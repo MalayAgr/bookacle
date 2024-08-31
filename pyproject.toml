@@ -4,7 +4,12 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "asyncio>=3.4.3",
+    "langchain>=0.2.15",
+    "pypdf>=4.3.1",
+    "python-dotenv>=1.0.1",
+]
 
 [project.scripts]
 hello = "bookacle:hello"
