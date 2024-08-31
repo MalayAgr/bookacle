@@ -8,7 +8,7 @@ dependencies = [
     "asyncio>=3.4.3",
     "langchain-community>=0.2.15",
     "langchain>=0.2.15",
-    "polars>=1.6.0",
+    "numpy>=1.26.4",
     "pymupdf>=1.24.9",
     "python-dotenv>=1.0.1",
 ]
