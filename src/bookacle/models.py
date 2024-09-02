@@ -7,27 +7,26 @@ from langchain_huggingface import (
     HuggingFaceEmbeddings,
     HuggingFacePipeline,
 )
+from transformers import PreTrainedTokenizerBase
 
 
 class EmbeddingModel:
-    def __init__(self, model_name: str) -> None:
+    def __init__(self, model_name: str, *, use_gpu: bool = False) -> None:
         self.model_name = model_name
-
-    @cached_property
-    def model(self) -> HuggingFaceEmbeddings:
-        return HuggingFaceEmbeddings(
+        self.model = HuggingFaceEmbeddings(
             model_name=self.model_name,
             multi_process=True,
-            model_kwargs={"device": "cpu"},
+            model_kwargs={"device": "cpu" if use_gpu is False else "cuda"},
             encode_kwargs={"normalize_embeddings": True},
         )
+        self.tokenizer: PreTrainedTokenizerBase = self.model.client.tokenizer
 
     def embed(self, text: str) -> list[float]:
         return self.model.embed_query(text)
 
 
 class SummarizationModel:
-    SYSTEM_PROMPT = """ As a professional summarizer, create a concise and comprehensive summary of the provided text, be it an article, post, conversation, or passage, while adhering to these guidelines:
+    SYSTEM_PROMPT = """As a professional summarizer, create a concise and comprehensive summary of the provided text, be it an article, post, conversation, or passage, while adhering to these guidelines:
 
         1. Craft a summary that is detailed, thorough, in-depth, and complex, while maintaining clarity and conciseness.
 
@@ -51,17 +50,21 @@ class SummarizationModel:
     {% endif %}
     """
 
-    def __init__(self, model_name: str, max_tokens: int = 100) -> None:
+    def __init__(
+        self, model_name: str, max_tokens: int = 100, *, use_gpu: bool = False
+    ) -> None:
         self.model_name = model_name
         self.max_tokens = max_tokens
+        self.model = self._create_model(model_name=model_name, use_gpu=use_gpu)
+        self.tokenizer: PreTrainedTokenizerBase = self.model.tokenizer
 
-    @cached_property
-    def model(self) -> ChatHuggingFace:
+    def _create_model(self, model_name: str, use_gpu: bool = False):
         llm = HuggingFacePipeline.from_model_id(
-            model_id=self.model_name,
+            model_id=model_name,
             task="summarization",
+            device=None if use_gpu is False else 0,
             pipeline_kwargs=dict(
-                max_new_tokens=512,
+                max_new_tokens=self.max_tokens,
                 do_sample=False,
                 repetition_penalty=1.03,
             ),
@@ -121,4 +124,5 @@ if __name__ == "__main__":
         model_name="facebook/bart-large-cnn", max_tokens=300
     )
     result = summary_model.summarize(text)
+    print(result)
     print(result)
