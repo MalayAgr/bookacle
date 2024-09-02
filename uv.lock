@@ -144,7 +144,8 @@ dependencies = [
     { name = "numpy" },
     { name = "pymupdf" },
     { name = "python-dotenv" },
-    { name = "scipy" },
+    { name = "scikit-learn" },
+    { name = "tqdm" },
 ]
 
 [package.metadata]
@@ -156,7 +157,8 @@ requires-dist = [
     { name = "numpy", specifier = ">=1.26.4" },
     { name = "pymupdf", specifier = ">=1.24.9" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
-    { name = "scipy", specifier = ">=1.14.1" },
+    { name = "scikit-learn", specifier = ">=1.5.1" },
+    { name = "tqdm", specifier = ">=4.66.5" },
 ]
 
 [[package]]

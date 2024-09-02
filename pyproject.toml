@@ -12,7 +12,8 @@ dependencies = [
     "numpy>=1.26.4",
     "pymupdf>=1.24.9",
     "python-dotenv>=1.0.1",
-    "scipy>=1.14.1",
+    "scikit-learn>=1.5.1",
+    "tqdm>=4.66.5",
 ]
 
 [project.scripts]
@@ -21,3 +22,6 @@ hello = "bookacle:hello"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.mypy]
+python_version = "3.11"
