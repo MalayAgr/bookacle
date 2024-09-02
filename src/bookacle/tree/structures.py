@@ -1,14 +1,13 @@
 from dataclasses import dataclass
 
-import numpy as np
-
 
 @dataclass
 class Node:
     text: str
     index: int
     children: set[int]
-    embeddings: np.ndarray
+    embeddings: list[float]
+    metadata: dict[str, str] | None = None
 
 
 @dataclass
