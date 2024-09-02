@@ -1,13 +1,10 @@
 from dataclasses import dataclass
 from enum import Enum, auto
-from functools import cached_property
+from functools import cache, cached_property
 
 from bookacle.models import EmbeddingModel, SummarizationModel
-from langchain_huggingface import (
-    ChatHuggingFace,
-    HuggingFaceEmbeddings,
-    HuggingFacePipeline,
-)
+from pyexpat import model
+from transformers import PreTrainedTokenizerBase
 
 
 class SelectionMode(Enum):
@@ -26,23 +23,31 @@ class RaptorTreeConfig:
         top_k: int = 5,
         selection_mode: SelectionMode = SelectionMode.TOP_K,
         summarization_length: int = 100,
+        use_gpu: bool = False,
+        max_workers: int = 4,
     ):
         self.embedding_model_name = embedding_model_name
         self.summarization_model_name = summarization_model_name
+        self.embedding_model = EmbeddingModel(
+            model_name=embedding_model_name, use_gpu=use_gpu
+        )
+        self.summarization_model = SummarizationModel(
+            model_name=summarization_model_name,
+            max_tokens=summarization_length,
+            use_gpu=use_gpu,
+        )
         self.max_tokens = max_tokens
         self.num_layers = num_layers
         self.threshold = threshold
         self.top_k = top_k
         self.selection_mode = selection_mode
         self.summarization_length = summarization_length
+        self.max_workers = max_workers
 
-    @cached_property
-    def embedding_model(self) -> EmbeddingModel:
-        return EmbeddingModel(model_name=self.embedding_model_name)
+    @property
+    def embedding_tokenizer(self) -> PreTrainedTokenizerBase:
+        return self.embedding_model.tokenizer
 
-    @cached_property
-    def summarization_model(self) -> SummarizationModel:
-        return SummarizationModel(
-            model_name=self.summarization_model_name,
-            max_tokens=self.summarization_length,
-        )
+    @property
+    def summarization_tokenizer(self) -> PreTrainedTokenizerBase:
+        return self.summarization_model.tokenizer
