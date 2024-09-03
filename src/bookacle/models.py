@@ -23,10 +23,10 @@ class SummarizationModelLike(Protocol):
     @property
     def tokenizer(self) -> PreTrainedTokenizerBase: ...
 
-    def summarize(self, text: str, max_tokens: int = 100): ...
+    def summarize(self, text: str, max_tokens: int = 100) -> str: ...
 
 
-class EmbeddingModel:
+class HuggingFaceEmbeddingModel:
     def __init__(self, model_name: str, *, use_gpu: bool = False) -> None:
         self.model_name = model_name
         self.model = HuggingFaceEmbeddings(
@@ -38,13 +38,13 @@ class EmbeddingModel:
 
     @property
     def tokenizer(self) -> PreTrainedTokenizerBase:
-        return self.model.client.token
+        return self.model.client.tokenizer
 
     def embed(self, text: str) -> list[float]:
         return self.model.embed_query(text)
 
 
-class SummarizationModel:
+class HuggingFaceSummarizationModel:
     SYSTEM_PROMPT = """As a professional summarizer, create a concise and comprehensive summary of the provided text, while adhering to these guidelines:
 
         1. Craft a summary that is detailed, thorough, in-depth, and complex, while maintaining clarity and conciseness.
@@ -95,13 +95,15 @@ class SummarizationModel:
     def tokenizer(self) -> PreTrainedTokenizerBase:
         return self.model.tokenizer
 
-    def summarize(self, text: str, max_tokens: int = 100):
+    def summarize(self, text: str, max_tokens: int = 100) -> str:
         messages: list[BaseMessage] = [
             SystemMessage(content=f"{self.SYSTEM_PROMPT}"),
             HumanMessage(content=f"Summarize the text below:\n<text>\n{text}\n</text>"),
         ]
 
         ai_msg = self.model.invoke(messages, max_new_tokens=max_tokens)
+
+        assert isinstance(ai_msg.content, str)
 
         return ai_msg.content
 
@@ -111,7 +113,7 @@ if __name__ == "__main__":
 
     dotenv.load_dotenv()
 
-    embedding_model = EmbeddingModel(
+    embedding_model = HuggingFaceEmbeddingModel(
         model_name="sentence-transformers/all-mpnet-base-v2"
     )
     embeddings = embedding_model.embed("This is a test")
@@ -137,6 +139,6 @@ if __name__ == "__main__":
     2. **Model Hub:** Hugging Face's Model Hub is a treasure trove of pre-trained models, making it simple for anyone to access, experiment with, and fine-tune models. Researchers and developers around the world can collaborate and share their models through this platform.
     """
 
-    summary_model = SummarizationModel(model_name="facebook/bart-large-cnn")
+    summary_model = HuggingFaceSummarizationModel(model_name="facebook/bart-large-cnn")
     result = summary_model.summarize(text, max_tokens=300)
     print(result)

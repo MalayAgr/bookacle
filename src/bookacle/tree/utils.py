@@ -1,11 +1,6 @@
 from threading import Lock
 
-from bookacle.models import (
-    EmbeddingModel,
-    EmbeddingModelLike,
-    SummarizationModel,
-    SummarizationModelLike,
-)
+from bookacle.models import EmbeddingModelLike, SummarizationModelLike
 from bookacle.tree.structures import Node
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter

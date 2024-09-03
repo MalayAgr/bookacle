@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from bookacle.models import EmbeddingModel, EmbeddingModelLike
+from bookacle.models import EmbeddingModelLike, HuggingFaceEmbeddingModel
 
 
 @dataclass

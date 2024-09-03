@@ -51,8 +51,11 @@ class RaptorTreeBuilder:
         return leaf_nodes
 
     def build_from_documents(self, documents: list[Document]) -> Tree:
-        splitted_documents = split_documents(
-            documents, tokenizer=self.config.embedding_tokenizer
+        splitted_documents = self.config.document_splitter(
+            documents=documents,
+            max_tokens=self.config.max_tokens,
+            overlap=int(self.config.max_tokens * 0.1),
         )
+
         chunks = [doc.page_content for doc in splitted_documents]
         leaf_nodes = self.create_leaf_nodes(chunks=chunks)
