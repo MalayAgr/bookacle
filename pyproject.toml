@@ -25,6 +25,7 @@ build-backend = "hatchling.build"
 
 [tool.mypy]
 python_version = "3.11"
+disable_error_code = "import-untyped"
 
 [tool.uv]
 dev-dependencies = [
