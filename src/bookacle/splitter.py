@@ -7,7 +7,7 @@ from transformers import PreTrainedTokenizerBase
 
 class DocumentSplitterLike(Protocol):
     def __call__(
-        self, documents: list[Document], max_tokens: int = 100, overlap: int = 0
+        self, documents: list[Document], chunk_size: int = 100, chunk_overlap: int = 0
     ) -> list[Document]: ...
 
 
@@ -16,12 +16,12 @@ class HuggingFaceDocumentSplitter:
         self.tokenizer = tokenizer
 
     def __call__(
-        self, documents: list[Document], max_tokens: int = 100, overlap: int = 0
+        self, documents: list[Document], chunk_size: int = 100, chunk_overlap: int = 0
     ) -> list[Document]:
         splitter = RecursiveCharacterTextSplitter.from_huggingface_tokenizer(
             tokenizer=self.tokenizer,
-            chunk_size=max_tokens,
-            chunk_overlap=overlap,
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap,
             separators=[
                 "\n\n",
                 "\n",
