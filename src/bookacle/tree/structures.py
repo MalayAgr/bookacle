@@ -1,4 +1,8 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
+
+from bookacle.models import EmbeddingModel
 
 
 @dataclass
@@ -8,6 +12,27 @@ class Node:
     children: set[int]
     embeddings: list[float]
     metadata: dict[str, str] | None = None
+
+    @classmethod
+    def from_text(
+        cls,
+        index: int,
+        text: str,
+        embedding_model: EmbeddingModel,
+        children_indices: set[int] | None = None,
+        metadata: dict[str, str] | None = None,
+    ) -> Node:
+        if children_indices is None:
+            children_indices = set()
+
+        embeddings = embedding_model.embed(text=text)
+        return cls(
+            text=text,
+            index=index,
+            children=children_indices,
+            embeddings=embeddings,
+            metadata=metadata,
+        )
 
 
 @dataclass
