@@ -14,6 +14,9 @@ class EmbeddingModelLike(Protocol):
     @property
     def tokenizer(self) -> Any: ...
 
+    @property
+    def model_max_length(self) -> int: ...
+
     def embed(self, text: str) -> list[float]: ...
 
 
@@ -37,6 +40,10 @@ class HuggingFaceEmbeddingModel:
     @property
     def tokenizer(self) -> PreTrainedTokenizerBase:
         return self.model.client.tokenizer
+
+    @property
+    def model_max_length(self) -> int:
+        return self.model.client.tokenizer.model_max_length
 
     def embed(self, text: str) -> list[float]:
         return self.model.embed_query(text)
