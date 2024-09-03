@@ -1,75 +1,20 @@
 from __future__ import annotations
 
 import os
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
-from threading import Lock
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import numpy as np
 from bookacle.tree.config import RaptorTreeConfig, SelectionMode
 from bookacle.tree.structures import Node, Tree
+from bookacle.tree.utils import split_documents
 from langchain_core.documents import Document
-from langchain_text_splitters import RecursiveCharacterTextSplitter
 from sklearn.metrics.pairwise import cosine_similarity
 from tqdm import tqdm
-from transformers import PreTrainedTokenizerBase
-
-
-def split_documents(
-    documents: list[Document],
-    tokenizer: PreTrainedTokenizerBase,
-    max_tokens: int = 100,
-    overlap: int = 0,
-) -> list[Document]:
-    splitter = RecursiveCharacterTextSplitter.from_huggingface_tokenizer(
-        tokenizer=tokenizer,
-        chunk_size=max_tokens,
-        chunk_overlap=overlap,
-        separators=[
-            ".",
-            "!",
-            "?",
-            "\n",
-            "\n\n",
-            "\u200b",  # Zero-width space
-            "\uff0c",  # Fullwidth comma
-            "\u3001",  # Ideographic comma
-            "\uff0e",  # Fullwidth full stop
-            "\u3002",  # Ideographic full stop
-            "",
-        ],
-        keep_separator="end",
-    )
-
-    return splitter.split_documents(documents=documents)
-
-
-def process_cluster(
-    cluster: list[Node],
-    new_level_nodes: dict[int, Node],
-    next_node_index: int,
-    lock: Lock,
-):
-    pass
 
 
 class RaptorTreeBuilder:
     def __init__(self, config: RaptorTreeConfig):
         self.config = config
-
-    def create_node(
-        self, index: int, text: str, children_indices: set[int] | None = None
-    ) -> tuple[int, Node]:
-        if children_indices is None:
-            children_indices = set()
-
-        embeddings = self.config.embedding_model.embed(text)
-
-        return index, Node(
-            text=text,
-            index=index,
-            children=children_indices,
-            embeddings=embeddings,
-        )
 
     def summarize(self, text: str):
         return self.config.summarization_model.summarize(text=text)
@@ -94,14 +39,16 @@ class RaptorTreeBuilder:
         with tqdm(total=len(chunks), desc="Creating leaf nodes", unit="node") as pbar:
             with ThreadPoolExecutor(max_workers=self.config.max_workers) as executor:
                 tasks = {
-                    executor.submit(self.create_node, index, chunk): (index, chunk)
+                    executor.submit(
+                        Node.from_text, index, chunk, self.config.embedding_model
+                    ): (index, chunk)
                     for index, chunk in enumerate(chunks)
                 }
 
                 leaf_nodes = {}
                 for future in as_completed(tasks):
-                    index, node = future.result()
-                    leaf_nodes[index] = node
+                    node = future.result()
+                    leaf_nodes[node.index] = node
                     pbar.update(1)
 
         return leaf_nodes
