@@ -25,3 +25,8 @@ build-backend = "hatchling.build"
 
 [tool.mypy]
 python_version = "3.11"
+
+[tool.uv]
+dev-dependencies = [
+    "mypy>=1.11.2",
+]
