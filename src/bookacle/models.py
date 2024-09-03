@@ -2,6 +2,7 @@ import os
 from functools import cached_property
 
 from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.messages.base import BaseMessage
 from langchain_huggingface import (
     ChatHuggingFace,
     HuggingFaceEmbeddings,
@@ -26,7 +27,7 @@ class EmbeddingModel:
 
 
 class SummarizationModel:
-    SYSTEM_PROMPT = """As a professional summarizer, create a concise and comprehensive summary of the provided text, be it an article, post, conversation, or passage, while adhering to these guidelines:
+    SYSTEM_PROMPT = """As a professional summarizer, create a concise and comprehensive summary of the provided text, while adhering to these guidelines:
 
         1. Craft a summary that is detailed, thorough, in-depth, and complex, while maintaining clarity and conciseness.
 
@@ -35,6 +36,8 @@ class SummarizationModel:
         3. Rely strictly on the provided text, without including external information.
 
         4. Format the summary in paragraph form for easy understanding.
+
+        5. Use proper punctuation, grammar, and spelling to ensure a polished and professional summary.
     """
 
     CHAT_TEMPLATE = """
@@ -50,11 +53,8 @@ class SummarizationModel:
     {% endif %}
     """
 
-    def __init__(
-        self, model_name: str, max_tokens: int = 100, *, use_gpu: bool = False
-    ) -> None:
+    def __init__(self, model_name: str, *, use_gpu: bool = False) -> None:
         self.model_name = model_name
-        self.max_tokens = max_tokens
         self.model = self._create_model(model_name=model_name, use_gpu=use_gpu)
         self.tokenizer: PreTrainedTokenizerBase = self.model.tokenizer
 
@@ -64,7 +64,6 @@ class SummarizationModel:
             task="summarization",
             device=None if use_gpu is False else 0,
             pipeline_kwargs=dict(
-                max_new_tokens=self.max_tokens,
                 do_sample=False,
                 repetition_penalty=1.03,
             ),
@@ -75,24 +74,21 @@ class SummarizationModel:
 
         return chat_model
 
-    def summarize(self, text: str):
-        messages = [
+    def summarize(self, text: str, max_tokens: int = 100):
+        messages: list[BaseMessage] = [
             SystemMessage(content=f"{self.SYSTEM_PROMPT}"),
             HumanMessage(content=f"Summarize the text below:\n<text>\n{text}\n</text>"),
         ]
 
-        ai_msg = self.model.invoke(messages)
+        ai_msg = self.model.invoke(messages, max_new_tokens=max_tokens)
 
         return ai_msg.content
 
 
 if __name__ == "__main__":
-    import os
+    import dotenv
 
-    os.environ["LANGCHAIN_TRACING_V2"] = "true"
-    os.environ["LANGCHAIN_API_KEY"] = (
-        "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"
-    )
+    dotenv.load_dotenv()
 
     embedding_model = EmbeddingModel(
         model_name="sentence-transformers/all-mpnet-base-v2"
@@ -120,9 +116,6 @@ if __name__ == "__main__":
     2. **Model Hub:** Hugging Face's Model Hub is a treasure trove of pre-trained models, making it simple for anyone to access, experiment with, and fine-tune models. Researchers and developers around the world can collaborate and share their models through this platform.
     """
 
-    summary_model = SummarizationModel(
-        model_name="facebook/bart-large-cnn", max_tokens=300
-    )
-    result = summary_model.summarize(text)
-    print(result)
+    summary_model = SummarizationModel(model_name="facebook/bart-large-cnn")
+    result = summary_model.summarize(text, max_tokens=300)
     print(result)
