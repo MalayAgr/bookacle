@@ -43,7 +43,7 @@ class HuggingFaceEmbeddingModel:
 
     @property
     def model_max_length(self) -> int:
-        return self.model.client.tokenizer.model_max_length
+        return self.tokenizer.model_max_length
 
     def embed(self, text: str) -> list[float]:
         return self.model.embed_query(text)
@@ -80,7 +80,7 @@ class HuggingFaceSummarizationModel:
         self.model_name = model_name
         self.model = self._create_model(model_name=model_name, use_gpu=use_gpu)
 
-    def _create_model(self, model_name: str, use_gpu: bool = False):
+    def _create_model(self, model_name: str, use_gpu: bool = False) -> ChatHuggingFace:
         llm = HuggingFacePipeline.from_model_id(
             model_id=model_name,
             task="summarization",

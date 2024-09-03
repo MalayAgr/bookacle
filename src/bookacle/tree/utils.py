@@ -25,7 +25,7 @@ def create_parent_node(
 
     return Node.from_text(
         index=next_node_index,
-        text=summary,  # type: ignore
+        text=summary,
         embedding_model=embedding_model,
         children_indices={node.index for node in cluster},
     )
