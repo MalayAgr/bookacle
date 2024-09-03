@@ -2,7 +2,12 @@ from dataclasses import dataclass
 from enum import Enum, auto
 from functools import cache, cached_property
 
-from bookacle.models import EmbeddingModel, SummarizationModel
+from bookacle.models import (
+    EmbeddingModel,
+    EmbeddingModelLike,
+    SummarizationModel,
+    SummarizationModelLike,
+)
 from pyexpat import model
 from transformers import PreTrainedTokenizerBase
 
@@ -15,8 +20,8 @@ class SelectionMode(Enum):
 class RaptorTreeConfig:
     def __init__(
         self,
-        embedding_model_name: str,
-        summarization_model_name: str,
+        embedding_model: EmbeddingModelLike,
+        summarization_model: SummarizationModelLike,
         max_tokens: int = 100,
         max_num_layers: int = 5,
         threshold: float = 0.5,
@@ -26,15 +31,8 @@ class RaptorTreeConfig:
         use_gpu: bool = False,
         max_workers: int = 4,
     ):
-        self.embedding_model_name = embedding_model_name
-        self.summarization_model_name = summarization_model_name
-        self.embedding_model = EmbeddingModel(
-            model_name=embedding_model_name, use_gpu=use_gpu
-        )
-        self.summarization_model = SummarizationModel(
-            model_name=summarization_model_name,
-            use_gpu=use_gpu,
-        )
+        self.embedding_model = embedding_model
+        self.summarization_model = summarization_model
         self.max_tokens = max_tokens
         self.max_num_layers = max_num_layers
         self.threshold = threshold

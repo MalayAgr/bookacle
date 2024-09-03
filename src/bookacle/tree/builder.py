@@ -16,9 +16,6 @@ class RaptorTreeBuilder:
     def __init__(self, config: RaptorTreeConfig):
         self.config = config
 
-    def summarize(self, text: str):
-        return self.config.summarization_model.summarize(text=text)
-
     def get_relevant_nodes(
         self, current_node: Node, list_nodes: list[Node]
     ) -> list[Node]:

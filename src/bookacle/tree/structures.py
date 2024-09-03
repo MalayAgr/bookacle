@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from bookacle.models import EmbeddingModel
+from bookacle.models import EmbeddingModel, EmbeddingModelLike
 
 
 @dataclass
@@ -18,7 +18,7 @@ class Node:
         cls,
         index: int,
         text: str,
-        embedding_model: EmbeddingModel,
+        embedding_model: EmbeddingModelLike,
         children_indices: set[int] | None = None,
         metadata: dict[str, str] | None = None,
     ) -> Node:
@@ -26,6 +26,7 @@ class Node:
             children_indices = set()
 
         embeddings = embedding_model.embed(text=text)
+
         return cls(
             text=text,
             index=index,

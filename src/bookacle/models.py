@@ -1,5 +1,6 @@
 import os
 from functools import cached_property
+from typing import Protocol
 
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.messages.base import BaseMessage
@@ -11,6 +12,20 @@ from langchain_huggingface import (
 from transformers import PreTrainedTokenizerBase
 
 
+class EmbeddingModelLike(Protocol):
+    @property
+    def tokenizer(self) -> PreTrainedTokenizerBase: ...
+
+    def embed(self, text: str) -> list[float]: ...
+
+
+class SummarizationModelLike(Protocol):
+    @property
+    def tokenizer(self) -> PreTrainedTokenizerBase: ...
+
+    def summarize(self, text: str, max_tokens: int = 100): ...
+
+
 class EmbeddingModel:
     def __init__(self, model_name: str, *, use_gpu: bool = False) -> None:
         self.model_name = model_name
@@ -20,7 +35,10 @@ class EmbeddingModel:
             model_kwargs={"device": "cpu" if use_gpu is False else "cuda"},
             encode_kwargs={"normalize_embeddings": True},
         )
-        self.tokenizer: PreTrainedTokenizerBase = self.model.client.tokenizer
+
+    @property
+    def tokenizer(self) -> PreTrainedTokenizerBase:
+        return self.model.client.token
 
     def embed(self, text: str) -> list[float]:
         return self.model.embed_query(text)
@@ -56,7 +74,6 @@ class SummarizationModel:
     def __init__(self, model_name: str, *, use_gpu: bool = False) -> None:
         self.model_name = model_name
         self.model = self._create_model(model_name=model_name, use_gpu=use_gpu)
-        self.tokenizer: PreTrainedTokenizerBase = self.model.tokenizer
 
     def _create_model(self, model_name: str, use_gpu: bool = False):
         llm = HuggingFacePipeline.from_model_id(
@@ -73,6 +90,10 @@ class SummarizationModel:
         chat_model.tokenizer.chat_template = self.CHAT_TEMPLATE
 
         return chat_model
+
+    @property
+    def tokenizer(self) -> PreTrainedTokenizerBase:
+        return self.model.tokenizer
 
     def summarize(self, text: str, max_tokens: int = 100):
         messages: list[BaseMessage] = [

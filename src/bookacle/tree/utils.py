@@ -1,6 +1,11 @@
 from threading import Lock
 
-from bookacle.models import EmbeddingModel, SummarizationModel
+from bookacle.models import (
+    EmbeddingModel,
+    EmbeddingModelLike,
+    SummarizationModel,
+    SummarizationModelLike,
+)
 from bookacle.tree.structures import Node
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -36,12 +41,12 @@ def split_documents(
 
 def create_parent_node(
     cluster: list[Node],
-    embedding_model: EmbeddingModel,
-    summarization_model: SummarizationModel,
-    new_level_nodes: dict[int, Node],
+    embedding_model: EmbeddingModelLike,
+    summarization_model: SummarizationModelLike,
+    # new_level_nodes: dict[int, Node],
     next_node_index: int,
     summarization_length: int,
-    lock: Lock,
+    # lock: Lock,
 ) -> Node:
     concatenated_text = concatenate_node_texts(nodes=cluster)
 
