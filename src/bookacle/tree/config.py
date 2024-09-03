@@ -18,7 +18,7 @@ class RaptorTreeConfig:
         embedding_model_name: str,
         summarization_model_name: str,
         max_tokens: int = 100,
-        num_layers: int = 5,
+        max_num_layers: int = 5,
         threshold: float = 0.5,
         top_k: int = 5,
         selection_mode: SelectionMode = SelectionMode.TOP_K,
@@ -33,11 +33,10 @@ class RaptorTreeConfig:
         )
         self.summarization_model = SummarizationModel(
             model_name=summarization_model_name,
-            max_tokens=summarization_length,
             use_gpu=use_gpu,
         )
         self.max_tokens = max_tokens
-        self.num_layers = num_layers
+        self.max_num_layers = max_num_layers
         self.threshold = threshold
         self.top_k = top_k
         self.selection_mode = selection_mode
