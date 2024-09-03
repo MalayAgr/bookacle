@@ -1,6 +1,6 @@
 import os
 from functools import cached_property
-from typing import Protocol
+from typing import Any, Protocol
 
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.messages.base import BaseMessage
@@ -14,7 +14,7 @@ from transformers import PreTrainedTokenizerBase
 
 class EmbeddingModelLike(Protocol):
     @property
-    def tokenizer(self) -> PreTrainedTokenizerBase: ...
+    def tokenizer(self) -> Any: ...
 
     def embed(self, text: str) -> list[float]: ...
 

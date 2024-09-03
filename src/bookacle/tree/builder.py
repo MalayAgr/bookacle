@@ -53,8 +53,8 @@ class RaptorTreeBuilder:
     def build_from_documents(self, documents: list[Document]) -> Tree:
         splitted_documents = self.config.document_splitter(
             documents=documents,
-            max_tokens=self.config.max_tokens,
-            overlap=int(self.config.max_tokens * 0.1),
+            chunk_size=self.config.max_tokens,
+            chunk_overlap=int(self.config.max_tokens * 0.1),
         )
 
         chunks = [doc.page_content for doc in splitted_documents]
