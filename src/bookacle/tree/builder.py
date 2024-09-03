@@ -6,7 +6,6 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import numpy as np
 from bookacle.tree.config import RaptorTreeConfig, SelectionMode
 from bookacle.tree.structures import Node, Tree
-from bookacle.tree.utils import split_documents
 from langchain_core.documents import Document
 from sklearn.metrics.pairwise import cosine_similarity
 from tqdm import tqdm
