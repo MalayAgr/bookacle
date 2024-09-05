@@ -12,8 +12,15 @@ class DocumentSplitterLike(Protocol):
 
 
 class HuggingFaceDocumentSplitter:
-    def __init__(self, tokenizer: PreTrainedTokenizerBase) -> None:
+    def __init__(
+        self, tokenizer: PreTrainedTokenizerBase, separators: list[str] | None = None
+    ) -> None:
         self.tokenizer = tokenizer
+
+        if separators is None:
+            separators = ["\n\n", "\n", ".", "!", "?"]
+
+        self.separators = separators
 
     def __call__(
         self, documents: list[Document], chunk_size: int = 100, chunk_overlap: int = 0
@@ -22,13 +29,7 @@ class HuggingFaceDocumentSplitter:
             tokenizer=self.tokenizer,
             chunk_size=chunk_size,
             chunk_overlap=chunk_overlap,
-            separators=[
-                "\n\n",
-                "\n",
-                ".",
-                "!",
-                "?",
-            ],
+            separators=self.separators,
             keep_separator="end",
         )
 
