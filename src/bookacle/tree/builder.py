@@ -42,25 +42,17 @@ class ClusterTreeBuilder:
 
         return [list_nodes[i] for i in nearest_neighbors_indices[: self.config.top_k]]
 
-    def create_leaf_nodes(self, chunks: list[str]) -> dict[int, Node]:
-        with (
-            tqdm(total=len(chunks), desc="Creating leaf nodes", unit="node") as pbar,
-            ThreadPoolExecutor(max_workers=self.config.max_workers) as executor,
-        ):
-            tasks = {
-                executor.submit(
-                    Node.from_text, index, chunk, self.config.embedding_model
-                ): (index, chunk)
-                for index, chunk in enumerate(chunks)
-            }
+    def create_leaf_nodes(
+        self, chunks: list[str], embeddings: list[list[float]]
+    ) -> dict[int, Node]:
+        pbar_chunks = tqdm(chunks, desc="Creating leaf nodes", unit="node")
 
-            leaf_nodes = {}
-            for future in as_completed(tasks):
-                node = future.result()
-                leaf_nodes[node.index] = node
-                pbar.update(1)
-
-        return leaf_nodes
+        return {
+            index: Node(
+                text=chunk, index=index, children=set(), embeddings=embeddings[index]
+            )
+            for index, chunk in enumerate(pbar_chunks)
+        }
 
     def build_from_documents(
         self,
@@ -81,7 +73,8 @@ class ClusterTreeBuilder:
         )
 
         chunks = [doc.page_content for doc in splitted_documents]
-        leaf_nodes = self.create_leaf_nodes(chunks=chunks)
+        embeddings = self.config.embedding_model.embed(text=chunks)
+        leaf_nodes = self.create_leaf_nodes(chunks=chunks, embeddings=embeddings)
 
         layer_to_nodes = {0: list(leaf_nodes.values())}
 

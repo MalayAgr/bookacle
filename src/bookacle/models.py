@@ -1,4 +1,4 @@
-from typing import Any, Protocol
+from typing import Any, Protocol, overload
 
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.messages.base import BaseMessage
@@ -17,7 +17,13 @@ class EmbeddingModelLike(Protocol):
     @property
     def model_max_length(self) -> int: ...
 
+    @overload
     def embed(self, text: str) -> list[float]: ...
+
+    @overload
+    def embed(self, text: list[str]) -> list[list[float]]: ...
+
+    def embed(self, text: str | list[str]) -> list[float] | list[list[float]]: ...
 
 
 class SummarizationModelLike(Protocol):
@@ -34,7 +40,7 @@ class HuggingFaceEmbeddingModel:
             model_name=self.model_name,
             multi_process=True,
             model_kwargs={"device": "cpu" if use_gpu is False else "cuda"},
-            encode_kwargs={"normalize_embeddings": True},
+            encode_kwargs={"normalize_embeddings": True, "show_progress_bar": True},
         )
 
     @property
@@ -45,8 +51,17 @@ class HuggingFaceEmbeddingModel:
     def model_max_length(self) -> int:
         return self.tokenizer.model_max_length
 
-    def embed(self, text: str) -> list[float]:
-        return self.model.embed_query(text)
+    @overload
+    def embed(self, text: str) -> list[float]: ...
+
+    @overload
+    def embed(self, text: list[str]) -> list[list[float]]: ...
+
+    def embed(self, text: str | list[str]) -> list[float] | list[list[float]]:
+        if isinstance(text, str):
+            return self.model.embed_query(text)
+
+        return self.model.embed_documents(texts=text)
 
 
 class HuggingFaceSummarizationModel:
