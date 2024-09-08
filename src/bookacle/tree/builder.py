@@ -1,17 +1,28 @@
 from __future__ import annotations
 
-import os
+import copy
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from typing import Protocol
 
 import numpy as np
 from bookacle.tree.config import RaptorTreeConfig, SelectionMode
 from bookacle.tree.structures import Node, Tree
+from bookacle.tree.utils import create_parent_node
 from langchain_core.documents import Document
 from sklearn.metrics.pairwise import cosine_similarity
 from tqdm.rich import tqdm
 
 
-class RaptorTreeBuilder:
+class TreeBuilderLike(Protocol):
+    def build_from_documents(
+        self,
+        documents: list[Document],
+        chunk_size: int | None = None,
+        chunk_overlap: int | None = None,
+    ) -> Tree: ...
+
+
+class ClusterTreeBuilder:
     def __init__(self, config: RaptorTreeConfig):
         self.config = config
 
@@ -19,7 +30,7 @@ class RaptorTreeBuilder:
         self, current_node: Node, list_nodes: list[Node]
     ) -> list[Node]:
         embeddings = [node.embeddings for node in list_nodes]
-        distances = cosine_similarity([current_node.embeddings], embeddings)
+        distances = cosine_similarity([current_node.embeddings], embeddings)  # type: ignore
         nearest_neighbors_indices = np.argsort(distances)
 
         if self.config.selection_mode == SelectionMode.THRESHOLD:
@@ -71,3 +82,42 @@ class RaptorTreeBuilder:
 
         chunks = [doc.page_content for doc in splitted_documents]
         leaf_nodes = self.create_leaf_nodes(chunks=chunks)
+
+        layer_to_nodes = {0: list(leaf_nodes.values())}
+
+        all_nodes = copy.deepcopy(leaf_nodes)
+
+        root_nodes, num_layers = self.construct_tree(
+            current_level_nodes=leaf_nodes,
+            all_tree_nodes=all_nodes,
+            layer_to_nodes=layer_to_nodes,
+        )
+
+        return Tree(
+            all_nodes=all_nodes,
+            root_nodes=root_nodes,
+            leaf_nodes=leaf_nodes,
+            num_layers=num_layers,
+            layer_to_nodes=layer_to_nodes,
+        )
+
+    def construct_tree(
+        self,
+        current_level_nodes: dict[int, Node],
+        all_tree_nodes: dict[int, Node],
+        layer_to_nodes: dict[int, list[Node]],
+        reduction_dimension: int = 10,
+    ) -> tuple[dict[int, Node], int]:
+        num_layers = self.config.max_num_layers
+
+        next_node_index = len(all_tree_nodes)
+
+        for layer in range(self.config.max_num_layers):
+            next_level_nodes = {}
+            sorted_current_nodes = dict(sorted(current_level_nodes.items()))
+
+            if len(sorted_current_nodes) <= reduction_dimension + 1:
+                num_layers = layer
+                break
+
+        return current_level_nodes, num_layers
