@@ -1,5 +1,6 @@
 from typing import Any, Protocol, overload
 
+from bookacle.tokenizers import TokenizerLike
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.messages.base import BaseMessage
 from langchain_huggingface import (
@@ -12,7 +13,7 @@ from transformers import PreTrainedTokenizerBase
 
 class EmbeddingModelLike(Protocol):
     @property
-    def tokenizer(self) -> Any: ...
+    def tokenizer(self) -> TokenizerLike: ...
 
     @property
     def model_max_length(self) -> int: ...
@@ -28,7 +29,7 @@ class EmbeddingModelLike(Protocol):
 
 class SummarizationModelLike(Protocol):
     @property
-    def tokenizer(self) -> Any: ...
+    def tokenizer(self) -> TokenizerLike: ...
 
     def summarize(self, text: str, max_tokens: int = 100) -> str: ...
 
