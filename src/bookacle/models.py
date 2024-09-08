@@ -1,6 +1,7 @@
 from typing import Any, Protocol, overload
 
 from bookacle.tokenizers import TokenizerLike
+from langchain import prompts
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.messages.base import BaseMessage
 from langchain_huggingface import (
@@ -31,7 +32,15 @@ class SummarizationModelLike(Protocol):
     @property
     def tokenizer(self) -> TokenizerLike: ...
 
+    @overload
+    def summarize(self, text: list[str], max_tokens: int = 100) -> list[str]: ...
+
+    @overload
     def summarize(self, text: str, max_tokens: int = 100) -> str: ...
+
+    def summarize(
+        self, text: str | list[str], max_tokens: int = 100
+    ) -> str | list[str]: ...
 
 
 class HuggingFaceEmbeddingModel:
@@ -116,17 +125,49 @@ class HuggingFaceSummarizationModel:
     def tokenizer(self) -> PreTrainedTokenizerBase:
         return self.model.tokenizer
 
-    def summarize(self, text: str, max_tokens: int = 100) -> str:
-        messages: list[BaseMessage] = [
-            SystemMessage(content=f"{self.SYSTEM_PROMPT}"),
-            HumanMessage(content=f"Summarize the text below:\n<text>\n{text}\n</text>"),
-        ]
+    @overload
+    def summarize(self, text: list[str], max_tokens: int = 100) -> list[str]: ...
 
-        ai_msg = self.model.invoke(messages, max_new_tokens=max_tokens)
+    @overload
+    def summarize(self, text: str, max_tokens: int = 100) -> str: ...
 
-        assert isinstance(ai_msg.content, str)
+    def _batched_summarize(self, texts: list[str], max_tokens: int) -> list[str]:
+        prompt = prompts.ChatPromptTemplate.from_messages(
+            [
+                (
+                    "system",
+                    f"{self.SYSTEM_PROMPT}",
+                ),
+                ("human", "Summarize the text below:\n<text>\n{text}\n</text>"),
+            ]
+        )
 
-        return ai_msg.content
+        chain = prompt | self.model
+
+        ai_messages = chain.batch(
+            [{"text": text for text in texts}], max_new_tokens=max_tokens
+        )
+
+        return [message.content for message in ai_messages]  # type: ignore
+
+    def summarize(
+        self, text: str | list[str], max_tokens: int = 100
+    ) -> str | list[str]:
+        if isinstance(text, str):
+            messages: list[BaseMessage] = [
+                SystemMessage(content=f"{self.SYSTEM_PROMPT}"),
+                HumanMessage(
+                    content=f"Summarize the text below:\n<text>\n{text}\n</text>"
+                ),
+            ]
+
+            ai_messages = self.model.invoke(messages, max_new_tokens=max_tokens)
+
+            assert isinstance(ai_messages.content, str)
+
+            return ai_messages.content
+
+        return self._batched_summarize(texts=text, max_tokens=max_tokens)
 
 
 if __name__ == "__main__":
