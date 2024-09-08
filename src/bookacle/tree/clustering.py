@@ -56,7 +56,7 @@ class GMMClusteringBackend:
         n_neighbors_local: int = 10,
         n_clusters_global: int | None = None,
         n_clusters_local: int | None = None,
-    ):
+    ) -> None:
         self.reduction_dim = reduction_dim
         self.max_clusters = max_clusters
         self.threshold = threshold
@@ -103,15 +103,13 @@ class GMMClusteringBackend:
         n_neighbors: int,
         n_clusters: int | None = None,
     ) -> tuple[int, npt.NDArray[np.int64]]:
-        reduced_embeddings_global = umap_reduce_embeddings(
+        reduced_embeddings = umap_reduce_embeddings(
             embeddings=embeddings,
             n_components=n_components,
             neighbors=n_neighbors,
         )
 
-        return self.get_clusters(
-            embeddings=reduced_embeddings_global, n_clusters=n_clusters
-        )
+        return self.get_clusters(embeddings=reduced_embeddings, n_clusters=n_clusters)
 
     def cluster_locally(
         self,
@@ -207,7 +205,7 @@ def raptor_clustering(
 
     _, cluster_to_node = clustering_backend.cluster(embeddings=embeddings)
 
-    node_clusters = []
+    node_clusters: list[list[Node]] = []
 
     for _, node_indices in cluster_to_node.items():
         cluster_nodes = [nodes[idx] for idx in node_indices]
