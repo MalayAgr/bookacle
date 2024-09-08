@@ -1,6 +1,6 @@
-from typing import Any, Protocol, overload
+from typing import Protocol, overload
 
-from bookacle.tokenizers import TokenizerLike
+from bookacle.tokenizer import TokenizerLike
 from langchain import prompts
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.messages.base import BaseMessage
@@ -33,14 +33,12 @@ class SummarizationModelLike(Protocol):
     def tokenizer(self) -> TokenizerLike: ...
 
     @overload
-    def summarize(self, text: list[str], max_tokens: int = 100) -> list[str]: ...
+    def summarize(self, text: list[str]) -> list[str]: ...
 
     @overload
-    def summarize(self, text: str, max_tokens: int = 100) -> str: ...
+    def summarize(self, text: str) -> str: ...
 
-    def summarize(
-        self, text: str | list[str], max_tokens: int = 100
-    ) -> str | list[str]: ...
+    def summarize(self, text: str | list[str]) -> str | list[str]: ...
 
 
 class HuggingFaceEmbeddingModel:
@@ -75,19 +73,6 @@ class HuggingFaceEmbeddingModel:
 
 
 class HuggingFaceSummarizationModel:
-    SYSTEM_PROMPT = """As a professional summarizer, create a concise and comprehensive summary of the provided text, while adhering to these guidelines:
-
-        1. Craft a summary that is detailed, thorough, in-depth, and complex, while maintaining clarity and conciseness.
-
-        2. Incorporate main ideas and essential information, eliminating extraneous language and focusing on critical aspects.
-
-        3. Rely strictly on the provided text, without including external information.
-
-        4. Format the summary in paragraph form for easy understanding.
-
-        5. Use proper punctuation, grammar, and spelling to ensure a polished and professional summary.
-    """
-
     CHAT_TEMPLATE = """
     {% if not add_generation_prompt is defined %}
         {% set add_generation_prompt = false %}
@@ -101,22 +86,42 @@ class HuggingFaceSummarizationModel:
     {% endif %}
     """
 
-    def __init__(self, model_name: str, *, use_gpu: bool = False) -> None:
+    def __init__(
+        self,
+        model_name: str,
+        summarization_length: int = 100,
+        *,
+        task="summarization",
+        use_gpu: bool = False,
+    ) -> None:
         self.model_name = model_name
-        self.model = self._create_model(model_name=model_name, use_gpu=use_gpu)
+        self.model = self._create_model(
+            model_name=model_name,
+            summarization_length=summarization_length,
+            task=task,
+            use_gpu=use_gpu,
+        )
 
-    def _create_model(self, model_name: str, use_gpu: bool = False) -> ChatHuggingFace:
+    def _create_model(
+        self,
+        model_name: str,
+        summarization_length: int = 100,
+        task="summarization",
+        use_gpu: bool = False,
+    ) -> ChatHuggingFace:
         llm = HuggingFacePipeline.from_model_id(
             model_id=model_name,
-            task="summarization",
+            task=task,
             device=None if use_gpu is False else 0,
-            pipeline_kwargs=dict(
-                do_sample=False,
-                repetition_penalty=1.03,
-            ),
+            pipeline_kwargs={
+                "do_sample": True,
+                "repetition_penalty": 1.03,
+                "max_new_tokens": summarization_length,
+            },
         )
 
         chat_model = ChatHuggingFace(llm=llm)
+
         chat_model.tokenizer.chat_template = self.CHAT_TEMPLATE
 
         return chat_model
@@ -126,48 +131,39 @@ class HuggingFaceSummarizationModel:
         return self.model.tokenizer
 
     @overload
-    def summarize(self, text: list[str], max_tokens: int = 100) -> list[str]: ...
+    def summarize(self, text: list[str]) -> list[str]: ...
 
     @overload
-    def summarize(self, text: str, max_tokens: int = 100) -> str: ...
+    def summarize(self, text: str) -> str: ...
 
-    def _batched_summarize(self, texts: list[str], max_tokens: int) -> list[str]:
+    def _batched_summarize(self, texts: list[str]) -> list[str]:
         prompt = prompts.ChatPromptTemplate.from_messages(
             [
-                (
-                    "system",
-                    f"{self.SYSTEM_PROMPT}",
-                ),
                 ("human", "Summarize the text below:\n<text>\n{text}\n</text>"),
             ]
         )
 
         chain = prompt | self.model
 
-        ai_messages = chain.batch(
-            [{"text": text for text in texts}], max_new_tokens=max_tokens
-        )
+        ai_messages = chain.batch([{"text": text} for text in texts])
 
         return [message.content for message in ai_messages]  # type: ignore
 
-    def summarize(
-        self, text: str | list[str], max_tokens: int = 100
-    ) -> str | list[str]:
+    def summarize(self, text: str | list[str]) -> str | list[str]:
         if isinstance(text, str):
             messages: list[BaseMessage] = [
-                SystemMessage(content=f"{self.SYSTEM_PROMPT}"),
                 HumanMessage(
                     content=f"Summarize the text below:\n<text>\n{text}\n</text>"
                 ),
             ]
 
-            ai_messages = self.model.invoke(messages, max_new_tokens=max_tokens)
+            ai_messages = self.model.invoke(messages)
 
             assert isinstance(ai_messages.content, str)
 
             return ai_messages.content
 
-        return self._batched_summarize(texts=text, max_tokens=max_tokens)
+        return self._batched_summarize(texts=text)
 
 
 if __name__ == "__main__":
@@ -175,32 +171,36 @@ if __name__ == "__main__":
 
     dotenv.load_dotenv()
 
-    embedding_model = HuggingFaceEmbeddingModel(
-        model_name="sentence-transformers/all-mpnet-base-v2"
-    )
-    embeddings = embedding_model.embed("This is a test")
-    print(embeddings)
-    print(len(embeddings))
+    # embedding_model = HuggingFaceEmbeddingModel(
+    #     model_name="sentence-transformers/all-mpnet-base-v2"
+    # )
+    # embeddings = embedding_model.embed("This is a test")
+    # print(embeddings)
+    # print(len(embeddings))
 
-    text = """
+    text = [
+        """
     Hugging Face: Revolutionizing Natural Language Processing
 
     Introduction:
 
-    In the rapidly evolving field of Natural Language Processing (NLP), Hugging Face has emerged as a prominent and innovative force. This article will explore the story and significance of Hugging Face, a company that has made remarkable contributions to NLP and AI as a whole. From its inception to its role in democratizing AI, Hugging Face has left an indelible mark on the industry.
+    In the rapidly evolving field of Natural Language Processing (NLP), Hugging Face has emerged as a prominent and innovative force. This article will explore the story and significance of Hugging Face, a company that has made remarkable contributions to NLP and AI as a whole. From its inception to its role in democratizing AI, Hugging Face has left an indelible mark on the industry.""",
+        """The Birth of Hugging Face:
 
-    The Birth of Hugging Face:
-
-    Hugging Face was founded in 2016 by Clément Delangue, Julien Chaumond, and Thomas Wolf. The name "Hugging Face" was chosen to reflect the company's mission of making AI models more accessible and friendly to humans, much like a comforting hug. Initially, they began as a chatbot company but later shifted their focus to NLP, driven by their belief in the transformative potential of this technology.
-
-    Transformative Innovations:
+    Hugging Face was founded in 2016 by Clément Delangue, Julien Chaumond, and Thomas Wolf. The name "Hugging Face" was chosen to reflect the company's mission of making AI models more accessible and friendly to humans, much like a comforting hug. Initially, they began as a chatbot company but later shifted their focus to NLP, driven by their belief in the transformative potential of this technology.""",
+        """Transformative Innovations:
     Hugging Face is best known for its open-source contributions, particularly the "Transformers" library. This library has become the de facto standard for NLP and enables researchers, developers, and organizations to easily access and utilize state-of-the-art pre-trained language models, such as BERT, GPT-3, and more. These models have countless applications, from chatbots and virtual assistants to language translation and sentiment analysis.
 
     Key Contributions:
     1. **Transformers Library:** The Transformers library provides a unified interface for more than 50 pre-trained models, simplifying the development of NLP applications. It allows users to fine-tune these models for specific tasks, making it accessible to a wider audience.
     2. **Model Hub:** Hugging Face's Model Hub is a treasure trove of pre-trained models, making it simple for anyone to access, experiment with, and fine-tune models. Researchers and developers around the world can collaborate and share their models through this platform.
-    """
+    """,
+    ]
 
-    summary_model = HuggingFaceSummarizationModel(model_name="facebook/bart-large-cnn")
-    result = summary_model.summarize(text, max_tokens=300)
+    summary_model = HuggingFaceSummarizationModel(
+        model_name="facebook/bart-large-cnn",
+        use_gpu=False,
+        summarization_length=100,
+    )
+    result = summary_model.summarize(text)
     print(result)

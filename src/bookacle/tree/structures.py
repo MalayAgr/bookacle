@@ -45,15 +45,11 @@ class Node:
         cluster: list[Node],
         embedding_model: EmbeddingModelLike,
         summarization_model: SummarizationModelLike,
-        # new_level_nodes: dict[int, Node],
         next_node_index: int,
-        summarization_length: int,
     ) -> Node:
         concatenated_text = concatenate_node_texts(nodes=cluster)
 
-        summary = summarization_model.summarize(
-            text=concatenated_text, max_tokens=summarization_length
-        )
+        summary = summarization_model.summarize(text=concatenated_text)
 
         return Node.from_text(
             index=next_node_index,
