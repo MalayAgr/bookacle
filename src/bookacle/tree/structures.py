@@ -42,4 +42,4 @@ class Tree:
     root_nodes: dict[int, Node]
     leaf_nodes: dict[int, Node]
     num_layers: int
-    layer_to_nodes: dict[int, set[int]]
+    layer_to_nodes: dict[int, list[Node]]
