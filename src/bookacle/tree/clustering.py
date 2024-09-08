@@ -4,26 +4,9 @@ from typing import Any, Protocol
 import numpy as np
 import numpy.typing as npt
 import umap
+from bookacle.tokenizers import TokenizerLike
 from bookacle.tree.structures import Node
 from sklearn.mixture import GaussianMixture
-
-
-class ClustererLike(Protocol):
-    def cluster(
-        self, embeddings: npt.NDArray[np.float64], n_clusters: int | None = None
-    ) -> list[npt.NDArray[np.int64]]: ...
-
-
-class Clustering(Protocol):
-    def perform_clustering(
-        self,
-        nodes: list[Node],
-        embedding_model_name: str,
-        tokenizer: Any,
-        max_length_in_cluster: int = 3500,
-        reduction_dimension: int = 10,
-        threshold: float = 0.1,
-    ) -> list[list[Node]]: ...
 
 
 def umap_reduce_embeddings(
@@ -43,18 +26,45 @@ def umap_reduce_embeddings(
     return reduction
 
 
-class GMMClusterer:
+class ClusteringBackendLike(Protocol):
+    def cluster(
+        self,
+        embeddings: npt.NDArray[np.float64],
+    ) -> tuple[dict[int, list[int]], dict[int, list[int]]]: ...
+
+
+class ClusteringFunctionLike(Protocol):
+    def __call__(
+        self,
+        nodes: list[Node],
+        tokenizer: Any,
+        clustering_backend: ClusteringBackendLike | None = None,
+        max_length_in_cluster: int = 3500,
+        reduction_dimension: int = 10,
+        threshold: float = 0.1,
+    ) -> list[list[Node]]: ...
+
+
+class GMMClusteringBackend:
     def __init__(
         self,
         reduction_dim: int,
         max_clusters: int = 50,
         threshold: float = 0.5,
         random_state: int = 42,
+        n_neighbors_global: int | None = None,
+        n_neighbors_local: int = 10,
+        n_clusters_global: int | None = None,
+        n_clusters_local: int | None = None,
     ):
         self.reduction_dim = reduction_dim
         self.max_clusters = max_clusters
         self.threshold = threshold
         self.random_state = random_state
+        self.n_neighbors_global = n_neighbors_global
+        self.n_neighbors_local = n_neighbors_local
+        self.n_clusters_global = n_clusters_global
+        self.n_clusters_local = n_clusters_local
 
     def get_optimal_clusters_count(self, embeddings: npt.NDArray[np.float64]) -> int:
         max_clusters = min(self.max_clusters, embeddings.shape[0])
@@ -140,11 +150,9 @@ class GMMClusterer:
     def cluster(
         self,
         embeddings: npt.NDArray[np.float64],
-        n_neighbors_global: int | None = None,
-        n_neighbors_local: int = 10,
-        n_clusters_global: int | None = None,
-        n_clusters_local: int | None = None,
     ) -> tuple[dict[int, list[int]], dict[int, list[int]]]:
+        n_neighbors_global = self.n_neighbors_global
+
         if n_neighbors_global is None:
             n_neighbors_global = int((len(embeddings) - 1) ** 0.5)
 
@@ -152,7 +160,7 @@ class GMMClusterer:
             embeddings=embeddings,
             n_components=min(self.reduction_dim, embeddings.shape[0] - 2),
             n_neighbors=n_neighbors_global,
-            n_clusters=n_clusters_global,
+            n_clusters=self.n_clusters_global,
         )
 
         node_to_cluster: dict[int, list[int]] = defaultdict(list)
@@ -170,8 +178,8 @@ class GMMClusterer:
             n_local_clusters, local_clusters = self.cluster_locally(
                 embeddings=embeddings,
                 cluster_embeddings_global=cluster_embeddings_global,
-                n_clusters=n_clusters_local,
-                n_neighbors=n_neighbors_local,
+                n_clusters=self.n_clusters_local,
+                n_neighbors=self.n_neighbors_local,
             )
 
             for local_cluster_index, indices in local_clusters.items():
@@ -182,6 +190,45 @@ class GMMClusterer:
             total_clusters += n_local_clusters
 
         return node_to_cluster, cluster_to_node
+
+
+def raptor_clustering(
+    nodes: list[Node],
+    tokenizer: TokenizerLike,
+    clustering_backend: ClusteringBackendLike | None = None,
+    max_length_in_cluster: int = 3500,
+    reduction_dimension: int = 10,
+    threshold: float = 0.1,
+) -> list[list[Node]]:
+    if clustering_backend is None:
+        clustering_backend = GMMClusteringBackend(reduction_dim=reduction_dimension)
+
+    embeddings = np.array([node.embeddings for node in nodes])
+
+    _, cluster_to_node = clustering_backend.cluster(embeddings=embeddings)
+
+    node_clusters = []
+
+    for _, node_indices in cluster_to_node.items():
+        cluster_nodes = [nodes[idx] for idx in node_indices]
+        total_length = sum(len(tokenizer.encode(node.text)) for node in cluster_nodes)
+
+        if len(cluster_nodes) == 1 or total_length <= max_length_in_cluster:
+            node_clusters.append(cluster_nodes)
+            continue
+
+        reclustered_nodes = raptor_clustering(
+            nodes=cluster_nodes,
+            tokenizer=tokenizer,
+            clustering_backend=clustering_backend,
+            max_length_in_cluster=max_length_in_cluster,
+            reduction_dimension=reduction_dimension,
+            threshold=threshold,
+        )
+
+        node_clusters.extend(reclustered_nodes)
+
+    return node_clusters
 
 
 if __name__ == "__main__":
@@ -199,14 +246,6 @@ if __name__ == "__main__":
     document_splitter = HuggingFaceDocumentSplitter(tokenizer=embedding_model.tokenizer)
 
     chunks = document_splitter(documents=documents)
-    embeddings = embedding_model.model.embed_documents(
-        texts=[chunk.page_content for chunk in chunks]
-    )
+    embeddings = embedding_model.embed(text=[chunk.page_content for chunk in chunks])
 
-    gmm_clusterer = GMMClusterer(reduction_dim=10)
-    node_to_cluster, cluster_to_node = gmm_clusterer.cluster(
-        embeddings=np.array(embeddings)
-    )
-
-    print(node_to_cluster)
-    print(cluster_to_node)
+    gmm_clusterer = GMMClusteringBackend(reduction_dim=10)
