@@ -4,7 +4,7 @@ from typing import Any, Protocol
 import numpy as np
 import numpy.typing as npt
 import umap
-from bookacle.tokenizers import TokenizerLike
+from bookacle.tokenizer import TokenizerLike
 from bookacle.tree.structures import Node
 from sklearn.mixture import GaussianMixture
 
