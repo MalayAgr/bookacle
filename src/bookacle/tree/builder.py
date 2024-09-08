@@ -6,8 +6,7 @@ from typing import Protocol
 
 import numpy as np
 from bookacle.tree.config import RaptorTreeConfig, SelectionMode
-from bookacle.tree.structures import Node, Tree
-from bookacle.tree.utils import create_parent_node
+from bookacle.tree.structures import Node, Tree, concatenate_node_texts
 from langchain_core.documents import Document
 from sklearn.metrics.pairwise import cosine_similarity
 from tqdm.rich import tqdm
@@ -94,6 +93,24 @@ class ClusterTreeBuilder:
             layer_to_nodes=layer_to_nodes,
         )
 
+    def _create_next_tree_level(
+        self, clusters: list[list[Node]], first_node_index: int
+    ) -> dict[int, Node]:
+        cluster_texts = [concatenate_node_texts(cluster) for cluster in clusters]
+        summaries = self.config.summarization_model.summarize(text=cluster_texts)
+        embeddings = self.config.embedding_model.embed(text=summaries)
+
+        return {
+            first_node_index
+            + index: Node(
+                text=summary,
+                index=index,
+                children={node.index for node in cluster},
+                embeddings=embeddings[index],
+            )
+            for index, (cluster, summary) in enumerate(zip(clusters, summaries))
+        }
+
     def construct_tree(
         self,
         current_level_nodes: dict[int, Node],
@@ -103,14 +120,28 @@ class ClusterTreeBuilder:
     ) -> tuple[dict[int, Node], int]:
         num_layers = self.config.max_num_layers
 
-        next_node_index = len(all_tree_nodes)
-
         for layer in range(self.config.max_num_layers):
-            next_level_nodes = {}
             sorted_current_nodes = dict(sorted(current_level_nodes.items()))
 
             if len(sorted_current_nodes) <= reduction_dimension + 1:
                 num_layers = layer
                 break
+
+            clusters = self.config.clustering_func(
+                nodes=list(sorted_current_nodes.values()),
+                tokenizer=self.config.embedding_tokenizer,
+                clustering_backend=self.config.clustering_backend,
+                max_length_in_cluster=self.config.max_length_in_cluster,
+                reduction_dimension=reduction_dimension,
+                threshold=self.config.threshold,
+            )
+
+            new_level_nodes = self._create_next_tree_level(
+                clusters=clusters, first_node_index=len(all_tree_nodes)
+            )
+
+            layer_to_nodes[layer + 1] = list(new_level_nodes.values())
+            current_level_nodes = new_level_nodes
+            all_tree_nodes.update(new_level_nodes)
 
         return current_level_nodes, num_layers
