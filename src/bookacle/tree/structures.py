@@ -2,7 +2,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from bookacle.models import EmbeddingModelLike, HuggingFaceEmbeddingModel
+from bookacle.models import EmbeddingModelLike, SummarizationModelLike
+
+
+def concatenate_node_texts(nodes: list[Node]) -> str:
+    return "\n\n".join(" ".join(node.text.splitlines()) for node in nodes) + "\n\n"
 
 
 @dataclass
@@ -33,6 +37,29 @@ class Node:
             children=children_indices,
             embeddings=embeddings,
             metadata=metadata,
+        )
+
+    @classmethod
+    def from_children(
+        cls,
+        cluster: list[Node],
+        embedding_model: EmbeddingModelLike,
+        summarization_model: SummarizationModelLike,
+        # new_level_nodes: dict[int, Node],
+        next_node_index: int,
+        summarization_length: int,
+    ) -> Node:
+        concatenated_text = concatenate_node_texts(nodes=cluster)
+
+        summary = summarization_model.summarize(
+            text=concatenated_text, max_tokens=summarization_length
+        )
+
+        return Node.from_text(
+            index=next_node_index,
+            text=summary,
+            embedding_model=embedding_model,
+            children_indices={node.index for node in cluster},
         )
 
 
