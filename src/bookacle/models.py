@@ -91,7 +91,7 @@ class HuggingFaceSummarizationModel:
         model_name: str,
         summarization_length: int = 100,
         *,
-        task="summarization",
+        task: str = "summarization",
         use_gpu: bool = False,
     ) -> None:
         self.model_name = model_name
@@ -106,7 +106,7 @@ class HuggingFaceSummarizationModel:
         self,
         model_name: str,
         summarization_length: int = 100,
-        task="summarization",
+        task: str = "summarization",
         use_gpu: bool = False,
     ) -> ChatHuggingFace:
         llm = HuggingFacePipeline.from_model_id(
@@ -136,19 +136,6 @@ class HuggingFaceSummarizationModel:
     @overload
     def summarize(self, text: str) -> str: ...
 
-    def _batched_summarize(self, texts: list[str]) -> list[str]:
-        prompt = prompts.ChatPromptTemplate.from_messages(
-            [
-                ("human", "Summarize the text below:\n<text>\n{text}\n</text>"),
-            ]
-        )
-
-        chain = prompt | self.model
-
-        ai_messages = chain.batch([{"text": text} for text in texts])
-
-        return [message.content for message in ai_messages]  # type: ignore
-
     def summarize(self, text: str | list[str]) -> str | list[str]:
         if isinstance(text, str):
             messages: list[BaseMessage] = [
@@ -164,6 +151,19 @@ class HuggingFaceSummarizationModel:
             return ai_messages.content
 
         return self._batched_summarize(texts=text)
+
+    def _batched_summarize(self, texts: list[str]) -> list[str]:
+        prompt = prompts.ChatPromptTemplate.from_messages(
+            [
+                ("human", "Summarize the text below:\n<text>\n{text}\n</text>"),
+            ]
+        )
+
+        chain = prompt | self.model
+
+        ai_messages = chain.batch([{"text": text} for text in texts])
+
+        return [message.content for message in ai_messages]  # type: ignore
 
 
 if __name__ == "__main__":
