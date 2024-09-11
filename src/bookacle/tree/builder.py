@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import copy
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Protocol
 
 import numpy as np
@@ -9,7 +8,6 @@ from bookacle.tree.config import RaptorTreeConfig, SelectionMode
 from bookacle.tree.structures import Node, Tree, concatenate_node_texts
 from langchain_core.documents import Document
 from sklearn.metrics.pairwise import cosine_similarity
-from tqdm.rich import tqdm
 
 
 class TreeBuilderLike(Protocol):
@@ -44,13 +42,11 @@ class ClusterTreeBuilder:
     def create_leaf_nodes(
         self, chunks: list[str], embeddings: list[list[float]]
     ) -> dict[int, Node]:
-        pbar_chunks = tqdm(chunks, desc="Creating leaf nodes", unit="node")
-
         return {
             index: Node(
                 text=chunk, index=index, children=set(), embeddings=embeddings[index]
             )
-            for index, chunk in enumerate(pbar_chunks)
+            for index, chunk in enumerate(chunks)
         }
 
     def build_from_documents(
