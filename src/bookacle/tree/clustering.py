@@ -1,4 +1,5 @@
 from collections import defaultdict
+from collections.abc import Generator
 from typing import Any, Protocol
 
 import numpy as np
@@ -6,6 +7,7 @@ import numpy.typing as npt
 import umap
 from bookacle.tokenizer import TokenizerLike
 from bookacle.tree.structures import Node
+from joblib import Parallel, delayed
 from sklearn.mixture import GaussianMixture
 
 
@@ -19,6 +21,7 @@ def umap_reduce_embeddings(
         n_neighbors=neighbors,
         n_components=n_components,
         metric=metric,
+        low_memory=False,
     ).fit_transform(embeddings)
 
     assert isinstance(reduction, np.ndarray)
@@ -145,6 +148,27 @@ class GMMClusteringBackend:
 
         return n_local_clusters, clusters
 
+    def process_single_cluster(
+        self,
+        cluster_index: int,
+        embeddings: npt.NDArray[np.float64],
+        clusters: npt.NDArray[np.int64],
+    ) -> tuple[int, dict[int, npt.NDArray[np.int64]]] | None:
+        cluster_embeddings_global = embeddings[clusters == cluster_index]
+        n_samples = cluster_embeddings_global.shape[0]
+
+        if n_samples == 0:
+            return None  # Skip empty clusters
+
+        n_local_clusters, local_clusters = self.cluster_locally(
+            embeddings=embeddings,
+            cluster_embeddings_global=cluster_embeddings_global,
+            n_clusters=self.n_clusters_local,
+            n_neighbors=self.n_neighbors_local,
+        )
+
+        return n_local_clusters, local_clusters
+
     def cluster(
         self,
         embeddings: npt.NDArray[np.float64],
@@ -163,23 +187,18 @@ class GMMClusteringBackend:
 
         node_to_cluster: dict[int, list[int]] = defaultdict(list)
         cluster_to_node: dict[int, list[int]] = defaultdict(list)
-        total_clusters = 0
+        total_clusters: int = 0
 
-        for cluster_index in range(n_clusters_global):
-            cluster_embeddings_global = embeddings[clusters == cluster_index]
+        results = Parallel(n_jobs=-1)(
+            delayed(self.process_single_cluster)(cluster_index, embeddings, clusters)
+            for cluster_index in range(n_clusters_global)
+        )
 
-            n_samples = cluster_embeddings_global.shape[0]
-
-            if n_samples == 0:
+        for result in results:
+            if result is None:
                 continue
 
-            n_local_clusters, local_clusters = self.cluster_locally(
-                embeddings=embeddings,
-                cluster_embeddings_global=cluster_embeddings_global,
-                n_clusters=self.n_clusters_local,
-                n_neighbors=self.n_neighbors_local,
-            )
-
+            n_local_clusters, local_clusters = result
             for local_cluster_index, indices in local_clusters.items():
                 for idx in indices:
                     node_to_cluster[idx].append(total_clusters + local_cluster_index)
