@@ -30,7 +30,7 @@ build-backend = "hatchling.build"
 
 [tool.mypy]
 python_version = "3.11"
-disable_error_code = ["import-untyped", "no-any-return"]
+disable_error_code = ["import-untyped", "no-any-return", "unused-ignore"]
 strict = true
 plugins = "numpy.typing.mypy_plugin"
 files = "src"

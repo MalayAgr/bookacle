@@ -1,5 +1,6 @@
 from typing import Protocol, overload
 
+import numpy as np
 from bookacle.tokenizer import TokenizerLike
 from langchain import prompts
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -9,7 +10,13 @@ from langchain_huggingface import (
     HuggingFaceEmbeddings,
     HuggingFacePipeline,
 )
-from transformers import PreTrainedTokenizerBase
+from sentence_transformers import SentenceTransformer
+from transformers import (
+    AutoModelForSeq2SeqLM,
+    AutoTokenizer,
+    PreTrainedTokenizerBase,
+    pipeline,
+)
 
 
 class EmbeddingModelLike(Protocol):
@@ -41,23 +48,20 @@ class SummarizationModelLike(Protocol):
     def summarize(self, text: str | list[str]) -> str | list[str]: ...
 
 
-class HuggingFaceEmbeddingModel:
+class SentenceTransformerEmbeddingModel:
     def __init__(self, model_name: str, *, use_gpu: bool = False) -> None:
         self.model_name = model_name
-        self.model = HuggingFaceEmbeddings(
-            model_name=self.model_name,
-            multi_process=True,
-            model_kwargs={"device": "cpu" if use_gpu is False else "cuda"},
-            encode_kwargs={"normalize_embeddings": True, "show_progress_bar": True},
+        self.model = SentenceTransformer(
+            model_name_or_path=model_name, device="cuda" if use_gpu is True else "cpu"
         )
 
     @property
     def tokenizer(self) -> PreTrainedTokenizerBase:
-        return self.model.client.tokenizer
+        return self.model.tokenizer
 
     @property
     def model_max_length(self) -> int:
-        return self.tokenizer.model_max_length
+        return self.model.max_seq_length
 
     @overload
     def embed(self, text: str) -> list[float]: ...
@@ -66,69 +70,38 @@ class HuggingFaceEmbeddingModel:
     def embed(self, text: list[str]) -> list[list[float]]: ...
 
     def embed(self, text: str | list[str]) -> list[float] | list[list[float]]:
-        if isinstance(text, str):
-            return self.model.embed_query(text)
+        embeddings = self.model.encode(text, normalize_embeddings=True)
 
-        return self.model.embed_documents(texts=text)
+        assert isinstance(embeddings, np.ndarray)
+
+        return embeddings.tolist()
 
 
 class HuggingFaceSummarizationModel:
-    CHAT_TEMPLATE = """
-    {% if not add_generation_prompt is defined %}
-        {% set add_generation_prompt = false %}
-    {% endif %}
-
-    {% for message in messages %}
-        {{'<|im_start|>' + message['role'] + '\n' + message['content'] + '<|im_end|>' + '\n'}}
-    {% endfor %}
-    {% if add_generation_prompt %}
-        {{ '<|im_start|>assistant\n' }}
-    {% endif %}
-    """
-
     def __init__(
         self,
         model_name: str,
         summarization_length: int = 100,
         *,
-        task: str = "summarization",
         use_gpu: bool = False,
     ) -> None:
         self.model_name = model_name
-        self.model = self._create_model(
-            model_name=model_name,
-            summarization_length=summarization_length,
-            task=task,
-            use_gpu=use_gpu,
+        self.summarization_length = summarization_length
+
+        self._tokenizer = AutoTokenizer.from_pretrained(
+            model_name, model_max_length=512
         )
-
-    def _create_model(
-        self,
-        model_name: str,
-        summarization_length: int = 100,
-        task: str = "summarization",
-        use_gpu: bool = False,
-    ) -> ChatHuggingFace:
-        llm = HuggingFacePipeline.from_model_id(
-            model_id=model_name,
-            task=task,
-            device=None if use_gpu is False else 0,
-            pipeline_kwargs={
-                "do_sample": True,
-                "repetition_penalty": 1.03,
-                "max_new_tokens": summarization_length,
-            },
+        self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+        self.pipeline = pipeline(
+            task="summarization",
+            model=self.model,
+            tokenizer=self._tokenizer,
+            device=0 if use_gpu else -1,
         )
-
-        chat_model = ChatHuggingFace(llm=llm)
-
-        chat_model.tokenizer.chat_template = self.CHAT_TEMPLATE
-
-        return chat_model
 
     @property
     def tokenizer(self) -> PreTrainedTokenizerBase:
-        return self.model.tokenizer
+        return self._tokenizer
 
     @overload
     def summarize(self, text: list[str]) -> list[str]: ...
@@ -137,33 +110,14 @@ class HuggingFaceSummarizationModel:
     def summarize(self, text: str) -> str: ...
 
     def summarize(self, text: str | list[str]) -> str | list[str]:
-        if isinstance(text, str):
-            messages: list[BaseMessage] = [
-                HumanMessage(
-                    content=f"Summarize the text below:\n<text>\n{text}\n</text>"
-                ),
-            ]
-
-            ai_messages = self.model.invoke(messages)
-
-            assert isinstance(ai_messages.content, str)
-
-            return ai_messages.content
-
-        return self._batched_summarize(texts=text)
-
-    def _batched_summarize(self, texts: list[str]) -> list[str]:
-        prompt = prompts.ChatPromptTemplate.from_messages(
-            [
-                ("human", "Summarize the text below:\n<text>\n{text}\n</text>"),
-            ]
+        summaries = self.pipeline(
+            text, min_length=5, max_length=self.summarization_length, truncation=True
         )
 
-        chain = prompt | self.model
+        if isinstance(text, str):
+            return summaries[0]["summary_text"]  # type: ignore
 
-        ai_messages = chain.batch([{"text": text} for text in texts])
-
-        return [message.content for message in ai_messages]  # type: ignore
+        return [summary["summary_text"] for summary in summaries]  # type: ignore
 
 
 if __name__ == "__main__":
@@ -171,12 +125,12 @@ if __name__ == "__main__":
 
     dotenv.load_dotenv()
 
-    # embedding_model = HuggingFaceEmbeddingModel(
-    #     model_name="sentence-transformers/all-mpnet-base-v2"
-    # )
-    # embeddings = embedding_model.embed("This is a test")
-    # print(embeddings)
-    # print(len(embeddings))
+    embedding_model = SentenceTransformerEmbeddingModel(
+        model_name="sentence-transformers/all-mpnet-base-v2"
+    )
+    embeddings = embedding_model.embed(["This is a test", "This is another test"])
+    print(embeddings)
+    print(len(embeddings))
 
     text = [
         """
