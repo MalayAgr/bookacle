@@ -1,4 +1,4 @@
-from typing import Any, Protocol
+from typing import Protocol
 
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter

@@ -1,5 +1,4 @@
 from collections import defaultdict
-from collections.abc import Generator
 from typing import Any, Protocol
 
 import numpy as np
