@@ -30,7 +30,7 @@ class HuggingFaceDocumentSplitter:
             chunk_size=chunk_size,
             chunk_overlap=chunk_overlap,
             separators=self.separators,
-            keep_separator="end",
+            strip_whitespace=True,
         )
 
         return splitter.split_documents(documents=documents)
