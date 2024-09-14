@@ -92,9 +92,7 @@ class GMMClusteringBackend:
         gm = GaussianMixture(n_components=n_clusters, random_state=self.random_state)
         gm = gm.fit(embeddings)
 
-        probabilities = gm.predict_proba(embeddings)
-
-        _, clusters = np.asarray(probabilities > self.threshold).nonzero()
+        clusters = gm.predict(embeddings)
 
         return n_clusters, clusters
 
