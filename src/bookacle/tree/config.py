@@ -28,7 +28,6 @@ class RaptorTreeConfig:
     threshold: float = 0.5
     top_k: int = 5
     selection_mode: SelectionMode = SelectionMode.TOP_K
-    max_workers: int = 4
 
     @property
     def embedding_tokenizer(self) -> TokenizerLike:
