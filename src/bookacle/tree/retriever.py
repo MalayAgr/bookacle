@@ -10,7 +10,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 @runtime_checkable
 class RetrieverLike(Protocol):
-    def retrieve(self, query: str, *args, **kwargs) -> str: ...
+    def retrieve(self, query: str, *args, **kwargs) -> str: ...  # type: ignore
 
 
 class TreeRetriever:
