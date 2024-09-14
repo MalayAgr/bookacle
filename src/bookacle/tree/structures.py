@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import overload
 
 from bookacle.models import EmbeddingModelLike, SummarizationModelLike
@@ -14,10 +14,14 @@ def concatenate_node_texts(nodes: list[Node]) -> str:
 class Node:
     text: str
     index: int
-    children: set[int]
-    embeddings: list[float]
-    metadata: dict[str, str] | None = None
+    children: set[int] = field(repr=False)
+    embeddings: list[float] = field(repr=False)
+    metadata: dict[str, str] | None = field(default=None, repr=False)
     layer: int = 0
+
+    @property
+    def num_children(self) -> int:
+        return len(self.children)
 
     @classmethod
     def from_text(
@@ -67,14 +71,11 @@ class Node:
 
 @dataclass
 class Tree:
-    all_nodes: dict[int, Node]
-    root_nodes: dict[int, Node]
-    leaf_nodes: dict[int, Node]
+    all_nodes: dict[int, Node] = field(repr=False)
+    root_nodes: dict[int, Node] = field(repr=False)
+    leaf_nodes: dict[int, Node] = field(repr=False)
     num_layers: int
-    layer_to_nodes: dict[int, list[Node]]
-
-    def __post_init__(self):
-        pass
+    layer_to_nodes: dict[int, list[Node]] = field(repr=False)
 
     @property
     def num_nodes(self) -> int:
