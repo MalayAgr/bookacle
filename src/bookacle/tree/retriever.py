@@ -82,9 +82,9 @@ class TreeRetriever:
             candidate_nodes.extend(relevant_nodes)
             added_nodes.update({node.index for node in relevant_nodes})
 
-            next_level_nodes = {
-                child_index for node in candidate_nodes for child_index in node.children
-            }
+            next_level_nodes = set()
+            for node in relevant_nodes:
+                next_level_nodes.update(node.children)
 
             current_nodes = [self.tree.get_node(index) for index in next_level_nodes]
 
