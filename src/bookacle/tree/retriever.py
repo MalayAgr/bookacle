@@ -84,6 +84,9 @@ class TreeRetriever:
             for node in relevant_nodes:
                 next_level_nodes.update(node.children)
 
+            if not next_level_nodes:
+                break
+
             current_nodes = [self.tree.get_node(index) for index in next_level_nodes]
 
         selected_nodes = self.get_nodes_within_context(candidate_nodes=candidate_nodes)
