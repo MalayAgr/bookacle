@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum, auto
+from typing import Protocol
 
 from bookacle.models import EmbeddingModelLike, SummarizationModelLike
 from bookacle.splitter import DocumentSplitterLike
@@ -37,3 +38,16 @@ class RaptorTreeConfig:
     @property
     def summarization_tokenizer(self) -> TokenizerLike:
         return self.summarization_model.tokenizer
+
+
+@dataclass
+class TreeRetrieverConfig:
+    embedding_model: EmbeddingModelLike
+    threshold: float = 0.5
+    top_k: int = 5
+    selection_mode: SelectionMode = SelectionMode.TOP_K
+    max_tokens: int = 3500
+
+    @property
+    def tokenizer(self) -> TokenizerLike:
+        return self.embedding_model.tokenizer

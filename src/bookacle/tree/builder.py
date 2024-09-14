@@ -4,10 +4,9 @@ import copy
 from typing import Protocol
 
 import numpy as np
-from bookacle.tree.config import RaptorTreeConfig, SelectionMode
+from bookacle.tree.config import RaptorTreeConfig
 from bookacle.tree.structures import Node, Tree, concatenate_node_texts
 from langchain_core.documents import Document
-from sklearn.metrics.pairwise import cosine_similarity
 
 
 class TreeBuilderLike(Protocol):
@@ -22,22 +21,6 @@ class TreeBuilderLike(Protocol):
 class ClusterTreeBuilder:
     def __init__(self, config: RaptorTreeConfig):
         self.config = config
-
-    def get_relevant_nodes(
-        self, current_node: Node, list_nodes: list[Node]
-    ) -> list[Node]:
-        embeddings = [node.embeddings for node in list_nodes]
-        distances = cosine_similarity([current_node.embeddings], embeddings)  # type: ignore
-        nearest_neighbors_indices = np.argsort(distances)
-
-        if self.config.selection_mode == SelectionMode.THRESHOLD:
-            return [
-                list_nodes[i]
-                for i in nearest_neighbors_indices
-                if distances[i] > self.config.threshold
-            ]
-
-        return [list_nodes[i] for i in nearest_neighbors_indices[: self.config.top_k]]
 
     def create_leaf_nodes(
         self, chunks: list[str], embeddings: list[list[float]]
