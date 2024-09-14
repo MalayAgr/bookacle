@@ -3,7 +3,6 @@ from __future__ import annotations
 import copy
 from typing import Protocol
 
-import numpy as np
 from bookacle.tree.config import RaptorTreeConfig
 from bookacle.tree.structures import Node, Tree, concatenate_node_texts
 from langchain_core.documents import Document

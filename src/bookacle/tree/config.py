@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from enum import Enum, auto
-from typing import Protocol
 
 from bookacle.models import EmbeddingModelLike, SummarizationModelLike
 from bookacle.splitter import DocumentSplitterLike

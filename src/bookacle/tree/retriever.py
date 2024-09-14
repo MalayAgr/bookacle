@@ -1,5 +1,4 @@
-import select
-from typing import Protocol, runtime_checkable
+from typing import Protocol
 
 import numpy as np
 import numpy.typing as npt
@@ -8,7 +7,6 @@ from bookacle.tree.structures import Node, Tree, concatenate_node_texts
 from sklearn.metrics.pairwise import cosine_similarity
 
 
-@runtime_checkable
 class RetrieverLike(Protocol):
     def retrieve(self, query: str, *args, **kwargs) -> str: ...  # type: ignore
 

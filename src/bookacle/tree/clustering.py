@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Any, Protocol
+from typing import Protocol
 
 import numpy as np
 import numpy.typing as npt
@@ -39,7 +39,7 @@ class ClusteringFunctionLike(Protocol):
     def __call__(
         self,
         nodes: list[Node],
-        tokenizer: Any,
+        tokenizer: TokenizerLike,
         clustering_backend: ClusteringBackendLike | None = None,
         max_length_in_cluster: int = 3500,
         reduction_dimension: int = 10,
