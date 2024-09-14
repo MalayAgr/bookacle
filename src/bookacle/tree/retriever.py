@@ -63,11 +63,12 @@ class TreeRetriever:
 
         candidate_nodes: list[Node] = []
 
+        current_layer = start_layer
         current_nodes = self.tree.fetch_layer(layer=start_layer)
 
         added_nodes: set[int] = set()
 
-        for _ in range(start_layer, end_layer - 1, -1):
+        while current_layer <= end_layer and current_nodes:
             relevant_node_indices = self.get_relevant_node_indices(
                 target_embedding=query_embedding, candidate_nodes=current_nodes
             )
@@ -80,7 +81,7 @@ class TreeRetriever:
             candidate_nodes.extend(relevant_nodes)
             added_nodes.update({node.index for node in relevant_nodes})
 
-            next_level_nodes = set()
+            next_level_nodes: set[int] = set()
             for node in relevant_nodes:
                 next_level_nodes.update(node.children)
 
@@ -88,6 +89,7 @@ class TreeRetriever:
                 break
 
             current_nodes = [self.tree.get_node(index) for index in next_level_nodes]
+            current_layer -= 1
 
         selected_nodes = self.get_nodes_within_context(candidate_nodes=candidate_nodes)
 
