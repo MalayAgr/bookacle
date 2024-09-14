@@ -94,7 +94,7 @@ class ClusterTreeBuilder:
         )
 
     def _create_next_tree_level(
-        self, clusters: list[list[Node]], first_node_index: int
+        self, clusters: list[list[Node]], first_node_index: int, layer: int
     ) -> dict[int, Node]:
         cluster_texts = [concatenate_node_texts(cluster) for cluster in clusters]
         summaries = self.config.summarization_model.summarize(text=cluster_texts)
@@ -107,7 +107,7 @@ class ClusterTreeBuilder:
                 index=index,
                 children={node.index for node in cluster},
                 embeddings=embeddings[index],
-                layer=first_node_index + index,
+                layer=layer,
             )
             for index, (cluster, summary) in enumerate(zip(clusters, summaries))
         }
@@ -138,7 +138,7 @@ class ClusterTreeBuilder:
             )
 
             new_level_nodes = self._create_next_tree_level(
-                clusters=clusters, first_node_index=len(all_tree_nodes)
+                clusters=clusters, first_node_index=len(all_tree_nodes), layer=layer + 1
             )
 
             layer_to_nodes[layer + 1] = list(new_level_nodes.values())
