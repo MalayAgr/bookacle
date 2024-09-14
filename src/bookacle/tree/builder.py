@@ -44,7 +44,11 @@ class ClusterTreeBuilder:
     ) -> dict[int, Node]:
         return {
             index: Node(
-                text=chunk, index=index, children=set(), embeddings=embeddings[index]
+                text=chunk,
+                index=index,
+                children=set(),
+                embeddings=embeddings[index],
+                layer=0,
             )
             for index, chunk in enumerate(chunks)
         }
@@ -103,6 +107,7 @@ class ClusterTreeBuilder:
                 index=index,
                 children={node.index for node in cluster},
                 embeddings=embeddings[index],
+                layer=first_node_index + index,
             )
             for index, (cluster, summary) in enumerate(zip(clusters, summaries))
         }

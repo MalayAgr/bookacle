@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import overload
 
 from bookacle.models import EmbeddingModelLike, SummarizationModelLike
 
@@ -16,6 +17,7 @@ class Node:
     children: set[int]
     embeddings: list[float]
     metadata: dict[str, str] | None = None
+    layer: int = 0
 
     @classmethod
     def from_text(
@@ -25,6 +27,7 @@ class Node:
         embedding_model: EmbeddingModelLike,
         children_indices: set[int] | None = None,
         metadata: dict[str, str] | None = None,
+        layer: int = 0,
     ) -> Node:
         if children_indices is None:
             children_indices = set()
@@ -37,6 +40,7 @@ class Node:
             children=children_indices,
             embeddings=embeddings,
             metadata=metadata,
+            layer=layer,
         )
 
     @classmethod
@@ -46,6 +50,7 @@ class Node:
         embedding_model: EmbeddingModelLike,
         summarization_model: SummarizationModelLike,
         next_node_index: int,
+        layer: int = 0,
     ) -> Node:
         concatenated_text = concatenate_node_texts(nodes=cluster)
 
@@ -56,6 +61,7 @@ class Node:
             text=summary,
             embedding_model=embedding_model,
             children_indices={node.index for node in cluster},
+            layer=layer,
         )
 
 
@@ -66,3 +72,26 @@ class Tree:
     leaf_nodes: dict[int, Node]
     num_layers: int
     layer_to_nodes: dict[int, list[Node]]
+
+    def __post_init__(self):
+        pass
+
+    @property
+    def num_nodes(self) -> int:
+        return len(self.all_nodes)
+
+    @property
+    def top_layer(self) -> int:
+        return self.num_layers - 1
+
+    def tolist(self) -> list[Node]:
+        return list(self.all_nodes.values())
+
+    def get_node(self, index: int) -> Node:
+        return self.all_nodes[index]
+
+    def fetch_layer(self, layer: int) -> list[Node]:
+        return self.layer_to_nodes[layer]
+
+    def fetch_node_layer(self, node_idx: int) -> int:
+        return self.all_nodes[node_idx].layer
