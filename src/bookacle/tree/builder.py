@@ -9,11 +9,13 @@ from langchain_core.documents import Document
 
 
 class TreeBuilderLike(Protocol):
-    def build_from_documents(
+    def build_from_documents(  # type: ignore
         self,
         documents: list[Document],
         chunk_size: int | None = None,
         chunk_overlap: int | None = None,
+        *args,
+        **kwargs,
     ) -> Tree: ...
 
 
