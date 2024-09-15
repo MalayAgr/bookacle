@@ -45,7 +45,7 @@ class ClusterTreeBuilder:
             chunk_size = self.config.embedding_model.model_max_length
 
         if chunk_overlap is None:
-            chunk_overlap = int(chunk_size * 0.1)
+            chunk_overlap = int(chunk_size * 0.5)
 
         splitted_documents = self.config.document_splitter(
             documents=documents,
