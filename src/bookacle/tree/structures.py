@@ -6,7 +6,7 @@ from bookacle.models import EmbeddingModelLike, SummarizationModelLike
 
 
 def concatenate_node_texts(nodes: list[Node]) -> str:
-    return "\n\n".join(" ".join(node.text.splitlines()) for node in nodes) + "\n\n"
+    return "\n\n".join(node.text for node in nodes) + "\n\n"
 
 
 @dataclass
