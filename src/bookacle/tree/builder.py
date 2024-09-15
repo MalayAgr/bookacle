@@ -104,14 +104,12 @@ class ClusterTreeBuilder:
         num_layers = self.config.max_num_layers
 
         for layer in range(self.config.max_num_layers):
-            sorted_current_nodes = dict(sorted(current_level_nodes.items()))
-
-            if len(sorted_current_nodes) <= reduction_dimension + 1:
+            if len(current_level_nodes) <= reduction_dimension + 1:
                 num_layers = len(layer_to_nodes)
                 break
 
             clusters = self.config.clustering_func(
-                nodes=list(sorted_current_nodes.values()),
+                nodes=list(current_level_nodes.values()),
                 tokenizer=self.config.embedding_tokenizer,
                 clustering_backend=self.config.clustering_backend,
                 max_length_in_cluster=self.config.max_length_in_cluster,
