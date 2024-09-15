@@ -8,13 +8,12 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 
 class RetrieverLike(Protocol):
-    def retrieve(self, query: str, *args, **kwargs) -> str: ...  # type: ignore
+    def retrieve(self, query: str, *args, **kwargs) -> tuple[list[Node], str]: ...  # type: ignore
 
 
 class TreeRetriever:
-    def __init__(self, config: TreeRetrieverConfig, tree: Tree) -> None:
+    def __init__(self, config: TreeRetrieverConfig) -> None:
         self.config = config
-        self.tree = tree
 
     def get_relevant_node_indices(
         self, target_embedding: list[float], candidate_nodes: list[Node]
@@ -43,28 +42,29 @@ class TreeRetriever:
     def retrieve_collapse(
         self,
         query: str,
+        tree: Tree,
     ) -> tuple[list[Node], str]:
         query_embedding = self.config.embedding_model.embed(text=query)
 
         relevant_node_indices = self.get_relevant_node_indices(
-            target_embedding=query_embedding, candidate_nodes=self.tree.tolist()
+            target_embedding=query_embedding, candidate_nodes=tree.tolist()
         )
 
-        candidate_nodes = [self.tree.get_node(index) for index in relevant_node_indices]
+        candidate_nodes = [tree.get_node(index) for index in relevant_node_indices]
 
         selected_nodes = self.get_nodes_within_context(candidate_nodes=candidate_nodes)
 
         return selected_nodes, concatenate_node_texts(nodes=selected_nodes)
 
     def retrieve_no_collapse(
-        self, query: str, start_layer: int, end_layer: int
+        self, query: str, tree: Tree, start_layer: int, end_layer: int
     ) -> tuple[list[Node], str]:
         query_embedding = self.config.embedding_model.embed(text=query)
 
         candidate_nodes: list[Node] = []
 
         current_layer = start_layer
-        current_nodes = self.tree.fetch_layer(layer=start_layer)
+        current_nodes = tree.fetch_layer(layer=start_layer)
 
         added_nodes: set[int] = set()
 
@@ -88,7 +88,7 @@ class TreeRetriever:
             if not next_level_nodes:
                 break
 
-            current_nodes = [self.tree.get_node(index) for index in next_level_nodes]
+            current_nodes = [tree.get_node(index) for index in next_level_nodes]
             current_layer -= 1
 
         selected_nodes = self.get_nodes_within_context(candidate_nodes=candidate_nodes)
@@ -98,19 +98,20 @@ class TreeRetriever:
     def retrieve(
         self,
         query: str,
+        tree: Tree,
         start_layer: int | None = None,
         end_layer: int | None = None,
         collapse_tree: bool = True,
     ) -> tuple[list[Node], str]:
         if collapse_tree is True:
-            return self.retrieve_collapse(query=query)
+            return self.retrieve_collapse(query=query, tree=tree)
 
         if start_layer is None:
-            start_layer = self.tree.top_layer
+            start_layer = tree.top_layer
 
         if end_layer is None:
             end_layer = 0
 
         return self.retrieve_no_collapse(
-            query=query, start_layer=start_layer, end_layer=end_layer
+            query=query, tree=tree, start_layer=start_layer, end_layer=end_layer
         )
