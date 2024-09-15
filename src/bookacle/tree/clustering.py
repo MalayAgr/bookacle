@@ -170,10 +170,11 @@ class GMMClusteringBackend:
         self,
         embeddings: npt.NDArray[np.float64],
     ) -> tuple[dict[int, list[int]], dict[int, list[int]]]:
-        n_neighbors_global = self.n_neighbors_global
-
-        if n_neighbors_global is None:
-            n_neighbors_global = int((len(embeddings) - 1) ** 0.5)
+        n_neighbors_global = (
+            int((len(embeddings) - 1) ** 0.5)
+            if self.n_neighbors_global is None
+            else self.n_neighbors_global
+        )
 
         n_clusters_global, clusters = self.reduce_and_cluster_embeddings(
             embeddings=embeddings,
