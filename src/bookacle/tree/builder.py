@@ -107,7 +107,7 @@ class ClusterTreeBuilder:
             sorted_current_nodes = dict(sorted(current_level_nodes.items()))
 
             if len(sorted_current_nodes) <= reduction_dimension + 1:
-                num_layers = layer
+                num_layers = len(layer_to_nodes)
                 break
 
             clusters = self.config.clustering_func(
