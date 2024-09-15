@@ -1,5 +1,5 @@
 version = 1
-requires-python = ">=3.11"
+requires-python = "==3.11.*"
 resolution-markers = [
     "python_full_version < '3.12'",
     "python_full_version < '3.12'",
@@ -156,6 +156,7 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "mypy" },
+    { name = "pymupdf4llm" },
 ]
 
 [package.metadata]
@@ -177,7 +178,10 @@ requires-dist = [
 ]
 
 [package.metadata.requires-dev]
-dev = [{ name = "mypy", specifier = ">=1.11.2" }]
+dev = [
+    { name = "mypy", specifier = ">=1.11.2" },
+    { name = "pymupdf4llm", specifier = ">=0.0.14" },
+]
 
 [[package]]
 name = "certifi"
@@ -1053,6 +1057,18 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/7d/dc/7679f6162a9aee703e162322fdbf6f6a93821e464bd0457d204830a0cb83/PyMuPDF-1.24.9-cp312-none-musllinux_1_2_x86_64.whl", hash = "sha256:41c92d69993e7614730205b75d7999b21ca0f929d31b2bb86a4b58d3b1b0451a", size = 3612307 },
     { url = "https://files.pythonhosted.org/packages/ae/b1/93632aebe4c717ee0df85fedd2a3dc880853807b17497ded73e32145e655/PyMuPDF-1.24.9-cp312-none-win32.whl", hash = "sha256:a04af6f3f5f35cb62bc7b3c2e9cfff510aa56c39c53355ecfff40b7cb9773fef", size = 2700003 },
     { url = "https://files.pythonhosted.org/packages/43/b4/5ca7d418ab3e80ffa2741d986e41e8a1ecfcc3d92928bc2f646011ff2ff3/PyMuPDF-1.24.9-cp312-none-win_amd64.whl", hash = "sha256:e2828a79415ae3dd90c629697ace51db7f1e81f426fc2fc034c2151dbe58be6e", size = 3227612 },
+]
+
+[[package]]
+name = "pymupdf4llm"
+version = "0.0.14"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pymupdf" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f4/14/edeac25a65e29f59eb561ab34e2099471015bd5bc3c9cb72dbd3638a202c/pymupdf4llm-0.0.14.tar.gz", hash = "sha256:d17950a9d69b198ec68aef708347b317d8e6c2244793c0671e67fb50f44c8bac", size = 23197 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/43/df/21b001a764126a35f5953091de9f18636dd157a09e4906cf2b24665aee1f/pymupdf4llm-0.0.14-py3-none-any.whl", hash = "sha256:ab51cb64e512cc915653a7f585ed7fb8e3f0f52cc51f87c3144ffec0bd33018d", size = 24129 },
 ]
 
 [[package]]

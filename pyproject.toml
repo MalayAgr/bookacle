@@ -3,7 +3,7 @@ name = "bookacle"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.11,<3.12"
 dependencies = [
     "asyncio>=3.4.3",
     "joblib>=1.4.2",
@@ -38,4 +38,5 @@ files = "src"
 [tool.uv]
 dev-dependencies = [
     "mypy>=1.11.2",
+    "pymupdf4llm>=0.0.14",
 ]
