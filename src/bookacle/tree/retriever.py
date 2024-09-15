@@ -68,7 +68,7 @@ class TreeRetriever:
 
         added_nodes: set[int] = set()
 
-        while current_layer <= end_layer and current_nodes:
+        while current_layer >= end_layer and current_nodes:
             relevant_node_indices = self.get_relevant_node_indices(
                 target_embedding=query_embedding, candidate_nodes=current_nodes
             )
