@@ -40,6 +40,10 @@ class SummarizationModelLike(Protocol):
     def summarize(self, text: str | list[str]) -> str | list[str]: ...
 
 
+class QAModelLike(Protocol):
+    pass
+
+
 class SentenceTransformerEmbeddingModel:
     def __init__(self, model_name: str, *, use_gpu: bool = False) -> None:
         self.model_name = model_name
