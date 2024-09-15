@@ -52,7 +52,6 @@ class GMMClusteringBackend:
         self,
         reduction_dim: int,
         max_clusters: int = 50,
-        threshold: float = 0.5,
         random_state: int = 42,
         n_neighbors_global: int | None = None,
         n_neighbors_local: int = 10,
@@ -61,7 +60,6 @@ class GMMClusteringBackend:
     ) -> None:
         self.reduction_dim = reduction_dim
         self.max_clusters = max_clusters
-        self.threshold = threshold
         self.random_state = random_state
         self.n_neighbors_global = n_neighbors_global
         self.n_neighbors_local = n_neighbors_local
@@ -238,7 +236,6 @@ def raptor_clustering(
             clustering_backend=clustering_backend,
             max_length_in_cluster=max_length_in_cluster,
             reduction_dimension=reduction_dimension,
-            threshold=threshold,
         )
 
         node_clusters.extend(reclustered_nodes)
