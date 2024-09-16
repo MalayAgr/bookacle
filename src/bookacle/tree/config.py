@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 from enum import Enum, auto
 
-from bookacle.models import EmbeddingModelLike, SummarizationModelLike
+from bookacle.models.embedding import EmbeddingModelLike
+from bookacle.models.summarization import SummarizationModelLike
 from bookacle.splitter import DocumentSplitterLike
 from bookacle.tokenizer import TokenizerLike
 from bookacle.tree.clustering import (

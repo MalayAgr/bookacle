@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from bookacle.models import EmbeddingModelLike, SummarizationModelLike
+from bookacle.models.embedding import EmbeddingModelLike
+from bookacle.models.summarization import SummarizationModelLike
 
 
 def concatenate_node_texts(nodes: list[Node]) -> str:

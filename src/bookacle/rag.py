@@ -3,11 +3,13 @@ from __future__ import annotations
 from functools import cached_property
 from typing import Any, Generic, Protocol, TypeVar
 
-from bookacle.models import (
+from bookacle.models.embedding import (
     EmbeddingModelLike,
-    HuggingFaceSummarizationModel,
-    QAModelLike,
     SentenceTransformerEmbeddingModel,
+)
+from bookacle.models.qa import QAModelLike
+from bookacle.models.summarization import (
+    HuggingFaceSummarizationModel,
     SummarizationModelLike,
 )
 from bookacle.splitter import DocumentSplitterLike, HuggingFaceMarkdownSplitter
