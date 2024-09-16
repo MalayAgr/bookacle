@@ -244,7 +244,7 @@ def raptor_clustering(
 
 
 if __name__ == "__main__":
-    from bookacle.models import SentenceTransformerEmbeddingModel
+    from bookacle.models.embedding import SentenceTransformerEmbeddingModel
     from bookacle.splitter import HuggingFaceTextSplitter
     from langchain_community.document_loaders import PyMuPDFLoader
 
