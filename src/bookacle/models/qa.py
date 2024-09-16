@@ -94,10 +94,25 @@ class OllamaQAModel:
 
 if __name__ == "__main__":
     qa_model: QAModelLike = OllamaQAModel(model_name="qwen2:0.5b")
-    non_stream_answer = qa_model.answer(
+    history: list[ollama.Message] = [
+        {"role": "user", "content": "Tell me about the Eiffel Tower."},
+        {
+            "role": "assistant",
+            "content": "The Eiffel Tower is a wrought-iron lattice tower located in Paris, France.",
+        },
+        {"role": "user", "content": "What is the height of the Eiffel Tower?"},
+        {
+            "role": "assistant",
+            "content": "The height of the Eiffel Tower is approximately 330 meters.",
+        },
+    ]
+
+    chunks = qa_model.answer(
         question="What is the capital of France?",
         context="France is a country in Europe.",
+        history=history,
         stream=True,
     )
 
-    print(non_stream_answer)
+    for chunk in chunks:
+        print(chunk, end="", flush=True)
