@@ -7,14 +7,9 @@ from bookacle.models.summarization import (
     HuggingFaceSummarizationModel,
     SummarizationModelLike,
 )
-from bookacle.splitter import DocumentSplitterLike, HuggingFaceMarkdownSplitter
+from bookacle.splitter import HuggingFaceMarkdownSplitter
 from bookacle.tree.builder import ClusterTreeBuilder, TreeBuilderLike
-from bookacle.tree.clustering import (
-    ClusteringBackendLike,
-    ClusteringFunctionLike,
-    GMMClusteringBackend,
-    raptor_clustering,
-)
+from bookacle.tree.clustering import GMMClusteringBackend, raptor_clustering
 from bookacle.tree.config import RaptorTreeConfig, SelectionMode, TreeRetrieverConfig
 from bookacle.tree.retriever import RetrieverLike, TreeRetriever
 
