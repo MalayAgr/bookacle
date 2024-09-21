@@ -116,7 +116,6 @@ class ClusterTreeBuilder:
                 clustering_backend=self.config.clustering_backend,
                 max_length_in_cluster=self.config.max_length_in_cluster,
                 reduction_dimension=reduction_dimension,
-                threshold=self.config.threshold,
             )
 
             new_level_nodes = self._create_next_tree_level(

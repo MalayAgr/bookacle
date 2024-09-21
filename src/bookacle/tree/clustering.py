@@ -43,7 +43,8 @@ class ClusteringFunctionLike(Protocol):
         clustering_backend: ClusteringBackendLike | None = None,
         max_length_in_cluster: int = 3500,
         reduction_dimension: int = 10,
-        threshold: float = 0.1,
+        *args,
+        **kwargs,
     ) -> list[list[Node]]: ...
 
 
@@ -211,7 +212,6 @@ def raptor_clustering(
     clustering_backend: ClusteringBackendLike | None = None,
     max_length_in_cluster: int = 3500,
     reduction_dimension: int = 10,
-    threshold: float = 0.1,
 ) -> list[list[Node]]:
     if clustering_backend is None:
         clustering_backend = GMMClusteringBackend(reduction_dim=reduction_dimension)

@@ -26,9 +26,6 @@ class RaptorTreeConfig:
     clustering_backend: ClusteringBackendLike | None = None
     max_length_in_cluster: int = 3500
     max_num_layers: int = 5
-    threshold: float = 0.5
-    top_k: int = 5
-    selection_mode: SelectionMode = SelectionMode.TOP_K
 
     @property
     def embedding_tokenizer(self) -> TokenizerLike:
