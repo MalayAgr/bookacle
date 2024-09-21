@@ -26,81 +26,49 @@ UMAP_METRIC: str = "cosine"
 
 UMAP_LOW_MEMORY: bool = False
 
-## Embedder Settings ##
-
-EMBEDDER_USE_GPU: bool = True
+## Default Embedding Model ##
 
 EMBEDDING_MODEL: EmbeddingModelLike = SentenceTransformerEmbeddingModel(
     model_name="sentence-transformers/paraphrase-albert-small-v2",
-    use_gpu=EMBEDDER_USE_GPU,
+    use_gpu=True,
 )
 
-## Summarizer Settings ##
-
-SUMMARIZER_USE_GPU: bool = True
-
-SUMMARIZATION_LENGTH: int = 100
+## Default Summarization Model ##
 
 SUMMARIZATION_MODEL: SummarizationModelLike = HuggingFaceSummarizationModel(
     model_name="facebook/bart-large-cnn",
-    summarization_length=SUMMARIZATION_LENGTH,
-    use_gpu=SUMMARIZER_USE_GPU,
+    summarization_length=100,
+    use_gpu=True,
 )
 
-DOCUMENT_SPLITTER: DocumentSplitterLike = HuggingFaceMarkdownSplitter(
-    tokenizer=EMBEDDING_MODEL.tokenizer
-)
-
-## Retriever Settings ##
-
-RETRIEVER_EMBEDDING_MODEL = EMBEDDING_MODEL
-
-RETRIEVER_EMBEDDER_USE_GPU: bool = True
-
-RETRIEVER_THRESHOLD: float = 0.5
-
-RETRIEVER_TOP_K: int = 5
-
-RETRIEVER_SELECTION_MODE: SelectionMode = SelectionMode.TOP_K
-
-RETRIEVER_MAX_TOKENS: int = 3500
+## Default Retriever ##
 
 RETRIEVER: RetrieverLike = TreeRetriever(
     config=TreeRetrieverConfig(
-        embedding_model=RETRIEVER_EMBEDDING_MODEL,
-        threshold=RETRIEVER_THRESHOLD,
-        top_k=RETRIEVER_TOP_K,
-        selection_mode=RETRIEVER_SELECTION_MODE,
-        max_tokens=RETRIEVER_MAX_TOKENS,
+        embedding_model=EMBEDDING_MODEL,
+        threshold=0.5,
+        top_k=5,
+        selection_mode=SelectionMode.TOP_K,
+        max_tokens=3500,
     )
 )
 
-## Tree Builder Settings ##
-
-REDUCTION_DIM: int = 10
-
-CLUSTERING_FUNC: ClusteringFunctionLike = raptor_clustering
-
-CLUSTERING_BACKEND: ClusteringBackendLike = GMMClusteringBackend(
-    reduction_dim=REDUCTION_DIM
-)
-
-MAX_LENGTH_IN_CLUSTER: int = 3500
-
-MAX_NUM_LAYERS: int = 5
+## Default Tree Builder ##
 
 TREE_BUILDER: TreeBuilderLike = ClusterTreeBuilder(
     config=RaptorTreeConfig(
         embedding_model=EMBEDDING_MODEL,
         summarization_model=SUMMARIZATION_MODEL,
-        document_splitter=DOCUMENT_SPLITTER,
-        clustering_func=CLUSTERING_FUNC,
-        clustering_backend=CLUSTERING_BACKEND,
-        max_length_in_cluster=MAX_LENGTH_IN_CLUSTER,
-        max_num_layers=MAX_NUM_LAYERS,
+        document_splitter=HuggingFaceMarkdownSplitter(
+            tokenizer=EMBEDDING_MODEL.tokenizer
+        ),
+        clustering_func=raptor_clustering,
+        clustering_backend=GMMClusteringBackend(reduction_dim=10),
+        max_length_in_cluster=3500,
+        max_num_layers=5,
     )
 )
 
-## QA Model Settings ##
+## Default QA Model ##
 
 QA_MODEL: QAModelLike = OllamaQAModel(model_name="qwen2:0.5b")
