@@ -31,6 +31,7 @@ class HuggingFaceSummarizationModel:
         use_gpu: bool = False,
     ) -> None:
         self.model_name = model_name
+        self.use_gpu = use_gpu
         self.summarization_length = summarization_length
 
         self._tokenizer = AutoTokenizer.from_pretrained(
@@ -42,6 +43,12 @@ class HuggingFaceSummarizationModel:
             model=self.model,
             tokenizer=self._tokenizer,
             device=0 if use_gpu else -1,
+        )
+
+    def __repr__(self) -> str:
+        return (
+            f"{self.__class__.__name__}(model_name={self.model_name}, "
+            f"summarization_length={self.summarization_length}, use_gpu={self.use_gpu})"
         )
 
     @property

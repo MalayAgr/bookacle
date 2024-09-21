@@ -67,6 +67,14 @@ class GMMClusteringBackend:
         self.n_clusters_global = n_clusters_global
         self.n_clusters_local = n_clusters_local
 
+    def __repr__(self) -> str:
+        return (
+            f"{self.__class__.__name__}(reduction_dim={self.reduction_dim}, "
+            f"max_clusters={self.max_clusters}, random_state={self.random_state}, "
+            f"n_neighbors_global={self.n_neighbors_global}, n_neighbors_local={self.n_neighbors_local}, "
+            f"n_clusters_global={self.n_clusters_global}, n_clusters_local={self.n_clusters_local})"
+        )
+
     def get_optimal_clusters_count(self, embeddings: npt.NDArray[np.float64]) -> int:
         max_clusters = min(self.max_clusters, embeddings.shape[0])
         n_clusters = np.arange(1, max_clusters)

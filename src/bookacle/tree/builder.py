@@ -23,6 +23,9 @@ class ClusterTreeBuilder:
     def __init__(self, config: RaptorTreeConfig):
         self.config = config
 
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}()"
+
     def create_leaf_nodes(
         self, chunks: list[str], embeddings: list[list[float]]
     ) -> dict[int, Node]:

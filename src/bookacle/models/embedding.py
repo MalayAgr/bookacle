@@ -25,9 +25,13 @@ class EmbeddingModelLike(Protocol):
 class SentenceTransformerEmbeddingModel:
     def __init__(self, model_name: str, *, use_gpu: bool = False) -> None:
         self.model_name = model_name
+        self.use_gpu = use_gpu
         self.model = SentenceTransformer(
             model_name_or_path=model_name, device="cuda" if use_gpu is True else "cpu"
         )
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(model_name={self.model_name}, use_gpu={self.use_gpu})"
 
     @property
     def tokenizer(self) -> PreTrainedTokenizerBase:

@@ -15,6 +15,9 @@ class TreeRetriever:
     def __init__(self, config: TreeRetrieverConfig) -> None:
         self.config = config
 
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}()"
+
     def get_relevant_node_indices(
         self, target_embedding: list[float], candidate_nodes: list[Node]
     ) -> npt.NDArray[np.int64]:

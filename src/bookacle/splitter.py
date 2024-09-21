@@ -25,6 +25,9 @@ class HuggingFaceTextSplitter:
 
         self.separators = separators
 
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(tokenizer={self.tokenizer}, separators={self.separators})"
+
     def __call__(
         self, documents: list[Document], chunk_size: int = 100, chunk_overlap: int = 0
     ) -> list[Document]:
@@ -42,6 +45,9 @@ class HuggingFaceTextSplitter:
 class HuggingFaceMarkdownSplitter:
     def __init__(self, tokenizer: PreTrainedTokenizerBase) -> None:
         self.tokenizer = tokenizer
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(tokenizer={self.tokenizer})"
 
     def __call__(
         self, documents: list[Document], chunk_size: int = 100, chunk_overlap: int = 0
