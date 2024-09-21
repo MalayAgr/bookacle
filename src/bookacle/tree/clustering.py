@@ -251,7 +251,7 @@ if __name__ == "__main__":
 
     loader = PyMuPDFLoader("data/c-language.pdf")
     documents = loader.load()
-    documents = documents[:100]
+    documents = documents[:20]
 
     embedding_model = SentenceTransformerEmbeddingModel(
         model_name="sentence-transformers/paraphrase-albert-small-v2", use_gpu=True
@@ -262,3 +262,7 @@ if __name__ == "__main__":
     embeddings = embedding_model.embed(text=[chunk.page_content for chunk in chunks])
 
     gmm_clusterer = GMMClusteringBackend(reduction_dim=10)
+
+    clusters = gmm_clusterer.cluster(embeddings=np.array(embeddings))
+
+    print(clusters)
