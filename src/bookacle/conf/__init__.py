@@ -7,8 +7,6 @@ from pathlib import Path
 from types import ModuleType
 from typing import Any
 
-from bookacle.conf import defaults as default_settings
-
 
 class ImproperlyConfigured(Exception): ...
 
@@ -81,6 +79,9 @@ class Settings:
         """
         Load settings from the specified module and fallback to default settings.
         """
+        # Important to ensure no circular imports
+        from bookacle.conf import defaults as default_settings
+
         for setting in dir(default_settings):
             if setting.isupper():
                 setattr(self, setting, getattr(default_settings, setting))
