@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import importlib
 import os
+import sys
+from pathlib import Path
 from types import ModuleType
 from typing import Any
 
@@ -19,10 +21,10 @@ class LazySettings:
         """
         Load the settings module specified by the environment variable.
         """
-        settings_module = os.environ.get(
+        settings_path = os.environ.get(
             "BOOKACLE_SETTINGS_MODULE", "bookacle.conf.defaults"
         )
-        if not settings_module:
+        if not settings_path:
             raise ImproperlyConfigured(
                 f"Requested {name or 'settings'}, but settings are not configured. "
                 "You must either define the environment variable "
@@ -30,7 +32,24 @@ class LazySettings:
                 "accessing settings."
             )
 
-        self._wrapped = Settings(settings_module)
+        if settings_path.endswith(".py"):
+            # Treat the Python file as a module
+            settings_path = self._load_from_file(settings_path)
+        else:
+            # Load settings from a module
+            settings_path = settings_path
+
+        self._wrapped = Settings(settings_path)
+
+    def _load_from_file(self, filename: str) -> str:
+        """
+        Treat the provided Python file as a module by adding its directory to sys.path and returning the module name.
+        """
+        filepath = Path(filename)
+        module_name = filepath.stem  # Get the filename without the .py extension
+        sys.path.insert(0, str(filepath.parent))  # Add the directory to sys.path
+
+        return module_name  # Return the module name to be imported
 
     def __getattr__(self, name: str) -> Any:
         if self._wrapped is None:
@@ -38,7 +57,7 @@ class LazySettings:
 
         return getattr(self._wrapped, name)
 
-    def configure(self, default_settings: ModuleType, **options):
+    def configure(self, default_settings: ModuleType, **options: Any) -> None:
         if self._wrapped is not None:
             raise RuntimeError("Settings are already configured.")
 
@@ -53,12 +72,12 @@ class LazySettings:
         self._wrapped = holder
 
     @property
-    def configured(self):
+    def configured(self) -> bool:
         return self._wrapped is not None
 
 
 class Settings:
-    def __init__(self, settings_module: str):
+    def __init__(self, settings_module: str) -> None:
         """
         Load settings from the specified module and fallback to default settings.
         """
@@ -81,20 +100,21 @@ class UserSettingsHolder:
         self.__dict__["_deleted"] = set()
         self.default_settings = default_settings
 
-    def __getattr__(self, name):
+    def __getattr__(self, name: str) -> Any:
         if name.isupper() and name not in self._deleted:
             return getattr(self.default_settings, name)
+
         raise AttributeError(f"Setting '{name}' not found.")
 
-    def __setattr__(self, name: str, value):
+    def __setattr__(self, name: str, value: Any) -> None:
         if not name.isupper():
             raise TypeError("Settings names must be uppercase.")
         super().__setattr__(name, value)
 
-    def __delattr__(self, name):
+    def __delattr__(self, name: str) -> None:
         self._deleted.add(name)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<UserSettingsHolder for {self.default_settings}>"
 
 

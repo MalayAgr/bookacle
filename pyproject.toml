@@ -36,6 +36,10 @@ strict = true
 plugins = "numpy.typing.mypy_plugin"
 files = "src"
 
+# [[tool.mypy.overrides]]
+# module = "bookacle.conf.*"
+# ignore_errors = true
+
 [tool.uv]
 dev-dependencies = [
     "mypy>=1.11.2",
