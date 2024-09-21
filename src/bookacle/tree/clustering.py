@@ -4,6 +4,7 @@ from typing import Protocol
 import numpy as np
 import numpy.typing as npt
 import umap
+from bookacle.conf import settings
 from bookacle.tokenizer import TokenizerLike
 from bookacle.tree.structures import Node
 from joblib import Parallel, delayed
@@ -14,14 +15,12 @@ def umap_reduce_embeddings(
     embeddings: npt.NDArray[np.float64],
     n_components: int,
     neighbors: int = 10,
-    metric: str = "cosine",
-    low_memory: bool = False,
 ) -> npt.NDArray[np.float64]:
     reduction = umap.UMAP(
         n_neighbors=neighbors,
         n_components=n_components,
-        metric=metric,
-        low_memory=low_memory,
+        metric=settings.UMAP_METRIC,
+        low_memory=settings.UMAP_LOW_MEMORY,
     ).fit_transform(embeddings)
 
     assert isinstance(reduction, np.ndarray)

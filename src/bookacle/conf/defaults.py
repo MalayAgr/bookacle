@@ -15,8 +15,6 @@ from bookacle.tree.retriever import RetrieverLike, TreeRetriever
 
 ## UMAP Setting ##
 
-UMAP_NEIGHBORS: int = 10
-
 UMAP_METRIC: str = "cosine"
 
 UMAP_LOW_MEMORY: bool = False
