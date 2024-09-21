@@ -37,7 +37,7 @@ class ClusteringBackendLike(Protocol):
 
 
 class ClusteringFunctionLike(Protocol):
-    def __call__(
+    def __call__(  # type: ignore
         self,
         nodes: list[Node],
         tokenizer: TokenizerLike,
