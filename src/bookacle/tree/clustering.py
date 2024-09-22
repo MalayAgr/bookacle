@@ -4,7 +4,6 @@ from typing import Protocol
 import numpy as np
 import numpy.typing as npt
 import umap
-from bookacle.conf import settings
 from bookacle.tokenizer import TokenizerLike
 from bookacle.tree.structures import Node
 from joblib import Parallel, delayed
@@ -15,12 +14,14 @@ def umap_reduce_embeddings(
     embeddings: npt.NDArray[np.float64],
     n_components: int,
     neighbors: int = 10,
+    metric: str = "cosine",
+    low_memory: bool = True,
 ) -> npt.NDArray[np.float64]:
     reduction = umap.UMAP(
         n_neighbors=neighbors,
         n_components=n_components,
-        metric=settings.UMAP_METRIC,
-        low_memory=settings.UMAP_LOW_MEMORY,
+        metric=metric,
+        low_memory=low_memory,
     ).fit_transform(embeddings)
 
     assert isinstance(reduction, np.ndarray)
@@ -58,6 +59,8 @@ class GMMClusteringBackend:
         n_neighbors_local: int = 10,
         n_clusters_global: int | None = None,
         n_clusters_local: int | None = None,
+        umap_metric: str = "cosine",
+        umap_low_memory: bool = True,
     ) -> None:
         self.reduction_dim = reduction_dim
         self.max_clusters = max_clusters
@@ -66,6 +69,8 @@ class GMMClusteringBackend:
         self.n_neighbors_local = n_neighbors_local
         self.n_clusters_global = n_clusters_global
         self.n_clusters_local = n_clusters_local
+        self.umap_metric = umap_metric
+        self.umap_low_memory = umap_low_memory
 
     def __repr__(self) -> str:
         return (
@@ -114,6 +119,8 @@ class GMMClusteringBackend:
             embeddings=embeddings,
             n_components=n_components,
             neighbors=n_neighbors,
+            metric=self.umap_metric,
+            low_memory=self.umap_low_memory,
         )
 
         return self.get_clusters(embeddings=reduced_embeddings, n_clusters=n_clusters)
