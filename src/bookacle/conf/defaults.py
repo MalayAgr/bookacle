@@ -13,12 +13,6 @@ from bookacle.tree.clustering import GMMClusteringBackend, raptor_clustering
 from bookacle.tree.config import RaptorTreeConfig, SelectionMode, TreeRetrieverConfig
 from bookacle.tree.retriever import RetrieverLike, TreeRetriever
 
-## UMAP Setting ##
-
-UMAP_METRIC: str = "cosine"
-
-UMAP_LOW_MEMORY: bool = False
-
 ## Default Embedding Model ##
 
 EMBEDDING_MODEL: EmbeddingModelLike = SentenceTransformerEmbeddingModel(
@@ -56,12 +50,20 @@ TREE_BUILDER: TreeBuilderLike = ClusterTreeBuilder(
             tokenizer=EMBEDDING_MODEL.tokenizer
         ),
         clustering_func=raptor_clustering,
-        clustering_backend=GMMClusteringBackend(reduction_dim=10),
+        clustering_backend=GMMClusteringBackend(
+            reduction_dim=10, umap_metric="cosine", umap_low_memory=False
+        ),
         max_length_in_cluster=3500,
         max_num_layers=5,
     )
 )
 
+CHUNK_SIZE: int | None = None
+
+CHUNK_OVERLAP: int | None = None
+
 ## Default QA Model ##
 
 QA_MODEL: QAModelLike = OllamaQAModel(model_name="qwen2:0.5b")
+
+STREAM_OUTPUT: bool = True
