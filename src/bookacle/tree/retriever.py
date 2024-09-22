@@ -8,7 +8,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 
 class RetrieverLike(Protocol):
-    def retrieve(self, query: str, *args, **kwargs) -> tuple[list[Node], str]: ...  # type: ignore
+    def retrieve(  # type: ignore
+        self, query: str, tree: Tree, *args, **kwargs
+    ) -> tuple[list[Node], str]: ...
 
 
 class TreeRetriever:
