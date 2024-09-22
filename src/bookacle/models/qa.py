@@ -1,7 +1,12 @@
 from collections.abc import Iterable, Iterator
-from typing import Literal, Protocol, overload
+from typing import Literal, Protocol, TypedDict, overload
 
 import ollama
+
+
+class Message(TypedDict):
+    role: Literal["user", "assistant", "system", "tool"]
+    content: str
 
 
 class QAModelLike(Protocol):
@@ -10,36 +15,36 @@ class QAModelLike(Protocol):
         self,
         question: str,
         context: str,
+        history: list[Message] | None = None,
         *args,
         stream: Literal[True] = True,
         **kwargs,
-    ) -> Iterator[str]: ...
+    ) -> Iterator[Message]: ...
 
     @overload
     def answer(  # type: ignore
         self,
         question: str,
         context: str,
+        history: list[Message] | None = None,
         *args,
         stream: Literal[False] = False,
         **kwargs,
-    ) -> str: ...
+    ) -> Message: ...
 
     def answer(  # type: ignore
         self,
         question: str,
         context: str,
+        history: list[Message] | None = None,
         *args,
         stream: bool = False,
         **kwargs,
-    ) -> str | Iterator[str]: ...
+    ) -> Message | Iterator[Message]: ...
 
 
 class OllamaQAModel:
-    def __init__(
-        self,
-        model_name: str,
-    ) -> None:
+    def __init__(self, model_name: str) -> None:
         self.model_name = model_name
 
     def __repr__(self) -> str:
@@ -50,35 +55,35 @@ class OllamaQAModel:
         self,
         question: str,
         context: str,
-        history: list[ollama.Message] | None = None,
+        history: list[Message] | None = None,
         *args,
         stream: Literal[True] = True,
         **kwargs,
-    ) -> Iterator[str]: ...
+    ) -> Iterator[Message]: ...
 
     @overload
     def answer(  # type: ignore
         self,
         question: str,
         context: str,
-        history: list[ollama.Message] | None = None,
+        history: list[Message] | None = None,
         *args,
         stream: Literal[False] = False,
         **kwargs,
-    ) -> str: ...
+    ) -> Message: ...
 
     def answer(  # type: ignore
         self,
         question: str,
         context: str,
-        history: list[ollama.Message] | None = None,
+        history: list[Message] | None = None,
         *args,
         stream: bool = True,
         **kwargs,
-    ) -> str | Iterable[str]:
-        user_message_with_context: ollama.Message = {
+    ) -> Message | Iterable[Message]:
+        user_message_with_context: Message = {
             "role": "user",
-            "content": f"CONTEXT: {context}\n\n{question}",
+            "content": f"CONTEXT:\n{context}\n\nQUERY: {question}",
         }
 
         messages = (
@@ -88,16 +93,16 @@ class OllamaQAModel:
         )
 
         if stream is True:
-            chunks = ollama.chat(model=self.model_name, messages=messages, stream=True)
-            return (chunk["message"]["content"] for chunk in chunks)
+            chunks = ollama.chat(model=self.model_name, messages=messages, stream=True)  # type: ignore
+            return (chunk["message"] for chunk in chunks)
 
-        response = ollama.chat(model=self.model_name, messages=messages, stream=False)
-        return response["message"]["content"]
+        response = ollama.chat(model=self.model_name, messages=messages, stream=False)  # type: ignore
+        return response["message"]
 
 
 if __name__ == "__main__":
     qa_model: QAModelLike = OllamaQAModel(model_name="qwen2:0.5b")
-    history: list[ollama.Message] = [
+    history: list[Message] = [
         {"role": "user", "content": "Tell me about the Eiffel Tower."},
         {
             "role": "assistant",
