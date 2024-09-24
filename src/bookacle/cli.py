@@ -8,6 +8,8 @@ import typer
 from bookacle.loaders import LOADER_MANAGER
 from langchain_core.documents import Document
 
+app = typer.Typer()
+
 
 def load_data(
     file_path: str,
@@ -23,6 +25,7 @@ def load_data(
     return pdf_loader(file_path, start_page=start_page, end_page=end_page)
 
 
+@app.command()
 def chat(
     file_path: Annotated[
         Path,
