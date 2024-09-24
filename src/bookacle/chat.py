@@ -80,18 +80,18 @@ class Chat:
         retriever = self.retriever
         qa_model = self.qa_model
 
-        _, context = retriever.retrieve(query=question, tree=tree, *args, **kwargs)
+        _, context = retriever.retrieve(question, tree, *args, **kwargs)
 
         if stream is True:
-            response = qa_model.answer(
+            responses = qa_model.answer(
                 question=question, context=context, history=history, stream=True
             )
 
-            complete_message = self.display_ai_msg_stream(message=response)
+            complete_message = self.display_ai_msg_stream(message=responses)
 
             return {"role": "assistant", "content": complete_message}
 
-        response = qa_model.answer(
+        response: Message = qa_model.answer(
             question=question, context=context, history=history, stream=False
         )
 
@@ -106,7 +106,7 @@ class Chat:
 
         return response
 
-    def run(
+    def run(  # type: ignore
         self,
         tree: Tree,
         initial_chat_message: str = "",
@@ -118,7 +118,9 @@ class Chat:
         self.console.clear()
 
         user_history = FileHistory(filename=self.history_file)
-        session = PromptSession(history=user_history, erase_when_done=True)
+        session: PromptSession[str] = PromptSession(
+            history=user_history, erase_when_done=True
+        )
 
         messages: list[Message] = []
 
@@ -147,10 +149,10 @@ class Chat:
             self.console.print("")
 
             qa_response = self.invoke_qa_model(
-                tree=tree,
-                question=user_text,
-                history=messages,
-                stream=stream,
+                tree,
+                user_text,
+                messages,
+                stream,
                 *args,
                 **kwargs,
             )

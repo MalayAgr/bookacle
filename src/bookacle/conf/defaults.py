@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from bookacle.models.embedding import (
     EmbeddingModelLike,
     SentenceTransformerEmbeddingModel,
@@ -67,3 +69,5 @@ CHUNK_OVERLAP: int | None = None
 QA_MODEL: QAModelLike = OllamaQAModel(model_name="qwen2:0.5b")
 
 STREAM_OUTPUT: bool = True
+
+CUSTOM_LOADER_DIR: str = ""
