@@ -1,11 +1,9 @@
 from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
-from typing import overload
 
 from bookacle.conf import settings
 from bookacle.models.qa import Message, QAModelLike
-from bookacle.tree.builder import TreeBuilderLike
 from bookacle.tree.retriever import RetrieverLike
 from bookacle.tree.structures import Tree
 from prompt_toolkit import PromptSession
