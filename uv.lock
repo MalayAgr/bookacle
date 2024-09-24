@@ -138,7 +138,6 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "asyncio" },
-    { name = "click" },
     { name = "joblib" },
     { name = "langchain" },
     { name = "langchain-community" },
@@ -147,25 +146,25 @@ dependencies = [
     { name = "ollama" },
     { name = "prompt-toolkit" },
     { name = "pymupdf" },
+    { name = "pymupdf4llm" },
     { name = "python-dotenv" },
     { name = "rich" },
     { name = "scikit-learn" },
     { name = "sentence-transformers" },
     { name = "tqdm" },
     { name = "transformers" },
+    { name = "typer" },
     { name = "umap-learn" },
 ]
 
 [package.dev-dependencies]
 dev = [
     { name = "mypy" },
-    { name = "pymupdf4llm" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "asyncio", specifier = ">=3.4.3" },
-    { name = "click", specifier = ">=8.1.7" },
     { name = "joblib", specifier = ">=1.4.2" },
     { name = "langchain", specifier = ">=0.2.15" },
     { name = "langchain-community", specifier = ">=0.2.15" },
@@ -174,20 +173,19 @@ requires-dist = [
     { name = "ollama", specifier = ">=0.3.3" },
     { name = "prompt-toolkit", specifier = ">=3.0.47" },
     { name = "pymupdf", specifier = ">=1.24.9" },
+    { name = "pymupdf4llm", specifier = ">=0.0.16" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "rich", specifier = ">=13.8.0" },
     { name = "scikit-learn", specifier = ">=1.5.1" },
     { name = "sentence-transformers", specifier = ">=3.0.1" },
     { name = "tqdm", specifier = ">=4.66.5" },
     { name = "transformers", specifier = ">=4.44.2" },
+    { name = "typer", specifier = ">=0.12.5" },
     { name = "umap-learn", specifier = ">=0.5.6" },
 ]
 
 [package.metadata.requires-dev]
-dev = [
-    { name = "mypy", specifier = ">=1.11.2" },
-    { name = "pymupdf4llm", specifier = ">=0.0.14" },
-]
+dev = [{ name = "mypy", specifier = ">=1.11.2" }]
 
 [[package]]
 name = "certifi"
@@ -1103,14 +1101,14 @@ wheels = [
 
 [[package]]
 name = "pymupdf4llm"
-version = "0.0.14"
+version = "0.0.16"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pymupdf" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f4/14/edeac25a65e29f59eb561ab34e2099471015bd5bc3c9cb72dbd3638a202c/pymupdf4llm-0.0.14.tar.gz", hash = "sha256:d17950a9d69b198ec68aef708347b317d8e6c2244793c0671e67fb50f44c8bac", size = 23197 }
+sdist = { url = "https://files.pythonhosted.org/packages/1c/d4/d6e5c97c87c11581ae092bccd9ff2f6815176624b9424689b2d5fb16bd3b/pymupdf4llm-0.0.16.tar.gz", hash = "sha256:0e8ec98a79c0b315cdb263dacfe85a2f23eb4f871dd82ce4157a451ae7ffe1eb", size = 24620 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/43/df/21b001a764126a35f5953091de9f18636dd157a09e4906cf2b24665aee1f/pymupdf4llm-0.0.14-py3-none-any.whl", hash = "sha256:ab51cb64e512cc915653a7f585ed7fb8e3f0f52cc51f87c3144ffec0bd33018d", size = 24129 },
+    { url = "https://files.pythonhosted.org/packages/d2/5d/018edcc33676bf5e6572f3504cfbc75f65a6b140784afb5ddd59adf6fbf5/pymupdf4llm-0.0.16-py3-none-any.whl", hash = "sha256:fc6aca6f3e41652548cd7bdbc08d64b4b885431cd6b90710a08b85d0ddfffc8c", size = 25593 },
 ]
 
 [[package]]
@@ -1375,6 +1373,15 @@ wheels = [
 ]
 
 [[package]]
+name = "shellingham"
+version = "1.5.4"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/58/15/8b3609fd3830ef7b27b655beb4b4e9c62313a4e8da8c676e142cc210d58e/shellingham-1.5.4.tar.gz", hash = "sha256:8dbca0739d487e5bd35ab3ca4b36e11c4078f3a234bfce294b0a0291363404de", size = 10310 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e0/f9/0595336914c5619e5f28a1fb793285925a8cd4b432c9da0a987836c7f822/shellingham-1.5.4-py2.py3-none-any.whl", hash = "sha256:7ecfff8f2fd72616f7481040475a65b2bf8af90a56c89140852d1120324e8686", size = 9755 },
+]
+
+[[package]]
 name = "sniffio"
 version = "1.3.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1555,6 +1562,21 @@ dependencies = [
 wheels = [
     { url = "https://files.pythonhosted.org/packages/33/3e/a2f59384587eff6aeb7d37b6780de7fedd2214935e27520430ca9f5b7975/triton-3.0.0-1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:5ce8520437c602fb633f1324cc3871c47bee3b67acf9756c1a66309b60e3216c", size = 209438883 },
     { url = "https://files.pythonhosted.org/packages/fe/7b/7757205dee3628f75e7991021d15cd1bd0c9b044ca9affe99b50879fc0e1/triton-3.0.0-1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:34e509deb77f1c067d8640725ef00c5cbfcb2052a1a3cb6a6d343841f92624eb", size = 209464695 },
+]
+
+[[package]]
+name = "typer"
+version = "0.12.5"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "rich" },
+    { name = "shellingham" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c5/58/a79003b91ac2c6890fc5d90145c662fd5771c6f11447f116b63300436bc9/typer-0.12.5.tar.gz", hash = "sha256:f592f089bedcc8ec1b974125d64851029c3b1af145f04aca64d69410f0c9b722", size = 98953 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a8/2b/886d13e742e514f704c33c4caa7df0f3b89e5a25ef8db02aa9ca3d9535d5/typer-0.12.5-py3-none-any.whl", hash = "sha256:62fe4e471711b147e3365034133904df3e235698399bc4de2b36c8579298d52b", size = 47288 },
 ]
 
 [[package]]

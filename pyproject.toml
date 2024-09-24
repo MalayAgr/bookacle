@@ -6,7 +6,6 @@ readme = "README.md"
 requires-python = ">=3.11,<3.12"
 dependencies = [
     "asyncio>=3.4.3",
-    "click>=8.1.7",
     "joblib>=1.4.2",
     "langchain-community>=0.2.15",
     "langchain-huggingface>=0.0.3",
@@ -14,6 +13,7 @@ dependencies = [
     "numpy>=1.26.4",
     "ollama>=0.3.3",
     "prompt-toolkit>=3.0.47",
+    "pymupdf4llm>=0.0.16",
     "pymupdf>=1.24.9",
     "python-dotenv>=1.0.1",
     "rich>=13.8.0",
@@ -21,6 +21,7 @@ dependencies = [
     "sentence-transformers>=3.0.1",
     "tqdm>=4.66.5",
     "transformers>=4.44.2",
+    "typer>=0.12.5",
     "umap-learn>=0.5.6",
 ]
 
@@ -41,5 +42,4 @@ files = "src"
 [tool.uv]
 dev-dependencies = [
     "mypy>=1.11.2",
-    "pymupdf4llm>=0.0.14",
 ]
