@@ -23,19 +23,19 @@ from rich.spinner import Spinner
 class ChatConfig:
     retriever: RetrieverLike = settings.RETRIEVER
     qa_model: QAModelLike = settings.QA_MODEL
-    chunk_size: int = settings.CHUNK_SIZE
-    chunk_overlap: int = settings.CHUNK_OVERLAP
 
 
 class Chat:
     def __init__(
         self,
-        config: ChatConfig,
+        retriever: RetrieverLike,
+        qa_model: QAModelLike,
         console: Console,
         history_file: str = ".bookacle-chat-history.txt",
         user_avatar: str = "👤",
     ) -> None:
-        self.config = config
+        self.retriever = retriever
+        self.qa_model = qa_model
         self.console = console
         self.history_file = Path().home() / history_file
         self.user_avatar = user_avatar
@@ -77,8 +77,8 @@ class Chat:
         *args,
         **kwargs,
     ) -> Message:
-        retriever = self.config.retriever
-        qa_model = self.config.qa_model
+        retriever = self.retriever
+        qa_model = self.qa_model
 
         _, context = retriever.retrieve(query=question, tree=tree, *args, **kwargs)
 
