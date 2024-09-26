@@ -13,8 +13,8 @@ from bookacle.tree.clustering import (
 
 
 class SelectionMode(Enum):
-    TOP_K = auto()
-    THRESHOLD = auto()
+    TOP_K = "top_k"
+    THRESHOLD = "threshold"
 
 
 @dataclass
