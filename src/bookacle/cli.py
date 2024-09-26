@@ -1,12 +1,34 @@
 from __future__ import annotations
 
+import importlib
+import re
 from enum import Enum
 from pathlib import Path
 from typing import Annotated
 
 import typer
+from bookacle.conf import settings
 from bookacle.loaders import LOADER_MANAGER
 from langchain_core.documents import Document
+
+# Register custom document loaders
+if settings.CUSTOM_LOADERS_DIR:
+    import sys
+
+    custom_loader_dir = settings.CUSTOM_LOADERS_DIR
+
+    sys.path.append(custom_loader_dir)
+
+    pattern = re.compile(r"^(?!.*__init__\.py$).*.py$")
+    for module in (
+        path
+        for path in Path(custom_loader_dir).rglob("*.py")
+        if pattern.match(str(path))
+    ):
+        _ = importlib.import_module(module.stem)
+
+    sys.path.remove(custom_loader_dir)
+
 
 app = typer.Typer()
 
