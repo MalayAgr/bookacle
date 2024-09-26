@@ -118,5 +118,7 @@ settings = Dynaconf(
                 class_path=value["model_class"], arguments=value["model_arguments"]
             ),
         ),
+        Validator("chunk_size", default=None),
+        Validator("chunk_overlap", default=None),
     ],
 )

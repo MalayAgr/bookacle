@@ -1,5 +1,7 @@
 custom_loaders_dir = ''
 clustering_func = 'bookacle.tree.clustering.raptor_clustering'
+stream_output = true
+
 
 [embedding_model]
 model_class = 'bookacle.models.embedding.SentenceTransformerEmbeddingModel'
@@ -13,8 +15,6 @@ model_arguments = {model_name='facebook/bart-large-cnn', use_gpu=false, summariz
 [document_splitter]
 splitter_class = 'bookacle.splitter.HuggingFaceMarkdownSplitter'
 splitter_arguments = {tokenizer='@format {this.EMBEDDING_MODEL.tokenizer}'}
-
-[chunking]
 
 [retriever_config]
 config_class = 'bookacle.tree.retriever.TreeRetrieverConfig'
