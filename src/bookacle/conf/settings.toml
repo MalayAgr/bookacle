@@ -1,0 +1,42 @@
+custom_loaders_dir = ''
+clustering_func = 'bookacle.tree.clustering.raptor_clustering'
+
+[embedding_model]
+model_class = 'bookacle.models.embedding.SentenceTransformerEmbeddingModel'
+model_arguments = {model_name='paraphrase-albert-small-v2', use_gpu=false}
+
+[summarization_model]
+model_class = 'bookacle.models.summarization.HuggingFaceSummarizationModel'
+model_arguments = {model_name='facebook/bart-large-cnn', use_gpu=false, summarization_length=100}
+
+
+[document_splitter]
+splitter_class = 'bookacle.splitter.HuggingFaceMarkdownSplitter'
+splitter_arguments = {tokenizer='@format {this.EMBEDDING_MODEL.tokenizer}'}
+
+[chunking]
+
+[retriever_config]
+config_class = 'bookacle.tree.retriever.TreeRetrieverConfig'
+config_arguments = {embedding_model='@get embedding_model', threshold=0.5, top_k=5, selection_mode='top_k', max_tokens=3500}
+
+[retriever]
+retriever_class = 'bookacle.tree.retriever.TreeRetriever'
+retriever_arguments = {config='@get retriever_config'}
+
+[clustering_backend]
+backend_class = 'bookacle.tree.clustering.GMMClusteringBackend'
+backend_arguments = {reduction_dim=10, umap_metric='cosine', umap_low_memory=false}
+
+[tree_builder_config]
+config_class = 'bookacle.tree.builder.RaptorTreeConfig'
+config_arguments = {embedding_model='@get embedding_model', summarization_model='@get summarization_model',document_splitter='@get document_splitter',clustering_func='@get clustering_func',clustering_backend='@get clustering_backend', max_length_in_cluster=3500, max_num_layers=5}
+
+[tree_builder]
+builder_class = 'bookacle.tree.builder.ClusterTreeBuilder'
+builder_arguments = {config='@get tree_builder_config'}
+
+[qa_model]
+model_class = 'bookacle.models.qa.OllamaQAModel'
+model_arguments = {model_name="qwen2:0.5b"}
+
