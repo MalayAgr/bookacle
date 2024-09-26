@@ -1,5 +1,4 @@
 from collections.abc import Iterator
-from dataclasses import dataclass
 from pathlib import Path
 
 from bookacle.conf import settings
@@ -15,12 +14,6 @@ from rich.live import Live
 from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.spinner import Spinner
-
-
-@dataclass
-class ChatConfig:
-    retriever: RetrieverLike = settings.RETRIEVER
-    qa_model: QAModelLike = settings.QA_MODEL
 
 
 class Chat:
