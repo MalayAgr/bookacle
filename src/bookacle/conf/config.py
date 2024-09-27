@@ -4,6 +4,9 @@ import importlib
 import os
 from typing import Any, Type, TypeVar
 
+from bookacle.models.embedding import EmbeddingModelLike
+from bookacle.models.summarization import SummarizationModelLike
+from bookacle.splitter import DocumentSplitterLike
 from bookacle.tree.config import SelectionMode
 from bookacle.tree.retriever import RetrieverLike
 from dynaconf import Dynaconf, ValidationError, Validator
@@ -24,6 +27,21 @@ def _cast_class_path_to_instance(class_path: str, arguments: dict[str, Any]):
     return cls(**arguments)
 
 
+def _cast_document_splitter(value: dict[str, Any]) -> DocumentSplitterLike:
+    class_path = value["splitter_class"]
+    cls = _import_attribute_from_module(class_path)
+    arguments: dict[str, Any] = value["splitter_arguments"]
+
+    if (tokenizer_from := arguments.get("tokenizer_from")) is not None:
+        if not isinstance(tokenizer_from, (EmbeddingModelLike, SummarizationModelLike)):
+            raise ValidationError("Invalid tokenizer_from.")
+
+        arguments.pop("tokenizer_from")
+        arguments["tokenizer"] = tokenizer_from.tokenizer
+
+    return cls(**arguments)
+
+
 def _cast_retriever_config(value: dict[str, Any]) -> RetrieverLike:
     class_path = value["config_class"]
     cls = _import_attribute_from_module(class_path)
@@ -39,14 +57,14 @@ def _cast_retriever_config(value: dict[str, Any]) -> RetrieverLike:
 
 
 settings = Dynaconf(
-    envvar_prefix="DYNACONF",
-    root_path=ROOT_PATH,
-    settings_files=["settings.toml"],
-    validate_on_update="all",
+    envvar_prefix="BOOKACLE", root_path=ROOT_PATH, settings_files=["settings.toml"]
 )
 
 settings.validators.register(
     Validator(
+        "custom_loaders_dir",
+        "clustering_func",
+        "stream_output",
         "embedding_model.model_class",
         "embedding_model.model_arguments",
         "summarization_model.model_class",
@@ -74,13 +92,7 @@ settings.validators.register(
             arguments=value["model_arguments"],
         ),
     ),
-    Validator(
-        "document_splitter",
-        cast=lambda value: _cast_class_path_to_instance(
-            class_path=value["splitter_class"],
-            arguments=value["splitter_arguments"],
-        ),
-    ),
+    Validator("document_splitter", cast=_cast_document_splitter),
     Validator("retriever_config", cast=_cast_retriever_config),
     Validator(
         "retriever",

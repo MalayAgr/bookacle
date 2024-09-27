@@ -14,7 +14,7 @@ model_arguments = {model_name='facebook/bart-large-cnn', use_gpu=false, summariz
 
 [document_splitter]
 splitter_class = 'bookacle.splitter.HuggingFaceMarkdownSplitter'
-splitter_arguments = {tokenizer='@format {this.EMBEDDING_MODEL.tokenizer}'}
+splitter_arguments = {tokenizer_from='@get embedding_model'}
 
 [retriever_config]
 config_class = 'bookacle.tree.retriever.TreeRetrieverConfig'
