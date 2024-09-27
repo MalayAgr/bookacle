@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import itertools
 from collections import UserDict
-from enum import Enum, StrEnum
+from enum import Enum
 from typing import Callable, Protocol
 
 import pymupdf

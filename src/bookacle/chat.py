@@ -1,7 +1,6 @@
 from collections.abc import Iterator
 from pathlib import Path
 
-from bookacle.conf import settings
 from bookacle.models.qa import Message, QAModelLike
 from bookacle.tree.retriever import RetrieverLike
 from bookacle.tree.structures import Tree
@@ -102,7 +101,7 @@ class Chat:
         tree: Tree,
         initial_chat_message: str = "",
         system_prompt: str = "",
-        stream: bool = settings.STREAM_OUTPUT,
+        stream: bool = True,
         *args,
         **kwargs,
     ) -> None:

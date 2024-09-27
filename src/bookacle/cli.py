@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import importlib
 import re
-import tomllib
 from enum import Enum
 from pathlib import Path
 from typing import Annotated
