@@ -1,4 +1,4 @@
-from typing import Protocol, overload
+from typing import Protocol, overload, runtime_checkable
 
 import numpy as np
 from bookacle.tokenizer import TokenizerLike
@@ -6,6 +6,7 @@ from sentence_transformers import SentenceTransformer
 from transformers import PreTrainedTokenizerBase
 
 
+@runtime_checkable
 class EmbeddingModelLike(Protocol):
     @property
     def tokenizer(self) -> TokenizerLike: ...

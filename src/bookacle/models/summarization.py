@@ -1,4 +1,4 @@
-from typing import Protocol, overload
+from typing import Protocol, overload, runtime_checkable
 
 from bookacle.tokenizer import TokenizerLike
 from transformers import (
@@ -9,6 +9,7 @@ from transformers import (
 )
 
 
+@runtime_checkable
 class SummarizationModelLike(Protocol):
     @property
     def tokenizer(self) -> TokenizerLike: ...
