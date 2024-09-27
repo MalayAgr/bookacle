@@ -2,14 +2,18 @@ from __future__ import annotations
 
 import importlib
 import re
+import tomllib
 from enum import Enum
 from pathlib import Path
 from typing import Annotated
 
 import typer
+from bookacle.chat import Chat
 from bookacle.conf import settings
 from bookacle.loaders import LOADER_MANAGER
+from bookacle.tree.builder import TreeBuilderLike
 from langchain_core.documents import Document
+from rich.console import Console
 
 # Register custom document loaders
 if settings.CUSTOM_LOADERS_DIR:
@@ -79,14 +83,54 @@ def chat(
             show_default=False,
         ),
     ] = None,
+    user_avatar: Annotated[
+        str, typer.Option(help="Avatar that should be used for the user during chat.")
+    ] = "👤",
+    history_file: Annotated[
+        str, typer.Option(help="File where chat history should be stored.")
+    ] = ".bookacle-chat-history.txt",
+    config_file: Annotated[
+        Path | None,
+        typer.Option(
+            exists=True,
+            file_okay=True,
+            dir_okay=False,
+            show_default=False,
+            help="Custom configuration file. If not provided, the default settings are used.",
+        ),
+    ] = None,
 ) -> None:
+    if config_file is not None:
+        settings.load_file(config_file)
+
     documents = load_data(
         file_path=str(file_path),
         loader=loader,
         start_page=start_page,
         end_page=end_page,
     )
-    print(len(documents))
+
+    console = Console()
+
+    settings.validators.validate()
+
+    tree_builder: TreeBuilderLike = settings.TREE_BUILDER
+
+    tree = tree_builder.build_from_documents(
+        documents=documents,
+        chunk_size=settings.CHUNK_SIZE,
+        chunk_overlap=settings.CHUNK_OVERLAP,
+    )
+
+    chat = Chat(
+        retriever=settings.RETRIEVER,
+        qa_model=settings.QA_MODEL,
+        console=console,
+        history_file=history_file,
+        user_avatar=user_avatar,
+    )
+
+    chat.run(tree=tree, stream=settings.STREAM_OUTPUT)
 
 
 if __name__ == "__main__":
