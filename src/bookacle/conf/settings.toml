@@ -1,15 +1,30 @@
 custom_loaders_dir = ''
+
 clustering_func = 'bookacle.tree.clustering.raptor_clustering'
+
 stream_output = true
 
+summarization_system_prompt = """You are a highly skilled text summarization assistant. Your task is to generate concise and coherent summaries from the input text while retaining key information, main ideas, and critical details. Ensure that your summary:
+
+    - Covers all the essential points from the input text.
+    - Is clear, grammatically correct, and easy to understand.
+    - Avoids adding any new information or personal opinions.
+    - Uses a neutral tone and concise language.
+    - Can be adjusted for length if specified (e.g., not more than 50 words).
+
+If the specified length is longer than the input text, adjust the length to ensure the summary is shorter than the input text.
+Make sure the summaries do NOT end abruptly.
+
+Do NOT hallucinate. Always output ONLY the summary. Do not include any additional information or context in your response.
+"""
 
 [embedding_model]
 model_class = 'bookacle.models.embedding.SentenceTransformerEmbeddingModel'
 model_arguments = {model_name='paraphrase-albert-small-v2', use_gpu=false}
 
 [summarization_model]
-model_class = 'bookacle.models.summarization.HuggingFaceSummarizationModel'
-model_arguments = {model_name='facebook/bart-large-cnn', use_gpu=false, summarization_length=100}
+model_class = 'bookacle.models.summarization.HuggingFaceLLMSummarizationModel'
+model_arguments = {model_name='Qwen/Qwen2-0.5B-Instruct', use_gpu=false, summarization_length=100}
 
 
 [document_splitter]
