@@ -24,9 +24,7 @@ if settings.CUSTOM_LOADERS_DIR:
 
     pattern = re.compile(r"^(?!.*__init__\.py$).*.py$")
     for module in (
-        path
-        for path in Path(custom_loader_dir).rglob("*.py")
-        if pattern.match(str(path))
+        path for path in Path(custom_loader_dir).rglob("*.py") if pattern.match(str(path))
     ):
         _ = importlib.import_module(module.stem)
 

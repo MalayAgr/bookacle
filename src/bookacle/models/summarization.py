@@ -35,9 +35,7 @@ class HuggingFaceSummarizationModel:
         self.use_gpu = use_gpu
         self.summarization_length = summarization_length
 
-        self._tokenizer = AutoTokenizer.from_pretrained(
-            model_name, model_max_length=512
-        )
+        self._tokenizer = AutoTokenizer.from_pretrained(model_name, model_max_length=512)
         self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
         self.pipeline = pipeline(
             task="summarization",

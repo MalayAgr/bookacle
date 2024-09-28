@@ -40,7 +40,11 @@ strict = true
 plugins = "numpy.typing.mypy_plugin"
 files = "src"
 
+[tool.black]
+line-length = 90
+
 [tool.uv]
 dev-dependencies = [
+    "black>=24.8.0",
     "mypy>=1.11.2",
 ]

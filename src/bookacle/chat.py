@@ -44,17 +44,13 @@ class Chat:
                 complete_message += chunk["content"]
                 updated_panel = Columns(
                     [
-                        Panel(
-                            Markdown(complete_message), title="🤖", title_align="left"
-                        ),
+                        Panel(Markdown(complete_message), title="🤖", title_align="left"),
                         Spinner("aesthetic"),
                     ]
                 )
                 live.update(updated_panel)
 
-            live.update(
-                Panel(Markdown(complete_message), title="🤖", title_align="left")
-            )
+            live.update(Panel(Markdown(complete_message), title="🤖", title_align="left"))
 
         return complete_message
 

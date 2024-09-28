@@ -96,9 +96,7 @@ class RaptorSplitter:
             if chunk:
                 chunks.append(" ".join(chunk))
                 chunk = chunk[-chunk_overlap:] if chunk_overlap > 0 else []
-                length = sum(
-                    len(tokenizer.encode(" " + sentence)) for sentence in chunk
-                )
+                length = sum(len(tokenizer.encode(" " + sentence)) for sentence in chunk)
                 return chunk, length
 
             return [], 0
