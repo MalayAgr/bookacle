@@ -2,6 +2,7 @@ from typing import Protocol, overload, runtime_checkable
 
 from bookacle.tokenizer import TokenizerLike
 from transformers import (
+    AutoModelForCausalLM,
     AutoModelForSeq2SeqLM,
     AutoTokenizer,
     PreTrainedTokenizerBase,
@@ -71,10 +72,107 @@ class HuggingFaceSummarizationModel:
         return [summary["summary_text"] for summary in summaries]  # type: ignore
 
 
+class HuggingFaceLLMSummarizationModel:
+    SYSTEM_PROMPT: str = """You are a highly skilled text summarization assistant. Your task is to generate concise and coherent summaries from the input text while retaining key information, main ideas, and critical details. Ensure that your summary:
+
+    - Covers all the essential points from the input text.
+    - Is clear, grammatically correct, and easy to understand.
+    - Avoids adding any new information or personal opinions.
+    - Uses a neutral tone and concise language.
+    - Can be adjusted for length if specified (e.g., not more than 50 words).
+
+
+    If the specified length is longer than the input text, adjust the length to ensure the summary is shorter than the input text.
+    Make sure the summaries do NOT end abruptly.
+
+    Do NOT hallucinate. Always output ONLY the summary. Do not include any additional information or context in your response.
+    """
+
+    def __init__(
+        self,
+        model_name: str,
+        summarization_length: int = 100,
+        *,
+        use_gpu: bool = False,
+    ) -> None:
+        self.model_name = model_name
+        self.use_gpu = use_gpu
+        self.summarization_length = summarization_length
+
+        self._tokenizer = AutoTokenizer.from_pretrained(model_name, model_max_length=512)
+
+        self.model = AutoModelForCausalLM.from_pretrained(model_name)
+        self.pipeline = pipeline(
+            task="text-generation",
+            model=self.model,
+            tokenizer=self._tokenizer,
+            device=0 if use_gpu else -1,
+        )
+
+    @property
+    def tokenizer(self) -> PreTrainedTokenizerBase:
+        return self._tokenizer
+
+    @overload
+    def _format_as_chat_message(self, text: list[str]) -> list[list[dict[str, str]]]: ...
+
+    @overload
+    def _format_as_chat_message(self, text: str) -> list[dict[str, str]]: ...
+
+    def _format_as_chat_message(
+        self, text: str | list[str]
+    ) -> list[dict[str, str]] | list[list[dict[str, str]]]:
+        user_prompt = "Summarize the following in not more than {summarization_length} words:\n{text}"
+
+        if isinstance(text, str):
+            return [
+                {"role": "system", "content": self.SYSTEM_PROMPT},
+                {
+                    "role": "user",
+                    "content": user_prompt.format(
+                        summarization_length=self.summarization_length, text=text
+                    ),
+                },
+            ]
+
+        return [
+            [
+                {"role": "system", "content": self.SYSTEM_PROMPT},
+                {
+                    "role": "user",
+                    "content": user_prompt.format(
+                        summarization_length=self.summarization_length, text=t
+                    ),
+                },
+            ]
+            for t in text
+        ]
+
+    @overload
+    def summarize(self, text: list[str]) -> list[str]: ...
+
+    @overload
+    def summarize(self, text: str) -> str: ...
+
+    def summarize(self, text: str | list[str]) -> str | list[str]:
+        messages = self._format_as_chat_message(text)
+
+        summaries = self.pipeline(
+            messages,
+            do_sample=True,
+            max_new_tokens=self.summarization_length,
+            return_full_text=False,
+        )
+
+        if isinstance(text, str):
+            return summaries[0][0]["generated_text"]  # type: ignore
+
+        return [summary[0]["generated_text"] for summary in summaries]  # type: ignore
+
+
 if __name__ == "__main__":
     text = [
-        """
-    Hugging Face: Revolutionizing Natural Language Processing
+        """Hugging Face: Revolutionizing Natural Language Processing
 
     Introduction:
 
@@ -91,8 +189,8 @@ if __name__ == "__main__":
     """,
     ]
 
-    summary_model = HuggingFaceSummarizationModel(
-        model_name="facebook/bart-large-cnn",
+    summary_model = HuggingFaceLLMSummarizationModel(
+        model_name="Qwen/Qwen2-0.5B-Instruct",
         use_gpu=False,
         summarization_length=100,
     )
