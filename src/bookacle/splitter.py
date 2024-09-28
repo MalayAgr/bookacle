@@ -77,14 +77,6 @@ class RaptorSplitter:
 
         self.delimiters = delimiters
 
-    def _split_and_tokenize(self, sentence: str) -> list[tuple[str, int]]:
-        parts = re.split(r"([,;:])", sentence)
-        return [
-            (part.strip(), len(self.tokenizer.encode(" " + part.strip())))
-            for part in parts
-            if part.strip()
-        ]
-
     def _split_single_document(
         self, document: Document, chunk_size: int, chunk_overlap: int
     ) -> list[Document]:
