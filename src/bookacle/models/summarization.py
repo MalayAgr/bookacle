@@ -168,6 +168,8 @@ class HuggingFaceLLMSummarizationModel:
 
 
 if __name__ == "__main__":
+    from bookacle.conf import settings
+
     text = [
         """Hugging Face: Revolutionizing Natural Language Processing
 
@@ -190,6 +192,7 @@ if __name__ == "__main__":
         model_name="Qwen/Qwen2-0.5B-Instruct",
         use_gpu=False,
         summarization_length=100,
+        system_prompt=settings.SUMMARIZATION_SYSTEM_PROMPT,
     )
     result = summary_model.summarize(text)
     print(result)
