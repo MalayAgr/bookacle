@@ -1,6 +1,7 @@
+"""This module implements document splitters for document chunking."""
+
 import itertools
 import re
-import token
 from typing import Protocol
 
 from bookacle.tokenizer import TokenizerLike
@@ -33,9 +34,15 @@ class DocumentSplitterLike(Protocol):
 
 
 class HuggingFaceTextSplitter:
-    """A document splitter which uses a HuggingFace tokenizer to calculate length when splitting.
+    """Text-based document splitter which uses a HuggingFace tokenizer to calculate
+    length when splitting.
 
-    The splitter used is Langchain's [RecursiveCharacterTextSplitter][].
+    It uses Langchain's
+    [RecursiveCharacterTextSplitter][langchain_text_splitters.RecursiveCharacterTextSplitter]
+    and expects the list of documents to be in plain text.
+
+    It implements the [DocumentSplitterLike][bookacle.splitters.DocumentSplitterLike]
+    protocol.
     """
 
     def __init__(
@@ -45,8 +52,9 @@ class HuggingFaceTextSplitter:
         Initialize the splitter.
 
         Args:
-            tokenizer: The Hugging Face tokenizer to use.
-            separators: The list of separators to use. When `None`, the default separators are used: `["\\n\\n", "\\n", ".", "!", "?"]`.
+            tokenizer: The HuggingFace tokenizer to use for calculating length.
+            separators: The list of separators to use.
+                        When `None`, the default separators are used: `["\\n\\n", "\\n", ".", "!", "?"]`.
         """
         self.tokenizer = tokenizer
 
@@ -73,7 +81,23 @@ class HuggingFaceTextSplitter:
 
 
 class HuggingFaceMarkdownSplitter:
+    """Markdown-based document splitter which uses a HuggingFace tokenizer to calculate
+    length of chunks when splitting.
+
+    It uses Langchain's
+    [MarkdownTextSplitter][langchain_text_splitters.MarkdownTextSplitter]
+    and expects the list of documents to be in Markdown.
+
+    It implements the [DocumentSplitterLike][bookacle.splitters.DocumentSplitterLike]
+    protocol.
+    """
+
     def __init__(self, tokenizer: PreTrainedTokenizerBase) -> None:
+        """Initialize the splitter.
+
+        Args:
+            tokenizer: The HuggingFace tokenizer to use to calculate length.
+        """
         self.tokenizer = tokenizer
 
     def __repr__(self) -> str:
@@ -93,9 +117,28 @@ class HuggingFaceMarkdownSplitter:
 
 
 class RaptorSplitter:
+    """Document splitter which implements the chunking technique
+    as defined in the RAPTOR paper.
+
+    It expects a tokenizer which implements the
+    [TokenizerLike][bookacle.tokenizer.TokenizerLike]
+    protocol to calculate the length of chunks.
+
+    For more details, see:
+    https://github.com/parthsarthi03/raptor/blob/7da1d48a7e1d7dec61a63c9d9aae84e2dfaa5767/raptor/utils.py#L22.
+
+    It implements the [DocumentSplitterLike][bookacle.splitters.DocumentSplitterLike]
+    protocol.
+    """
+
     def __init__(
         self, tokenizer: TokenizerLike, *, delimiters: list[str] | None = None
     ) -> None:
+        """Initialize the splitter.
+
+        Args:
+            tokenizer: Tokenizer to use for calculating chunk lengths.
+        """
         self.tokenizer = tokenizer
 
         if delimiters is None:
@@ -103,9 +146,16 @@ class RaptorSplitter:
 
         self.delimiters = delimiters
 
-    def _split_single_document(
+    def split_single_document(
         self, document: Document, chunk_size: int, chunk_overlap: int
     ) -> list[Document]:
+        """Split a single document into chunks.
+
+        Args:
+            document: [Document][langchain_core.documents.Document] to split into chunks.
+            chunk_size: Maximum size of each chunk.
+            chunk_overlap: Overlap between each chunk.
+        """
         text = document.page_content
         tokenizer = self.tokenizer
 
@@ -170,7 +220,7 @@ class RaptorSplitter:
         self, documents: list[Document], chunk_size: int = 100, chunk_overlap: int = 0
     ) -> list[Document]:
         per_doc_chunks = [
-            self._split_single_document(doc, chunk_size, chunk_overlap)
+            self.split_single_document(doc, chunk_size, chunk_overlap)
             for doc in documents
         ]
 
