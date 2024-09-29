@@ -12,9 +12,23 @@ from langchain_core.documents import Document
 
 
 class LoaderLike(Protocol):
+    """A protocol that all document loaders should follow."""
+
     def __call__(
         self, file_path: str, start_page: int = 0, end_page: int | None = None
-    ) -> list[Document]: ...
+    ) -> list[Document]:
+        """
+        Load a PDF document.
+
+        Args:
+            file_path: The path to the PDF file.
+            start_page: The starting (0-based) page number.
+            end_page: The ending  (0-based) page number. When `None`, all pages in the PDF are loaded.
+
+        Returns:
+            Pages in the file.
+        """
+        ...
 
 
 class _LoaderManager(UserDict[str, LoaderLike]):
@@ -44,6 +58,7 @@ def register_loader(name: str) -> Callable[[LoaderLike], LoaderLike]:
 def pymupdf4llm_loader(
     file_path: str, start_page: int = 0, end_page: int | None = None
 ) -> list[Document]:
+    """Document loader which uses `pymupdf4llm` to load the PDF as Markdown."""
     with pymupdf.open(file_path) as doc:
         if end_page is None:
             end_page = doc.page_count
@@ -61,6 +76,7 @@ def pymupdf4llm_loader(
 def pymupdf_loader(
     file_path: str, start_page: int = 0, end_page: int | None = None
 ) -> list[Document]:
+    """Document loader which uses `pymupdf` to load the PDF as text."""
     loader = PyMuPDFLoader(file_path=file_path)
 
     if start_page == 0 and end_page is None:
