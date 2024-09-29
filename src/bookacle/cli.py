@@ -31,7 +31,12 @@ if settings.CUSTOM_LOADERS_DIR:
     sys.path.remove(custom_loader_dir)
 
 
-app = typer.Typer()
+def version_callback(value: bool) -> None:
+    if value:
+        import bookacle
+
+        print(f"v{bookacle.__version__}")
+        raise typer.Exit()
 
 
 def load_data(
@@ -46,6 +51,9 @@ def load_data(
         raise ValueError(f"Loader {pdf_loader} is not supported.")
 
     return pdf_loader(file_path, start_page=start_page, end_page=end_page)
+
+
+app = typer.Typer()
 
 
 @app.command()
@@ -120,6 +128,12 @@ def chat(
             dir_okay=False,
             show_default=False,
             help="Custom prompts file. If not provided, the default prompts are used.",
+        ),
+    ] = None,
+    version: Annotated[
+        bool | None,
+        typer.Option(
+            "--version", "-v", callback=version_callback, help="Print version and exit."
         ),
     ] = None,
 ) -> None:
