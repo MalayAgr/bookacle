@@ -60,7 +60,7 @@ def chat(
             help="Path to the PDF file.",
         ),
     ],
-    loader: Annotated[
+    loader: Annotated[  # type: ignore
         LOADER_MANAGER.to_enum,  # type: ignore
         typer.Option("--loader", "-l", case_sensitive=False, help="Loader to use."),
     ] = "pymupdf4llm",

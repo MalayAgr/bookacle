@@ -83,6 +83,13 @@ class RaptorSplitter:
         text = document.page_content
         tokenizer = self.tokenizer
 
+        regex_pattern = "|".join(map(re.escape, self.delimiters))
+        sentences = re.split(regex_pattern, text)
+
+        chunks: list[str] = []
+        current_chunk: list[str] = []
+        current_length = 0
+
         def add_chunk(chunk: list[str]) -> tuple[list[str], int]:
             """Helper function to add chunk and apply overlap if necessary."""
             if chunk:
@@ -92,13 +99,6 @@ class RaptorSplitter:
                 return chunk, length
 
             return [], 0
-
-        regex_pattern = "|".join(map(re.escape, self.delimiters))
-        sentences = re.split(regex_pattern, text)
-
-        chunks: list[str] = []
-        current_chunk: list[str] = []
-        current_length = 0
 
         for sentence in sentences:
             if not sentence.strip():

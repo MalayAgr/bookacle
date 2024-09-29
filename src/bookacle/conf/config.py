@@ -9,7 +9,7 @@ from bookacle.models.summarization import SummarizationModelLike
 from bookacle.splitter import DocumentSplitterLike
 from bookacle.tree.config import SelectionMode
 from bookacle.tree.retriever import RetrieverLike
-from dynaconf import Dynaconf, ValidationError, Validator
+from dynaconf import Dynaconf, LazySettings, ValidationError, Validator
 
 ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -22,7 +22,7 @@ def _import_attribute_from_module(dotted_path: str) -> Type[Any]:
     return getattr(module, attr_name)
 
 
-def _cast_class_path_to_instance(class_path: str, arguments: dict[str, Any]):
+def _cast_class_path_to_instance(class_path: str, arguments: dict[str, Any]) -> object:
     cls = _import_attribute_from_module(class_path)
     return cls(**arguments)
 
@@ -56,7 +56,7 @@ def _cast_retriever_config(value: dict[str, Any]) -> RetrieverLike:
     return cls(**arguments)
 
 
-settings = Dynaconf(
+settings: LazySettings = Dynaconf(
     envvar_prefix="BOOKACLE",
     root_path=ROOT_PATH,
     settings_files=["settings.toml", "prompts.toml"],
