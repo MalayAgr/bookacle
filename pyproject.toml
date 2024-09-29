@@ -46,5 +46,6 @@ line-length = 90
 [tool.uv]
 dev-dependencies = [
     "black>=24.8.0",
+    "huggingface-hub[cli]>=0.24.6",
     "mypy>=1.11.2",
 ]
