@@ -1,12 +1,8 @@
 from collections.abc import Iterable, Iterator
-from typing import Literal, Protocol, TypedDict, overload
+from typing import Literal, Protocol, overload
 
 import ollama
-
-
-class Message(TypedDict):
-    role: Literal["user", "assistant", "system", "tool"]
-    content: str
+from bookacle.models.message import Message
 
 
 class QAModelLike(Protocol):

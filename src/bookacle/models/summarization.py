@@ -1,5 +1,6 @@
-from typing import Protocol, overload, runtime_checkable
+from typing import Iterable, Protocol, overload, runtime_checkable
 
+from bookacle.models.message import Message
 from bookacle.tokenizer import TokenizerLike
 from transformers import (
     AutoModelForCausalLM,
@@ -73,30 +74,17 @@ class HuggingFaceSummarizationModel:
 
 
 class HuggingFaceLLMSummarizationModel:
-    SYSTEM_PROMPT: str = """You are a highly skilled text summarization assistant. Your task is to generate concise and coherent summaries from the input text while retaining key information, main ideas, and critical details. Ensure that your summary:
-
-    - Covers all the essential points from the input text.
-    - Is clear, grammatically correct, and easy to understand.
-    - Avoids adding any new information or personal opinions.
-    - Uses a neutral tone and concise language.
-    - Can be adjusted for length if specified (e.g., not more than 50 words).
-
-
-    If the specified length is longer than the input text, adjust the length to ensure the summary is shorter than the input text.
-    Make sure the summaries do NOT end abruptly.
-
-    Do NOT hallucinate. Always output ONLY the summary. Do not include any additional information or context in your response.
-    """
-
     def __init__(
         self,
         model_name: str,
         summarization_length: int = 100,
         *,
+        system_prompt: str = "",
         use_gpu: bool = False,
     ) -> None:
         self.model_name = model_name
         self.use_gpu = use_gpu
+        self.system_prompt = system_prompt
         self.summarization_length = summarization_length
 
         self._tokenizer = AutoTokenizer.from_pretrained(model_name, model_max_length=512)
@@ -114,39 +102,48 @@ class HuggingFaceLLMSummarizationModel:
         return self._tokenizer
 
     @overload
-    def _format_as_chat_message(self, text: list[str]) -> list[list[dict[str, str]]]: ...
+    def _format_as_chat_message(self, text: list[str]) -> list[list[Message]]: ...
 
     @overload
-    def _format_as_chat_message(self, text: str) -> list[dict[str, str]]: ...
+    def _format_as_chat_message(self, text: str) -> list[Message]: ...
 
     def _format_as_chat_message(
         self, text: str | list[str]
-    ) -> list[dict[str, str]] | list[list[dict[str, str]]]:
+    ) -> list[Message] | list[list[Message]]:
+        system_message = None
+
+        if self.system_prompt:
+            system_message = Message(role="system", content=self.system_prompt)
+
         user_prompt = "Summarize the following in not more than {summarization_length} words:\n{text}"
 
         if isinstance(text, str):
-            return [
-                {"role": "system", "content": self.SYSTEM_PROMPT},
-                {
-                    "role": "user",
-                    "content": user_prompt.format(
-                        summarization_length=self.summarization_length, text=text
-                    ),
-                },
-            ]
+            user_message = Message(
+                role="user",
+                content=user_prompt.format(
+                    summarization_length=self.summarization_length, text=text
+                ),
+            )
 
-        return [
-            [
-                {"role": "system", "content": self.SYSTEM_PROMPT},
-                {
-                    "role": "user",
-                    "content": user_prompt.format(
-                        summarization_length=self.summarization_length, text=t
-                    ),
-                },
-            ]
+            if system_message is not None:
+                return [system_message, user_message]
+
+            return [user_message]
+
+        user_messages = (
+            Message(
+                role="user",
+                content=user_prompt.format(
+                    summarization_length=self.summarization_length, text=t
+                ),
+            )
             for t in text
-        ]
+        )
+
+        if system_message is not None:
+            return [[system_message, user_message] for user_message in user_messages]
+
+        return [[user_message] for user_message in user_messages]
 
     @overload
     def summarize(self, text: list[str]) -> list[str]: ...

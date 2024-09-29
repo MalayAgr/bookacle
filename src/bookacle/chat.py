@@ -1,7 +1,8 @@
 from collections.abc import Iterator
 from pathlib import Path
 
-from bookacle.models.qa import Message, QAModelLike
+from bookacle.models.message import Message
+from bookacle.models.qa import QAModelLike
 from bookacle.tree.retriever import RetrieverLike
 from bookacle.tree.structures import Tree
 from prompt_toolkit import PromptSession
@@ -75,9 +76,9 @@ class Chat:
 
             complete_message = self.display_ai_msg_stream(message=responses)
 
-            return {"role": "assistant", "content": complete_message}
+            return Message(role="assistant", content=complete_message)
 
-        response: Message = qa_model.answer(
+        response = qa_model.answer(
             question=question, context=context, history=history, stream=False
         )
 
@@ -130,7 +131,7 @@ class Chat:
             user_history.append_string(user_text)
 
             self.console.print(f"{self.user_avatar}: {user_text}")
-            messages.append({"role": "user", "content": user_text})
+            messages.append(Message(role="user", content=user_text))
 
             self.console.print("")
 
