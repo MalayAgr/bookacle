@@ -74,14 +74,13 @@ plugins:
     nav_file: SUMMARY.txt
 - section-index:
 - mkdocstrings:
-    custom_templates: docs/_templates
     default_handler: python
     handlers:
       python:
         import:
           - https://docs.python.org/3/objects.inv
-          - https://python-tcod.readthedocs.io/en/stable/objects.inv
           - https://numpy.org/doc/stable/objects.inv
+          - https://api.python.langchain.com/en/latest/objects.inv
         options:
           members_order: source
           show_signature_annotations: false
@@ -89,12 +88,16 @@ plugins:
           merge_init_into_class: true
           docstring_options:
             ignore_init_summary: true
+          preload_modules: [mkdocstrings]
+          show_symbol_type_heading: true
+          show_symbol_type_toc: true
+          signature_crossrefs: true
           show_source: false
           filters:
             - "!^_"
             - "^__init__$"
+            - "^__call__$"
             - "!^can_replace$"
-          line-length: 88
 
 
 watch:

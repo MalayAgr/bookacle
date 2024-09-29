@@ -27,6 +27,12 @@ LOADER_MANAGER = _LoaderManager()
 
 
 def register_loader(name: str) -> Callable[[LoaderLike], LoaderLike]:
+    """A decorator that registers a loader function with the loader manager.
+
+    Args:
+        name (str): The name to map the loader function to.
+    """
+
     def decorator(func: LoaderLike) -> LoaderLike:
         LOADER_MANAGER[name] = func
         return func

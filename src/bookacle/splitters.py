@@ -13,15 +13,41 @@ from transformers import PreTrainedTokenizerBase
 
 
 class DocumentSplitterLike(Protocol):
+    """A protocol that defines the methods that a document splitter should implement."""
+
     def __call__(
         self, documents: list[Document], chunk_size: int = 100, chunk_overlap: int = 0
-    ) -> list[Document]: ...
+    ) -> list[Document]:
+        """
+        Split a list of documents into smaller chunks.
+
+        Args:
+            documents: The list of documents to be split.
+            chunk_size: The size of each chunk.
+            chunk_overlap: The overlap between consecutive chunks.
+
+        Returns:
+            The list of documents after splitting into chunks.
+        """
+        ...
 
 
 class HuggingFaceTextSplitter:
+    """A document splitter which uses a HuggingFace tokenizer to calculate length when splitting.
+
+    The splitter used is Langchain's [RecursiveCharacterTextSplitter][].
+    """
+
     def __init__(
         self, tokenizer: PreTrainedTokenizerBase, separators: list[str] | None = None
     ) -> None:
+        """
+        Initialize the splitter.
+
+        Args:
+            tokenizer: The Hugging Face tokenizer to use.
+            separators: The list of separators to use. When `None`, the default separators are used: `["\\n\\n", "\\n", ".", "!", "?"]`.
+        """
         self.tokenizer = tokenizer
 
         if separators is None:
