@@ -6,7 +6,7 @@ from typing import Any, Type, TypeVar
 
 from bookacle.models.embedding import EmbeddingModelLike
 from bookacle.models.summarization import SummarizationModelLike
-from bookacle.splitter import DocumentSplitterLike
+from bookacle.splitters import DocumentSplitterLike
 from bookacle.tree.config import SelectionMode
 from bookacle.tree.retriever import RetrieverLike
 from dynaconf import Dynaconf, LazySettings, ValidationError, Validator

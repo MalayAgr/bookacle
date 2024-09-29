@@ -260,7 +260,7 @@ def raptor_clustering(
 
 if __name__ == "__main__":
     from bookacle.models.embedding import SentenceTransformerEmbeddingModel
-    from bookacle.splitter import HuggingFaceTextSplitter
+    from bookacle.splitters import HuggingFaceTextSplitter
     from langchain_community.document_loaders import PyMuPDFLoader
 
     loader = PyMuPDFLoader("data/c-language.pdf")
