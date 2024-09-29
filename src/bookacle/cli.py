@@ -62,11 +62,13 @@ def chat(
     ],
     loader: Annotated[
         LOADER_MANAGER.to_enum,  # type: ignore
-        typer.Option(case_sensitive=False, help="Loader to use."),
+        typer.Option("--loader", "-l", case_sensitive=False, help="Loader to use."),
     ] = "pymupdf4llm",
     start_page: Annotated[
         int,
         typer.Option(
+            "--start-page",
+            "-s",
             help="The page (0-based) in the PDF file to start reading from. "
             "If not provided, defaults to 0, reading from the beginning.",
             show_default=False,
@@ -75,20 +77,32 @@ def chat(
     end_page: Annotated[
         int | None,
         typer.Option(
+            "--end-page",
+            "-e",
             help="The page (0-based) in the PDF file to stop reading at (not inclusive). "
             "If not provided, the document will be read till the end.",
             show_default=False,
         ),
     ] = None,
     user_avatar: Annotated[
-        str, typer.Option(help="Avatar that should be used for the user during chat.")
+        str,
+        typer.Option(
+            "--user-avatar",
+            "-a",
+            help="Avatar that should be used for the user during chat.",
+        ),
     ] = "👤",
     history_file: Annotated[
-        str, typer.Option(help="File where chat history should be stored.")
+        str,
+        typer.Option(
+            "--history_file", "-h", help="File where chat history should be stored."
+        ),
     ] = str(Path.home() / ".bookacle-chat-history.txt"),
     config_file: Annotated[
         Path | None,
         typer.Option(
+            "--config-file",
+            "-c",
             exists=True,
             file_okay=True,
             dir_okay=False,
@@ -99,6 +113,8 @@ def chat(
     prompt_file: Annotated[
         Path | None,
         typer.Option(
+            "--prompt-file",
+            "-p",
             exists=True,
             file_okay=True,
             dir_okay=False,
