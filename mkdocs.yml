@@ -81,14 +81,16 @@ plugins:
           - https://docs.python.org/3/objects.inv
           - https://numpy.org/doc/stable/objects.inv
           - https://api.python.langchain.com/en/latest/objects.inv
+          - https://pymupdf.readthedocs.io/en/latest/objects.inv
         options:
           members_order: source
+          allow_inspection: true
           show_signature_annotations: false
           separate_signature: true
           merge_init_into_class: true
           docstring_options:
             ignore_init_summary: true
-          preload_modules: [mkdocstrings]
+          preload_modules: [langchain_core, langchain_text_splitters, pymupdf, pymupdf4llm]
           show_symbol_type_heading: true
           show_symbol_type_toc: true
           signature_crossrefs: true
@@ -111,7 +113,7 @@ extra_css:
 nav:
 - Introduction: index.md
 - Download and Install: download-install.md
-- Code Reference: reference/
+- API Reference: reference/
 
 extra:
   social:
