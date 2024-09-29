@@ -65,14 +65,15 @@ markdown_extensions:
 
 
 plugins:
-- search: {}
-- social:
+- search
+- social
+- autorefs
 - gen-files:
     scripts:
     - docs/gen_ref_pages.py
 - literate-nav:
     nav_file: SUMMARY.txt
-- section-index:
+- section-index
 - mkdocstrings:
     default_handler: python
     handlers:
@@ -90,7 +91,7 @@ plugins:
           merge_init_into_class: true
           docstring_options:
             ignore_init_summary: true
-          preload_modules: [langchain_core, langchain_text_splitters, pymupdf, pymupdf4llm]
+          preload_modules: [langchain_core, langchain_text_splitters]
           show_symbol_type_heading: true
           show_symbol_type_toc: true
           signature_crossrefs: true
