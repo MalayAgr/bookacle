@@ -85,7 +85,7 @@ def chat(
     ] = "👤",
     history_file: Annotated[
         str, typer.Option(help="File where chat history should be stored.")
-    ] = ".bookacle-chat-history.txt",
+    ] = str(Path.home() / ".bookacle-chat-history.txt"),
     config_file: Annotated[
         Path | None,
         typer.Option(
@@ -96,9 +96,22 @@ def chat(
             help="Custom configuration file. If not provided, the default settings are used.",
         ),
     ] = None,
+    prompt_file: Annotated[
+        Path | None,
+        typer.Option(
+            exists=True,
+            file_okay=True,
+            dir_okay=False,
+            show_default=False,
+            help="Custom prompts file. If not provided, the default prompts are used.",
+        ),
+    ] = None,
 ) -> None:
     if config_file is not None:
         settings.load_file(config_file)
+
+    if prompt_file is not None:
+        settings.load_file(prompt_file)
 
     documents = load_data(
         file_path=str(file_path),
@@ -127,7 +140,11 @@ def chat(
         user_avatar=user_avatar,
     )
 
-    chat.run(tree=tree, stream=settings.STREAM_OUTPUT)
+    chat.run(
+        tree=tree,
+        stream=settings.STREAM_OUTPUT,
+        system_prompt=settings.QA_MODEL_SYSTEM_PROMPT,
+    )
 
 
 if __name__ == "__main__":

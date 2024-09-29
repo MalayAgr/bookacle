@@ -57,7 +57,9 @@ def _cast_retriever_config(value: dict[str, Any]) -> RetrieverLike:
 
 
 settings = Dynaconf(
-    envvar_prefix="BOOKACLE", root_path=ROOT_PATH, settings_files=["settings.toml"]
+    envvar_prefix="BOOKACLE",
+    root_path=ROOT_PATH,
+    settings_files=["settings.toml", "prompts.toml"],
 )
 
 settings.validators.register(
