@@ -69,7 +69,7 @@ def chat(
         ),
     ],
     loader: Annotated[  # type: ignore
-        LOADER_MANAGER.to_enum,  # type: ignore
+        LOADER_MANAGER.enum,  # type: ignore
         typer.Option("--loader", "-l", case_sensitive=False, help="Loader to use."),
     ] = "pymupdf4llm",
     start_page: Annotated[

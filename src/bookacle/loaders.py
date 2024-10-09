@@ -56,7 +56,10 @@ class LoaderManager(UserDict[str, LoaderLike]):
 
     @property
     def enum(self) -> Enum:
-        """Obtain the names of the document loaders as an Enum."""
+        """Obtain the names of the document loaders as an Enum.
+
+        Useful in the CLI for `--help`.
+        """
         return Enum("LoaderChoices", {name.upper(): name for name in self.keys()})
 
 
@@ -91,6 +94,8 @@ def pymupdf4llm_loader(
     """Document loader which uses `pymupdf4llm` to load the PDF as Markdown.
 
     Can be accessed using the name `'pymupdf4llm'` via the default loader manager.
+
+    It implements the [LoaderLike][bookacle.loaders.LoaderLike] protocol.
     """
     with pymupdf.open(file_path) as doc:
         if end_page is None:
@@ -112,6 +117,8 @@ def pymupdf_loader(
     """Document loader which uses `pymupdf` to load the PDF as text.
 
     Can be accessed using the name `'pymupdf'` via the default loader manager.
+
+    It implements the [LoaderLike][bookacle.loaders.LoaderLike] protocol.
     """
     loader = PyMuPDFLoader(file_path=file_path)
 
