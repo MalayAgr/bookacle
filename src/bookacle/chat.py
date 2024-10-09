@@ -1,4 +1,4 @@
-"""Chat module for conversing with the AI model."""
+"""Chat module for conversing with a RAPTOR RAG-based LLM in the terminal."""
 
 from collections.abc import Iterator
 from pathlib import Path

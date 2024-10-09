@@ -1,3 +1,5 @@
+"""This module defines protocols and concrete implementations for embedding models used for text representation."""
+
 from typing import Protocol, overload, runtime_checkable
 
 import numpy as np
@@ -8,23 +10,72 @@ from transformers import PreTrainedTokenizerBase
 
 @runtime_checkable
 class EmbeddingModelLike(Protocol):
-    @property
-    def tokenizer(self) -> TokenizerLike: ...
+    """A protocol that defines the methods and attributes that an embedding model should implement."""
 
     @property
-    def model_max_length(self) -> int: ...
+    def tokenizer(self) -> TokenizerLike:
+        """The tokenizer used by the model."""
+        ...
+
+    @property
+    def model_max_length(self) -> int:
+        """The maximum length of a sequence supported by the model."""
+        ...
 
     @overload
-    def embed(self, text: str) -> list[float]: ...
+    def embed(self, text: str) -> list[float]:
+        """Embed a single input text.
+
+        Args:
+            text: The input text to embed.
+
+        Returns:
+            The embeddings of the input text.
+        """
+        ...
 
     @overload
-    def embed(self, text: list[str]) -> list[list[float]]: ...
+    def embed(self, text: list[str]) -> list[list[float]]:
+        """Embed a list of input texts.
 
-    def embed(self, text: str | list[str]) -> list[float] | list[list[float]]: ...
+        Args:
+            text: The list of input texts to embed.
+
+        Returns:
+            The embeddings of the input texts.
+        """
+        ...
+
+    def embed(self, text: str | list[str]) -> list[float] | list[list[float]]:
+        """Embed the input text or list of texts.
+
+        Args:
+            text: The input text or list of input texts to embed.
+
+        Returns:
+            The embeddings of the input text or list of texts.
+        """
+        ...
 
 
 class SentenceTransformerEmbeddingModel:
+    """An embedding model that uses the [SentenceTransformer](https://sbert.net/) library.
+
+    It implements the [EmbeddingModelLike][bookacle.models.embedding.EmbeddingModelLike] protocol.
+
+    Attributes:
+        model_name (str): The name of the model to use.
+        use_gpu (bool): Whether to use the GPU for inference.
+        model (SentenceTransformer): The SentenceTransformer model.
+    """
+
     def __init__(self, model_name: str, *, use_gpu: bool = False) -> None:
+        """Initialize the embedding model.
+
+        Args:
+            model_name: The name of the model to use.
+            use_gpu: Whether to use the GPU for inference.
+        """
         self.model_name = model_name
         self.use_gpu = use_gpu
         self.model = SentenceTransformer(
