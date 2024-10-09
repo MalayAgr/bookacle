@@ -2,15 +2,28 @@
 
 import itertools
 import re
+from collections.abc import Iterator
 from typing import Protocol
 
+from bookacle.document import Document
 from bookacle.tokenizer import TokenizerLike
-from langchain_core.documents import Document
+from langchain_core.documents import Document as LangchainDoc
 from langchain_text_splitters import (
     MarkdownTextSplitter,
     RecursiveCharacterTextSplitter,
 )
 from transformers import PreTrainedTokenizerBase
+
+
+def convert_to_langchain_doc(documents: list[Document]) -> Iterator[LangchainDoc]:
+    return (LangchainDoc(**doc) for doc in documents)
+
+
+def convert_to_bookacle_doc(documents: list[LangchainDoc]) -> list[Document]:
+    return [
+        Document(page_content=doc.page_content, metadata=doc.metadata)
+        for doc in documents
+    ]
 
 
 class DocumentSplitterLike(Protocol):
@@ -77,7 +90,11 @@ class HuggingFaceTextSplitter:
             strip_whitespace=True,
         )
 
-        return splitter.split_documents(documents=documents)
+        langchain_docs = convert_to_langchain_doc(documents)
+
+        splitted_docs = splitter.split_documents(documents=langchain_docs)
+
+        return convert_to_bookacle_doc(splitted_docs)
 
 
 class HuggingFaceMarkdownSplitter:
@@ -113,7 +130,11 @@ class HuggingFaceMarkdownSplitter:
             strip_whitespace=True,
         )
 
-        return splitter.split_documents(documents=documents)
+        langchain_docs = convert_to_langchain_doc(documents)
+
+        splitted_docs = splitter.split_documents(documents=langchain_docs)
+
+        return convert_to_bookacle_doc(splitted_docs)
 
 
 class RaptorSplitter:
@@ -156,7 +177,7 @@ class RaptorSplitter:
             chunk_size: Maximum size of each chunk.
             chunk_overlap: Overlap between each chunk.
         """
-        text = document.page_content
+        text = document["page_content"]
         tokenizer = self.tokenizer
 
         regex_pattern = "|".join(map(re.escape, self.delimiters))
@@ -211,10 +232,10 @@ class RaptorSplitter:
             current_chunk.append(sentence)
             current_length += token_count
 
-        doc_args = document.dict()
-        doc_args.pop("page_content")
-
-        return [Document(page_content=chunk, **doc_args) for chunk in chunks]
+        return [
+            Document(page_content=chunk, metadata=document["metadata"])
+            for chunk in chunks
+        ]
 
     def __call__(
         self, documents: list[Document], chunk_size: int = 100, chunk_overlap: int = 0

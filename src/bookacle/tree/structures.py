@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import Any
 
 from bookacle.models.embedding import EmbeddingModelLike
 from bookacle.models.summarization import SummarizationModelLike
@@ -16,7 +17,7 @@ class Node:
     index: int
     children: set[int] = field(repr=False)
     embeddings: list[float] = field(repr=False)
-    metadata: dict[str, str] | None = field(default=None, repr=False)
+    metadata: dict[str, Any] | None = field(default=None, repr=False)
     layer: int = 0
 
     @property

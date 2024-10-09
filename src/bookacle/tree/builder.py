@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 import copy
-from typing import Protocol
+from typing import Any, Protocol
 
+from bookacle.document import Document
 from bookacle.tree.config import RaptorTreeConfig
 from bookacle.tree.structures import Node, Tree, concatenate_node_texts
-from langchain_core.documents import Document
 
 
 class TreeBuilderLike(Protocol):
@@ -27,7 +27,10 @@ class ClusterTreeBuilder:
         return f"{self.__class__.__name__}()"
 
     def create_leaf_nodes(
-        self, chunks: list[str], embeddings: list[list[float]]
+        self,
+        chunks: list[str],
+        embeddings: list[list[float]],
+        metadata: dict[str, Any] | None = None,
     ) -> dict[int, Node]:
         return {
             index: Node(
@@ -36,6 +39,7 @@ class ClusterTreeBuilder:
                 children=set(),
                 embeddings=embeddings[index],
                 layer=0,
+                metadata=metadata,
             )
             for index, chunk in enumerate(chunks)
         }
@@ -58,7 +62,7 @@ class ClusterTreeBuilder:
             chunk_overlap=chunk_overlap,
         )
 
-        chunks = [doc.page_content for doc in splitted_documents]
+        chunks = [doc["page_content"] for doc in splitted_documents]
         embeddings = self.config.embedding_model.embed(text=chunks)
         leaf_nodes = self.create_leaf_nodes(chunks=chunks, embeddings=embeddings)
 

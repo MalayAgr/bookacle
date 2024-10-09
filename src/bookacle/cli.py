@@ -9,9 +9,8 @@ from typing import Annotated
 import typer
 from bookacle.chat import Chat
 from bookacle.conf import settings
-from bookacle.loaders import LOADER_MANAGER
+from bookacle.loaders import LOADER_MANAGER, Document
 from bookacle.tree.builder import TreeBuilderLike
-from langchain_core.documents import Document
 from rich.console import Console
 
 # Register custom document loaders

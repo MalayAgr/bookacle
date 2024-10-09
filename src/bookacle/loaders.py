@@ -2,15 +2,13 @@
 
 from __future__ import annotations
 
-import itertools
 from collections import UserDict
 from enum import Enum
-from typing import Callable, Protocol
+from typing import Callable, Protocol, TypedDict
 
 import pymupdf
 import pymupdf4llm
-from langchain_community.document_loaders import PyMuPDFLoader
-from langchain_core.documents import Document
+from bookacle.document import Document
 
 
 class LoaderLike(Protocol):
@@ -107,7 +105,7 @@ def pymupdf4llm_loader(
             doc, page_chunks=True, pages=list(range(start_page, end_page))
         )
 
-    return [Document(page_content=page["text"], **page) for page in pages]  # type: ignore
+    return [Document(page_content=page["text"], metadata=page["metadata"]) for page in pages]  # type: ignore
 
 
 @register_loader("pymupdf")
@@ -120,20 +118,10 @@ def pymupdf_loader(
 
     It implements the [LoaderLike][bookacle.loaders.LoaderLike] protocol.
     """
-    loader = PyMuPDFLoader(file_path=file_path)
+    doc = pymupdf.open(file_path)
+    pages = doc.pages(start=start_page, stop=end_page)
 
-    if start_page == 0 and end_page is None:
-        return loader.load()
-
-    pages = enumerate(loader.lazy_load())
-    remaining_pages = itertools.dropwhile(lambda page: page[0] < start_page, pages)
-
-    if end_page is not None:
-        return [
-            page
-            for _, page in itertools.takewhile(
-                lambda page: page[0] < end_page, remaining_pages
-            )
-        ]
-
-    return [page for _, page in remaining_pages]
+    return [
+        Document(page_content=page.get_text(), metadata={**doc.metadata, "page": page.number})  # type: ignore
+        for page in pages
+    ]

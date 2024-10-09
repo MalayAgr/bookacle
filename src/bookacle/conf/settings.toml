@@ -14,7 +14,7 @@ model_arguments = {model_name='Qwen/Qwen2-0.5B-Instruct', use_gpu=false, summari
 
 
 [document_splitter]
-splitter_class = 'bookacle.splitter.HuggingFaceMarkdownSplitter'
+splitter_class = 'bookacle.splitters.HuggingFaceMarkdownSplitter'
 splitter_arguments = {tokenizer_from='@get embedding_model'}
 
 [retriever_config]
