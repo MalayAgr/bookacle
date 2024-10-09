@@ -1,3 +1,6 @@
+"""This module defines a protocol and an implementation for a Question-Answering (QA) model that processes questions
+and returns answers with or without streaming capabilities."""
+
 from collections.abc import Iterable, Iterator
 from typing import Literal, Protocol, overload
 
@@ -6,6 +9,8 @@ from bookacle.models.message import Message
 
 
 class QAModelLike(Protocol):
+    """A protocol that defines the methods that a QA model should implement."""
+
     @overload
     def answer(  # type: ignore
         self,
@@ -15,7 +20,9 @@ class QAModelLike(Protocol):
         *args,
         stream: Literal[True] = True,
         **kwargs,
-    ) -> Iterator[Message]: ...
+    ) -> Iterator[Message]:
+        """Answer a question with streaming given a context and chat history."""
+        ...
 
     @overload
     def answer(  # type: ignore
@@ -26,7 +33,9 @@ class QAModelLike(Protocol):
         *args,
         stream: Literal[False] = False,
         **kwargs,
-    ) -> Message: ...
+    ) -> Message:
+        """Answer a question without streaming given a context and chat history."""
+        ...
 
     def answer(  # type: ignore
         self,
@@ -36,11 +45,36 @@ class QAModelLike(Protocol):
         *args,
         stream: bool = False,
         **kwargs,
-    ) -> Message | Iterator[Message]: ...
+    ) -> Message | Iterator[Message]:
+        """Answer a question given a context and chat history with or without streaming.
+
+        Args:
+            question: The question to answer.
+            context: The context for the question.
+            history: The chat history.
+            stream: Whether to stream the AI response.
+
+        Returns:
+            A single message from the QA model or a stream of messages.
+        """
+        ...
 
 
 class OllamaQAModel:
+    """A QA model that uses the [Ollama](https://ollama.com/) library.
+
+    It implements the [QAModelLike][bookacle.models.qa.QAModelLike] protocol.
+
+    Attributes:
+        model_name (str): The name of the model to use.
+    """
+
     def __init__(self, model_name: str) -> None:
+        """Initialize the QA model.
+
+        Args:
+            model_name: The name of the model to use.
+        """
         self.model_name = model_name
 
     def __repr__(self) -> str:
@@ -77,6 +111,23 @@ class OllamaQAModel:
         stream: bool = True,
         **kwargs,
     ) -> Message | Iterable[Message]:
+        """Answer a question given a context and chat history with or without streaming.
+
+        The question and the context are combined into a single message
+        for the QA model, using the following template:
+
+        ```html
+        CONTEXT:
+        <context>
+
+        QUERY: <question>
+        ```
+
+        After combining the question and context, the message is appended to the history (if any)
+        and sent to the QA model.
+
+        A system prompt can be provided by adding it as the first message in the history.
+        """
         user_message_with_context: Message = {
             "role": "user",
             "content": f"CONTEXT:\n{context}\n\nQUERY: {question}",
