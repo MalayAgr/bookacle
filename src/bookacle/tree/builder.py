@@ -28,61 +28,20 @@ class ClusterTreeBuilder:
 
     def create_leaf_nodes(
         self,
-        chunks: list[str],
+        chunks: list[Document],
         embeddings: list[list[float]],
-        metadata: dict[str, Any] | None = None,
     ) -> dict[int, Node]:
         return {
             index: Node(
-                text=chunk,
+                text=chunk["page_content"],
                 index=index,
                 children=set(),
                 embeddings=embeddings[index],
                 layer=0,
-                metadata=metadata,
+                metadata=chunk.get("metadata"),
             )
             for index, chunk in enumerate(chunks)
         }
-
-    def build_from_documents(
-        self,
-        documents: list[Document],
-        chunk_size: int | None = None,
-        chunk_overlap: int | None = None,
-    ) -> Tree:
-        if chunk_size is None:
-            chunk_size = self.config.embedding_model.model_max_length
-
-        if chunk_overlap is None:
-            chunk_overlap = int(chunk_size * 0.5)
-
-        splitted_documents = self.config.document_splitter(
-            documents=documents,
-            chunk_size=chunk_size,
-            chunk_overlap=chunk_overlap,
-        )
-
-        chunks = [doc["page_content"] for doc in splitted_documents]
-        embeddings = self.config.embedding_model.embed(text=chunks)
-        leaf_nodes = self.create_leaf_nodes(chunks=chunks, embeddings=embeddings)
-
-        layer_to_nodes = {0: list(leaf_nodes.values())}
-
-        all_nodes = copy.deepcopy(leaf_nodes)
-
-        root_nodes, num_layers = self.construct_tree(
-            current_level_nodes=leaf_nodes,
-            all_tree_nodes=all_nodes,
-            layer_to_nodes=layer_to_nodes,
-        )
-
-        return Tree(
-            all_nodes=all_nodes,
-            root_nodes=root_nodes,
-            leaf_nodes=leaf_nodes,
-            num_layers=num_layers,
-            layer_to_nodes=layer_to_nodes,
-        )
 
     def _create_next_tree_level(
         self, clusters: list[list[Node]], first_node_index: int, layer: int
@@ -134,3 +93,46 @@ class ClusterTreeBuilder:
             all_tree_nodes.update(new_level_nodes)
 
         return current_level_nodes, num_layers
+
+    def build_from_documents(
+        self,
+        documents: list[Document],
+        chunk_size: int | None = None,
+        chunk_overlap: int | None = None,
+    ) -> Tree:
+        if chunk_size is None:
+            chunk_size = self.config.embedding_model.model_max_length
+
+        if chunk_overlap is None:
+            chunk_overlap = int(chunk_size * 0.5)
+
+        splitted_documents = self.config.document_splitter(
+            documents=documents,
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap,
+        )
+
+        embeddings = self.config.embedding_model.embed(
+            text=[doc["page_content"] for doc in splitted_documents]
+        )
+        leaf_nodes = self.create_leaf_nodes(
+            chunks=splitted_documents, embeddings=embeddings
+        )
+
+        layer_to_nodes = {0: list(leaf_nodes.values())}
+
+        all_nodes = copy.deepcopy(leaf_nodes)
+
+        root_nodes, num_layers = self.construct_tree(
+            current_level_nodes=leaf_nodes,
+            all_tree_nodes=all_nodes,
+            layer_to_nodes=layer_to_nodes,
+        )
+
+        return Tree(
+            all_nodes=all_nodes,
+            root_nodes=root_nodes,
+            leaf_nodes=leaf_nodes,
+            num_layers=num_layers,
+            layer_to_nodes=layer_to_nodes,
+        )

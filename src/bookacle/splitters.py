@@ -232,10 +232,13 @@ class RaptorSplitter:
             current_chunk.append(sentence)
             current_length += token_count
 
-        return [
-            Document(page_content=chunk, metadata=document["metadata"])
-            for chunk in chunks
-        ]
+        if "metadata" in document:
+            return [
+                Document(page_content=chunk, metadata=document["metadata"])
+                for chunk in chunks
+            ]
+
+        return [Document(page_content=chunk) for chunk in chunks]
 
     def __call__(
         self, documents: list[Document], chunk_size: int = 100, chunk_overlap: int = 0

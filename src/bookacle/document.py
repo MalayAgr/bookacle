@@ -1,6 +1,6 @@
-from typing import Any, TypedDict
+from typing import Any, NotRequired, TypedDict
 
 
 class Document(TypedDict):
     page_content: str
-    metadata: dict[str, Any]
+    metadata: NotRequired[dict[str, Any]]
