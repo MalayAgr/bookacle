@@ -1,3 +1,5 @@
+"""Chat module for conversing with the AI model."""
+
 from collections.abc import Iterator
 from pathlib import Path
 
@@ -17,6 +19,16 @@ from rich.spinner import Spinner
 
 
 class Chat:
+    """A terminal-based chat interface for interacting with a RAPTOR RAG-based LLM.
+
+    Attributes:
+        retriever (RetrieverLike): Retriever to use for retrieving relevant context.
+        qa_model (QAModelLike): QA model to use for answering questions.
+        console (Console): Rich Console to use for displaying messages.
+        history_file (str): File to store chat history.
+        user_avatar (str): Avatar to use for the user in the chat UI.
+    """
+
     def __init__(
         self,
         retriever: RetrieverLike,
@@ -25,13 +37,30 @@ class Chat:
         history_file: str = ".bookacle-chat-history.txt",
         user_avatar: str = "👤",
     ) -> None:
+        """Initialize the chat interface.
+
+        Args:
+            retriever: Retriever to use for retrieving relevant context.
+            qa_model: QA model to use for answering questions.
+            console: Rich Console to use for displaying messages.
+            history_file: File to store chat history. The file is created in the home directory.
+            user_avatar: Avatar to use for the user in the chat UI.
+        """
         self.retriever = retriever
         self.qa_model = qa_model
         self.console = console
         self.history_file = Path().home() / history_file
         self.user_avatar = user_avatar
 
-    def display_ai_msg_stream(self, message: Iterator[Message]) -> str:
+    def display_ai_msg_stream(self, messages: Iterator[Message]) -> str:
+        """Display an AI message stream in the chat UI.
+
+        Args:
+            messages: Stream of AI messages to display.
+
+        Returns:
+            The complete message as a string.
+        """
         complete_message = ""
         panel = Columns(
             [
@@ -41,7 +70,7 @@ class Chat:
         )
 
         with Live(panel, refresh_per_second=15, console=self.console) as live:
-            for chunk in message:
+            for chunk in messages:
                 complete_message += chunk["content"]
                 updated_panel = Columns(
                     [
@@ -64,6 +93,19 @@ class Chat:
         *args,
         **kwargs,
     ) -> Message:
+        """Invoke the QA model to answer a question.
+
+        Args:
+            tree: RAPTOR tree that should be used for RAG.
+            question: The question to answer.
+            history: Chat history.
+            stream: Whether to stream the AI response.
+            **args (tuple[Any]): Additional positional arguments to pass to the retriever.
+            **kwargs (dict[str, Any]): Additional keyword arguments to pass to the retriever.
+
+        Returns:
+            The response from the QA model.
+        """
         retriever = self.retriever
         qa_model = self.qa_model
 
@@ -74,7 +116,7 @@ class Chat:
                 question=question, context=context, history=history, stream=True
             )
 
-            complete_message = self.display_ai_msg_stream(message=responses)
+            complete_message = self.display_ai_msg_stream(messages=responses)
 
             return Message(role="assistant", content=complete_message)
 
@@ -102,6 +144,16 @@ class Chat:
         *args,
         **kwargs,
     ) -> None:
+        """Run the chat interface.
+
+        Args:
+            tree: RAPTOR tree that should be used for RAG.
+            initial_chat_message: Initial message to display in the chat.
+            system_prompt: System prompt that should be used for the QA model.
+            stream: Whether to stream the AI response.
+            *args (tuple[Any]): Additional positional arguments to pass to the retriever.
+            **kwargs (dict[str, Any]): Additional keyword arguments to pass to the retriever.
+        """
         self.console.clear()
 
         user_history = FileHistory(filename=self.history_file)

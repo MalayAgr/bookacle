@@ -56,6 +56,10 @@ class HuggingFaceTextSplitter:
 
     It implements the [DocumentSplitterLike][bookacle.splitters.DocumentSplitterLike]
     protocol.
+
+    Attributes:
+        tokenizer: The HuggingFace tokenizer to use for calculating length.
+        separators: The list of separators to use for splitting the document.
     """
 
     def __init__(
@@ -107,6 +111,9 @@ class HuggingFaceMarkdownSplitter:
 
     It implements the [DocumentSplitterLike][bookacle.splitters.DocumentSplitterLike]
     protocol.
+
+    Attributes:
+        tokenizer: The HuggingFace tokenizer to use for calculating length.
     """
 
     def __init__(self, tokenizer: PreTrainedTokenizerBase) -> None:
@@ -150,22 +157,28 @@ class RaptorSplitter:
 
     It implements the [DocumentSplitterLike][bookacle.splitters.DocumentSplitterLike]
     protocol.
+
+    Attributes:
+        tokenizer: Tokenizer to use for calculating chunk lengths.
+        separators: The list of separators to use for splitting the document.
     """
 
     def __init__(
-        self, tokenizer: TokenizerLike, *, delimiters: list[str] | None = None
+        self, tokenizer: TokenizerLike, *, separators: list[str] | None = None
     ) -> None:
         """Initialize the splitter.
 
         Args:
             tokenizer: Tokenizer to use for calculating chunk lengths.
+            separators: The list of separators to use.
+                        When `None`, the default separators are used: `[".", "!", "?", "\\n"]`.
         """
         self.tokenizer = tokenizer
 
-        if delimiters is None:
-            delimiters = [".", "!", "?", "\n"]
+        if separators is None:
+            separators = [".", "!", "?", "\n"]
 
-        self.delimiters = delimiters
+        self.separators = separators
 
     def split_single_document(
         self, document: Document, chunk_size: int, chunk_overlap: int
@@ -173,14 +186,14 @@ class RaptorSplitter:
         """Split a single document into chunks.
 
         Args:
-            document: [Document][langchain_core.documents.Document] to split into chunks.
+            document: Document to split into chunks.
             chunk_size: Maximum size of each chunk.
             chunk_overlap: Overlap between each chunk.
         """
         text = document["page_content"]
         tokenizer = self.tokenizer
 
-        regex_pattern = "|".join(map(re.escape, self.delimiters))
+        regex_pattern = "|".join(map(re.escape, self.separators))
         sentences = re.split(regex_pattern, text)
 
         chunks: list[str] = []
@@ -272,7 +285,7 @@ if __name__ == "__main__":
         r"```[\s\S]*?```",  # Triple backticks for code
     ]
 
-    splitter = RaptorSplitter(tokenizer=tokenizer, delimiters=delimiters)
+    splitter = RaptorSplitter(tokenizer=tokenizer, separators=delimiters)
 
     chunks = splitter(documents=documents, chunk_size=100, chunk_overlap=10)
 

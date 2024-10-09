@@ -83,6 +83,8 @@ plugins:
           - https://numpy.org/doc/stable/objects.inv
           - https://api.python.langchain.com/en/latest/objects.inv
           - https://pymupdf.readthedocs.io/en/latest/objects.inv
+          - https://huggingface.co/docs/transformers/main/en/objects.inv
+          - https://rich.readthedocs.io/en/stable/objects.inv
         options:
           members_order: source
           allow_inspection: true
