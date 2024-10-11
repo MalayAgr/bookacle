@@ -259,13 +259,11 @@ def raptor_clustering(
 
 
 if __name__ == "__main__":
+    from bookacle.loaders import pymupdf_loader
     from bookacle.models.embedding import SentenceTransformerEmbeddingModel
     from bookacle.splitters import HuggingFaceTextSplitter
-    from langchain_community.document_loaders import PyMuPDFLoader
 
-    loader = PyMuPDFLoader("data/c-language.pdf")
-    documents = loader.load()
-    documents = documents[:20]
+    documents = pymupdf_loader("./data/c-language.pdf", start_page=0, end_page=10)
 
     embedding_model = SentenceTransformerEmbeddingModel(
         model_name="sentence-transformers/paraphrase-albert-small-v2", use_gpu=True
@@ -273,7 +271,7 @@ if __name__ == "__main__":
     document_splitter = HuggingFaceTextSplitter(tokenizer=embedding_model.tokenizer)
 
     chunks = document_splitter(documents=documents)
-    embeddings = embedding_model.embed(text=[chunk.page_content for chunk in chunks])
+    embeddings = embedding_model.embed(text=[chunk["page_content"] for chunk in chunks])
 
     gmm_clusterer = GMMClusteringBackend(reduction_dim=10)
 
