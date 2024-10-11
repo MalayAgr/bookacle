@@ -30,7 +30,7 @@ jobs:
         run: uv sync --extra docs
 
       - name: Deploy docs
-        run: mkdocs gh-deploy --force --clean --verbose
+        run: uv run mkdocs gh-deploy --force --clean --verbose
 
 
 
