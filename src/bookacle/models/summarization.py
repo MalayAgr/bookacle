@@ -13,19 +13,65 @@ from transformers import (
 
 @runtime_checkable
 class SummarizationModelLike(Protocol):
+    """A protocol that defines the methods and attributes that a summarization model should implement."""
+
     @property
-    def tokenizer(self) -> TokenizerLike: ...
+    def tokenizer(self) -> TokenizerLike:
+        """
+        Returns:
+            The tokenizer used by the model.
+        """
+        ...
 
     @overload
-    def summarize(self, text: list[str]) -> list[str]: ...
+    def summarize(self, text: list[str]) -> list[str]:
+        """Summarize a list of input texts.
+
+        Args:
+            text: The list of input texts to summarize.
+
+        Returns:
+            The summaries of the input texts.
+        """
+        ...
 
     @overload
-    def summarize(self, text: str) -> str: ...
+    def summarize(self, text: str) -> str:
+        """Summarize a single input text.
 
-    def summarize(self, text: str | list[str]) -> str | list[str]: ...
+        Args:
+            text: The input text to summarize.
+
+        Returns:
+            The summary of the input text.
+        """
+        ...
+
+    def summarize(self, text: str | list[str]) -> str | list[str]:
+        """Summarize the input text or list of texts.
+
+        Args:
+            text: The input text or list of input texts to summarize.
+
+        Returns:
+            The summary of the input text or list of texts.
+        """
+        ...
 
 
 class HuggingFaceSummarizationModel:
+    """A class that uses a Hugging Face model for summarization.
+
+    It implements the [SummarizationModelLike][bookacle.models.summarization.SummarizationModelLike] protocol.
+
+    Attributes:
+        model_name (str): The name of the Hugging Face model to use.
+        summarization_length (int): The maximum length of the summary.
+        use_gpu (bool): Whether to use the GPU for inference.
+        model (AutoModelForSeq2SeqLM): The Hugging Face model for summarization.
+        pipeline (transformers.Pipeline): The Hugging Face pipeline for summarization.
+    """
+
     def __init__(
         self,
         model_name: str,
@@ -33,6 +79,13 @@ class HuggingFaceSummarizationModel:
         *,
         use_gpu: bool = False,
     ) -> None:
+        """Initialize the summarization model.
+
+        Args:
+            model_name: The name of the Hugging Face model to use.
+            summarization_length: The maximum length of the summary.
+            use_gpu: Whether to use the GPU for inference.
+        """
         self.model_name = model_name
         self.use_gpu = use_gpu
         self.summarization_length = summarization_length
@@ -54,6 +107,10 @@ class HuggingFaceSummarizationModel:
 
     @property
     def tokenizer(self) -> PreTrainedTokenizerBase:
+        """
+        Returns:
+            The Hugging Face tokenizer used by the underlying model.
+        """
         return self._tokenizer
 
     @overload
@@ -74,6 +131,19 @@ class HuggingFaceSummarizationModel:
 
 
 class HuggingFaceLLMSummarizationModel:
+    """A class that uses a Hugging Face LLM for summarization.
+
+    It implements the [SummarizationModelLike][bookacle.models.summarization.SummarizationModelLike] protocol.
+
+    Attributes:
+        model_name (str): The name of the Hugging Face LLM to use.
+        summarization_length (int): The maximum length of the summary.
+        system_prompt (str): The system prompt passed to the LLM for summarization.
+        use_gpu (bool): Whether to use the GPU for inference.
+        model (AutoModelForCausalLM): The Hugging Face LLM for summarization.
+        pipeline (transformers.Pipeline): The Hugging Face pipeline for summarization.
+    """
+
     def __init__(
         self,
         model_name: str,
@@ -82,6 +152,14 @@ class HuggingFaceLLMSummarizationModel:
         system_prompt: str = "",
         use_gpu: bool = False,
     ) -> None:
+        """Initialize the summarization model.
+
+        Args:
+            model_name: The name of the Hugging Face model to use.
+            summarization_length: The maximum length of the summary.
+            system_prompt: The system prompt to use for LLM for summarization.
+            use_gpu: Whether to use the GPU for inference.
+        """
         self.model_name = model_name
         self.use_gpu = use_gpu
         self.system_prompt = system_prompt
@@ -99,17 +177,84 @@ class HuggingFaceLLMSummarizationModel:
 
     @property
     def tokenizer(self) -> PreTrainedTokenizerBase:
+        """
+        Returns:
+            The Hugging Face tokenizer used by the underlying model.
+        """
         return self._tokenizer
 
     @overload
-    def _format_as_chat_message(self, text: list[str]) -> list[list[Message]]: ...
+    def format_as_chat_message(self, text: list[str]) -> list[list[Message]]:
+        """Format a list of texts as chat messages.
+
+        A chat message is a dictionary with the keys 'role' and 'content'.
+
+        For each text:
+        - If the system prompt is provided, a list of lists containing the system prompt and user message is returned.
+        - If the system prompt is not provided, a list of user messages is returned.
+
+        Args:
+            text: The list of texts to format.
+
+        Returns:
+            The formatted chat messages.
+        """
+        ...
 
     @overload
-    def _format_as_chat_message(self, text: str) -> list[Message]: ...
+    def format_as_chat_message(self, text: str) -> list[Message]:
+        """Format a list of texts as chat messages.
 
-    def _format_as_chat_message(
+        A chat message is a dictionary with the keys 'role' and 'content'.
+
+        For the text:
+        - If the system prompt is provided, a list containing the system prompt and user message is returned.
+        - If the system prompt is not provided, a list containing only the user message is returned.
+
+        Args:
+            text: The list of texts to format.
+
+        Returns:
+            The formatted chat messages.
+        """
+        ...
+
+    def format_as_chat_message(
         self, text: str | list[str]
     ) -> list[Message] | list[list[Message]]:
+        """Format the input text or list of texts as chat messages.
+
+        A chat message is a dictionary with the keys 'role' and 'content'.
+
+        If the input is a list of texts:
+            - If the system prompt is provided, a list of lists containing the system prompt and user message is returned.
+            - If the system prompt is not provided, a list of user messages is returned.
+
+        If the input is a single text:
+            - If the system prompt is provided, a list containing the system prompt and user message is returned.
+            - If the system prompt is not provided, a list containing only the user message is returned.
+
+        Args:
+            text: The input text or list of texts to format.
+
+        Returns:
+            The formatted chat messages.
+
+        Example:
+            ```python exec="true" source="material-block"" result="python" title="Single Text"
+            from bookacle.models.summarization import HuggingFaceLLMSummarizationModel
+            model = HuggingFaceLLMSummarizationModel(model_name="Qwen/Qwen2-0.5B-Instruct")
+            text = "This is a test"
+            print(model.format_as_chat_message(text))
+            ```
+
+            ```python exec="true" source="material-block"" result="python" title="Mutliple Texts"
+            from bookacle.models.summarization import HuggingFaceLLMSummarizationModel
+            model = HuggingFaceLLMSummarizationModel(model_name="Qwen/Qwen2-0.5B-Instruct")
+            text = ["This is a test", "This is another test"]
+            print(model.format_as_chat_message(text))
+            ```
+        """
         system_message = None
 
         if self.system_prompt:
@@ -152,7 +297,19 @@ class HuggingFaceLLMSummarizationModel:
     def summarize(self, text: str) -> str: ...
 
     def summarize(self, text: str | list[str]) -> str | list[str]:
-        messages = self._format_as_chat_message(text)
+        """Summarize the input text or list of texts.
+
+        The input is first formatted into chat messages using
+        [format_as_chat_message][bookacle.models.summarization.HuggingFaceLLMSummarizationModel.format_as_chat_message]
+        and then passed to the underlying LLM for summarization.
+
+        Args:
+            text: The input text or list of texts to summarize.
+
+        Returns:
+            The summary of the input text or list of texts.
+        """
+        messages = self.format_as_chat_message(text)
 
         summaries = self.pipeline(
             messages,

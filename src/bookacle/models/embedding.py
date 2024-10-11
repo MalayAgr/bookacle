@@ -14,12 +14,18 @@ class EmbeddingModelLike(Protocol):
 
     @property
     def tokenizer(self) -> TokenizerLike:
-        """The tokenizer used by the model."""
+        """
+        Returns:
+            The tokenizer used by the model.
+        """
         ...
 
     @property
     def model_max_length(self) -> int:
-        """The maximum length of a sequence supported by the model."""
+        """
+        Returns:
+            The maximum length of the input that the model can accept.
+        """
         ...
 
     @overload
@@ -87,6 +93,10 @@ class SentenceTransformerEmbeddingModel:
 
     @property
     def tokenizer(self) -> PreTrainedTokenizerBase:
+        """
+        Returns:
+            The tokenizer used by the underlying model.
+        """
         return self.model.tokenizer
 
     @property
