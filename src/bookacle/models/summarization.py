@@ -1,3 +1,5 @@
+"""This module defines protocols and concrete implementations for summarization models used for summarizing texts in intermediate RAPTOR tree layers."""
+
 from typing import Iterable, Protocol, overload, runtime_checkable
 
 from bookacle.models.message import Message
@@ -157,7 +159,7 @@ class HuggingFaceLLMSummarizationModel:
         Args:
             model_name: The name of the Hugging Face model to use.
             summarization_length: The maximum length of the summary.
-            system_prompt: The system prompt to use for LLM for summarization.
+            system_prompt: The system prompt to pass to the LLM for summarization.
             use_gpu: Whether to use the GPU for inference.
         """
         self.model_name = model_name
@@ -228,7 +230,7 @@ class HuggingFaceLLMSummarizationModel:
 
         If the input is a list of texts:
             - If the system prompt is provided, a list of lists containing the system prompt and user message is returned.
-            - If the system prompt is not provided, a list of user messages is returned.
+            - If the system prompt is not provided, a list of lists containing the user messages is returned.
 
         If the input is a single text:
             - If the system prompt is provided, a list containing the system prompt and user message is returned.
@@ -300,8 +302,14 @@ class HuggingFaceLLMSummarizationModel:
         """Summarize the input text or list of texts.
 
         The input is first formatted into chat messages using
-        [format_as_chat_message][bookacle.models.summarization.HuggingFaceLLMSummarizationModel.format_as_chat_message]
+        [format_as_chat_message()][bookacle.models.summarization.HuggingFaceLLMSummarizationModel.format_as_chat_message]
         and then passed to the underlying LLM for summarization.
+
+        Each input text is passed to the LLM with the following format:
+
+        ```python
+        "Summarize the following in not more than {summarization_length} words:\\n{text}"
+        ```
 
         Args:
             text: The input text or list of texts to summarize.
