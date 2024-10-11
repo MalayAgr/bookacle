@@ -100,6 +100,7 @@ dependencies = [
 [package.optional-dependencies]
 docs = [
     { name = "cairosvg" },
+    { name = "markdown-exec", extra = ["ansi"] },
     { name = "mkdocs" },
     { name = "mkdocs-gen-files" },
     { name = "mkdocs-literate-nav" },
@@ -123,6 +124,7 @@ requires-dist = [
     { name = "dynaconf", specifier = ">=3.2.6" },
     { name = "joblib", specifier = ">=1.4.2" },
     { name = "langchain-text-splitters", specifier = ">=0.3.0" },
+    { name = "markdown-exec", extras = ["ansi"], marker = "extra == 'docs'", specifier = ">=1.9.3" },
     { name = "mkdocs", marker = "extra == 'docs'", specifier = ">=1.6.1" },
     { name = "mkdocs-gen-files", marker = "extra == 'docs'", specifier = ">=0.5.0" },
     { name = "mkdocs-literate-nav", marker = "extra == 'docs'", specifier = ">=0.6.1" },
@@ -562,6 +564,23 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/54/28/3af612670f82f4c056911fbbbb42760255801b3068c48de792d354ff4472/markdown-3.7.tar.gz", hash = "sha256:2ae2471477cfd02dbbf038d5d9bc226d40def84b4fe2986e49b59b6b472bbed2", size = 357086 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/3f/08/83871f3c50fc983b88547c196d11cf8c3340e37c32d2e9d6152abe2c61f7/Markdown-3.7-py3-none-any.whl", hash = "sha256:7eb6df5690b81a1d7942992c97fad2938e956e79df20cbc6186e9c3a77b1c803", size = 106349 },
+]
+
+[[package]]
+name = "markdown-exec"
+version = "1.9.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pymdown-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e4/41/5173766cc223e3d410b6f7d6590f48dda5408ffa925af7f341a760621dcc/markdown_exec-1.9.3.tar.gz", hash = "sha256:6ad206b75306020779144835f44de115235903755c46a7ccd3b754aad74661e1", size = 74674 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/11/a6/b10ae36f30be4321dd9bc527e4845446fe72e3bab41081e16b6d504621ee/markdown_exec-1.9.3-py3-none-any.whl", hash = "sha256:6b3f5f35d9c74e3c7ba9011376ad1732aa3ed3806cadefb8522dee3afe02b1ec", size = 27348 },
+]
+
+[package.optional-dependencies]
+ansi = [
+    { name = "pygments-ansi-color" },
 ]
 
 [[package]]
@@ -1211,6 +1230,18 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/8e/62/8336eff65bcbc8e4cb5d05b55faf041285951b6e80f33e2bff2024788f31/pygments-2.18.0.tar.gz", hash = "sha256:786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199", size = 4891905 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f7/3f/01c8b82017c199075f8f788d0d906b9ffbbc5a47dc9918a945e13d5a2bda/pygments-2.18.0-py3-none-any.whl", hash = "sha256:b8e6aca0523f3ab76fee51799c488e38782ac06eafcf95e7ba832985c8e7b13a", size = 1205513 },
+]
+
+[[package]]
+name = "pygments-ansi-color"
+version = "0.3.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pygments" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/50/f9/7f417aaee98a74b4f757f2b72971245181fcf25d824d2e7a190345669eaf/pygments-ansi-color-0.3.0.tar.gz", hash = "sha256:7018954cf5b11d1e734383a1bafab5af613213f246109417fee3f76da26d5431", size = 7317 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e6/17/8306a0bcd8c88d7761c2e73e831b0be026cd6873ce1f12beb3b4c9a03ffa/pygments_ansi_color-0.3.0-py3-none-any.whl", hash = "sha256:7eb063feaecadad9d4d1fd3474cbfeadf3486b64f760a8f2a00fc25392180aba", size = 10242 },
 ]
 
 [[package]]
