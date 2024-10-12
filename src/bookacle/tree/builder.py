@@ -117,11 +117,16 @@ class ClusterTreeBuilder:
 
     def construct_tree(
         self,
-        current_level_nodes: dict[int, Node],
-        all_tree_nodes: dict[int, Node],
-        layer_to_nodes: dict[int, list[Node]],
+        chunks: list[Document],
+        embeddings: list[list[float]],
         reduction_dimension: int = 10,
-    ) -> tuple[dict[int, Node], int]:
+    ) -> Tree:
+        leaf_nodes = self.create_leaf_nodes(chunks=chunks, embeddings=embeddings)
+
+        layer_to_nodes = {0: list(leaf_nodes.values())}
+
+        current_level_nodes = leaf_nodes
+        all_tree_nodes = leaf_nodes
 
         num_layers = self.config.max_num_layers
 
@@ -146,7 +151,13 @@ class ClusterTreeBuilder:
             current_level_nodes = new_level_nodes
             all_tree_nodes.update(new_level_nodes)
 
-        return current_level_nodes, num_layers
+        return Tree(
+            all_nodes=all_tree_nodes,
+            root_nodes=current_level_nodes,
+            leaf_nodes=leaf_nodes,
+            num_layers=num_layers,
+            layer_to_nodes=layer_to_nodes,
+        )
 
     def build_from_documents(
         self,
@@ -169,24 +180,5 @@ class ClusterTreeBuilder:
         embeddings = self.config.embedding_model.embed(
             text=[doc["page_content"] for doc in splitted_documents]
         )
-        leaf_nodes = self.create_leaf_nodes(
-            chunks=splitted_documents, embeddings=embeddings
-        )
 
-        layer_to_nodes = {0: list(leaf_nodes.values())}
-
-        all_nodes = copy.deepcopy(leaf_nodes)
-
-        root_nodes, num_layers = self.construct_tree(
-            current_level_nodes=leaf_nodes,
-            all_tree_nodes=all_nodes,
-            layer_to_nodes=layer_to_nodes,
-        )
-
-        return Tree(
-            all_nodes=all_nodes,
-            root_nodes=root_nodes,
-            leaf_nodes=leaf_nodes,
-            num_layers=num_layers,
-            layer_to_nodes=layer_to_nodes,
-        )
+        return self.construct_tree(chunks=splitted_documents, embeddings=embeddings)
