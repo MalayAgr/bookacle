@@ -177,6 +177,13 @@ class HuggingFaceLLMSummarizationModel:
             device=0 if use_gpu else -1,
         )
 
+    def __repr__(self) -> str:
+        return (
+            f"{self.__class__.__name__}(model_name={self.model_name!r}, "
+            f"summarization_length={self.summarization_length}, "
+            f"system_prompt={self.system_prompt!r}, use_gpu={self.use_gpu})"
+        )
+
     @property
     def tokenizer(self) -> PreTrainedTokenizerBase:
         """

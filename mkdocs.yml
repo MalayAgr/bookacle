@@ -88,6 +88,7 @@ plugins:
           - https://rich.readthedocs.io/en/stable/objects.inv
           - https://sbert.net/objects.inv
           - https://joblib.readthedocs.io/en/stable/objects.inv
+          - https://www.dynaconf.com/objects.inv
         options:
           members_order: source
           allow_inspection: true

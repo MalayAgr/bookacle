@@ -250,8 +250,7 @@ class GMMClusteringBackend:
         In other words, create new clusters from the embeddings of a global cluster.
 
         If the number of embeddings in the global cluster is less than or equal to
-        [reduction_dim][bookacle.tree.clustering.GMMClusteringBackend.reduction_dim],
-        the global cluster is returned as is in a singleton list.
+        `reduction_dim`, the global cluster is returned as is in a singleton list.
 
         Args:
             embeddings: The overall embeddings.

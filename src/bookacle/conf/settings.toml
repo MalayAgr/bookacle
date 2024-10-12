@@ -30,7 +30,7 @@ backend_class = 'bookacle.tree.clustering.GMMClusteringBackend'
 backend_arguments = {reduction_dim=10, umap_metric='cosine', umap_low_memory=false}
 
 [tree_builder_config]
-config_class = 'bookacle.tree.builder.RaptorTreeConfig'
+config_class = 'bookacle.tree.config.ClusterTreeConfig'
 config_arguments = {embedding_model='@get embedding_model', summarization_model='@get summarization_model',document_splitter='@get document_splitter',clustering_func='@get clustering_func',clustering_backend='@get clustering_backend', max_length_in_cluster=3500, max_num_layers=5}
 
 [tree_builder]

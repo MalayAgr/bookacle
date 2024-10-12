@@ -78,7 +78,7 @@ class OllamaQAModel:
         self.model_name = model_name
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}(model_name={self.model_name})"
+        return f"{self.__class__.__name__}(model_name={self.model_name!r})"
 
     @overload
     def answer(  # type: ignore
