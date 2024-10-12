@@ -4,7 +4,7 @@ import copy
 from typing import Any, Protocol
 
 from bookacle.document import Document
-from bookacle.tree.config import RaptorTreeConfig
+from bookacle.tree.config import ClusterTreeConfig
 from bookacle.tree.structures import Node, Tree, concatenate_node_texts
 
 
@@ -43,7 +43,7 @@ class ClusterTreeBuilder:
         config (RaptorTreeConfig): The configuration for the tree builder.
     """
 
-    def __init__(self, config: RaptorTreeConfig):
+    def __init__(self, config: ClusterTreeConfig):
         """Initialize the tree builder with the given configuration.
 
         Args:

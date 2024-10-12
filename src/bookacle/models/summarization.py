@@ -243,14 +243,14 @@ class HuggingFaceLLMSummarizationModel:
             The formatted chat messages.
 
         Examples:
-            ```python exec="true" source="material-block"" result="python" title="Single Text"
+            ```python exec="true" source="material-block" result="python" title="Single Text"
             from bookacle.models.summarization import HuggingFaceLLMSummarizationModel
             model = HuggingFaceLLMSummarizationModel(model_name="Qwen/Qwen2-0.5B-Instruct")
             text = "This is a test"
             print(model.format_as_chat_message(text))
             ```
 
-            ```python exec="true" source="material-block"" result="python" title="Mutliple Texts"
+            ```python exec="true" source="material-block" result="python" title="Mutliple Texts"
             from bookacle.models.summarization import HuggingFaceLLMSummarizationModel
             model = HuggingFaceLLMSummarizationModel(model_name="Qwen/Qwen2-0.5B-Instruct")
             text = ["This is a test", "This is another test"]

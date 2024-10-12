@@ -38,7 +38,7 @@ class LoaderManager(UserDict[str, LoaderLike]):
     It behaves like a dictionary, where each document loader is registered to a name.
 
     Examples:
-        ```python exec="true" source="above" result="python"
+        ```python exec="true" source="material-block" result="python"
         from bookacle.loaders import LoaderManager, register_loader
         from langchain_core.documents import Document
 

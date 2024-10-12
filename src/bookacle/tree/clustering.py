@@ -1,3 +1,5 @@
+"""Clustering module for the tree structure."""
+
 from collections import defaultdict
 from typing import Protocol
 
@@ -345,7 +347,7 @@ class GMMClusteringBackend:
             A mapping of clusters to embeddings.
 
         Examples:
-            ```python
+            ```python exec="true" source="material-block" result="python"
             import numpy as np
             from bookacle.tree.clustering import GMMClusteringBackend
 
@@ -353,9 +355,6 @@ class GMMClusteringBackend:
             embeddings = np.random.rand(10, 768)
             emb_to_clusters, clusters_to_emb = backend.cluster(embeddings=embeddings)
             print(clusters_to_emb)
-            ```
-            ```python
-            defaultdict(<class 'list'>, {0: [0, 3, 5, 6], 1: [2, 8, 9], 2: [1, 4, 7]})
             ```
         """
         n_neighbors_global = (
