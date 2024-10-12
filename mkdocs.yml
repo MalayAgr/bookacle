@@ -87,6 +87,7 @@ plugins:
           - https://huggingface.co/docs/transformers/main/en/objects.inv
           - https://rich.readthedocs.io/en/stable/objects.inv
           - https://sbert.net/objects.inv
+          - https://joblib.readthedocs.io/en/stable/objects.inv
         options:
           members_order: source
           allow_inspection: true
