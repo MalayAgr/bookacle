@@ -325,10 +325,7 @@ class GMMClusteringBackend:
         )
 
     def cluster(
-        self,
-        embeddings: npt.NDArray[np.float64],
-        *,
-        multithread: bool = True,
+        self, embeddings: npt.NDArray[np.float64]
     ) -> tuple[dict[int, list[int]], dict[int, list[int]]]:
         """Cluster the embeddings.
 
@@ -338,25 +335,27 @@ class GMMClusteringBackend:
             - Local clustering: The embeddings of each global cluster are reduced and clustered.
             - At the end, all local clusters are aggregated into a single result.
 
+        [Parallel][joblib.Parallel] from `joblib` is used to parallelize the clustering of each global cluster.
+
         Args:
             embeddings: The embeddings to cluster.
-            multithread: Whether to use multithreading. If `True`,
-                        [Parallel][joblib.Parallel] from `joblib` is used to parallelize
-                        the clustering of each global cluster.
 
         Returns:
             A mapping of embeddings to clusters
             A mapping of clusters to embeddings.
 
         Examples:
-            ```python exec="true" source="above" result="python"
+            ```python
             import numpy as np
             from bookacle.tree.clustering import GMMClusteringBackend
 
             backend = GMMClusteringBackend(reduction_dim=10, n_clusters_global=3)
             embeddings = np.random.rand(10, 768)
-            emb_to_clusters, clusters_to_emb = backend.cluster(embeddings=embeddings, multithread=False)
+            emb_to_clusters, clusters_to_emb = backend.cluster(embeddings=embeddings)
             print(clusters_to_emb)
+            ```
+            ```python
+            defaultdict(<class 'list'>, {0: [0, 3, 5, 6], 1: [2, 8, 9], 2: [1, 4, 7]})
             ```
         """
         n_neighbors_global = (
@@ -376,16 +375,10 @@ class GMMClusteringBackend:
         cluster_to_embedding: dict[int, list[int]] = defaultdict(list)
         total_clusters: int = 0
 
-        if multithread is True:
-            all_clusters: list[list[npt.NDArray[np.int64]]] = Parallel(n_jobs=-1)(  # type: ignore
-                delayed(self._process_single_cluster)(cluster_index, embeddings, clusters)
-                for cluster_index in np.unique(clusters)
-            )
-        else:
-            all_clusters = [
-                self._process_single_cluster(cluster_index, embeddings, clusters)
-                for cluster_index in np.unique(clusters)
-            ]
+        all_clusters: list[list[npt.NDArray[np.int64]]] = Parallel(n_jobs=-1)(  # type: ignore
+            delayed(self._process_single_cluster)(cluster_index, embeddings, clusters)
+            for cluster_index in np.unique(clusters)
+        )
 
         for cluster in all_clusters:
             if not cluster:
