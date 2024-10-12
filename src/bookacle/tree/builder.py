@@ -121,6 +121,25 @@ class ClusterTreeBuilder:
         embeddings: list[list[float]],
         reduction_dimension: int = 10,
     ) -> Tree:
+        """Construct a RAPTOR tree from the given chunks and embeddings.
+
+        The tree is built in a bottom-up manner, starting from the leaf nodes and going up to the root nodes.
+
+        To build the tree:
+            - The leaf nodes are created from the chunks and embeddings.
+            - The leaf nodes are clustered to create the next tree level using
+            [create_next_tree_level()][bookacle.tree.builder.ClusterTreeBuilder.create_next_tree_level].
+            - The process is repeated until the maximum number of layers is reached
+            or the number of nodes in the next level is less than the reduction dimension.
+
+        Args:
+            chunks: The chunks to construct the tree from.
+            embeddings: The embeddings of the chunks.
+            reduction_dimension: The dimension to reduce the embeddings to before clustering.
+
+        Returns:
+            A RAPTOR tree constructed from the chunks and embeddings.
+        """
         leaf_nodes = self.create_leaf_nodes(chunks=chunks, embeddings=embeddings)
 
         layer_to_nodes = {0: list(leaf_nodes.values())}
@@ -165,6 +184,20 @@ class ClusterTreeBuilder:
         chunk_size: int | None = None,
         chunk_overlap: int | None = None,
     ) -> Tree:
+        """Build a RAPTOR tree from the given documents.
+
+        Each document is split into chunks and each chunk is embedded.
+        These are then passed to the [construct_tree()][bookacle.tree.builder.ClusterTreeBuilder.construct_tree] method to build the tree.
+
+        Args:
+            documents: The documents to build the tree from.
+            chunk_size: The size of the chunks to split the documents into.
+                        When `None`, it defaults to the maximum length supported by the embedding model.
+            chunk_overlap: The overlap between the chunks. When `None`, it defaults to half the chunk size.
+
+        Returns:
+            A RAPTOR tree built from the documents.
+        """
         if chunk_size is None:
             chunk_size = self.config.embedding_model.model_max_length
 
