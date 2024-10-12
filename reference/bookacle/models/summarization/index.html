@@ -1242,6 +1242,8 @@
 <a id="bookacle.models.summarization"></a>
     <div class="doc doc-contents first">
 
+        <p>This module defines protocols and concrete implementations for summarization models used for summarizing texts in intermediate RAPTOR tree layers.</p>
+
 
 
   <div class="doc doc-children">
@@ -1773,7 +1775,7 @@
             </td>
             <td>
               <div class="doc-md-description">
-                <p>The system prompt to use for LLM for summarization.</p>
+                <p>The system prompt to pass to the LLM for summarization.</p>
               </div>
             </td>
             <td>
@@ -1876,7 +1878,7 @@
   <summary>If the input is a list of texts</summary>
   <ul>
 <li>If the system prompt is provided, a list of lists containing the system prompt and user message is returned.</li>
-<li>If the system prompt is not provided, a list of user messages is returned.</li>
+<li>If the system prompt is not provided, a list of lists containing the user messages is returned.</li>
 </ul>
 </details>
 
@@ -1980,8 +1982,11 @@
 
         <p>Summarize the input text or list of texts.</p>
 <p>The input is first formatted into chat messages using
-<a class="autorefs autorefs-internal" href="#bookacle.models.summarization.HuggingFaceLLMSummarizationModel.format_as_chat_message">format_as_chat_message</a>
+<a class="autorefs autorefs-internal" href="#bookacle.models.summarization.HuggingFaceLLMSummarizationModel.format_as_chat_message">format_as_chat_message()</a>
 and then passed to the underlying LLM for summarization.</p>
+<p>Each input text is passed to the LLM with the following format:</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="s2">&quot;Summarize the following in not more than </span><span class="si">{summarization_length}</span><span class="s2"> words:</span><span class="se">\n</span><span class="si">{text}</span><span class="s2">&quot;</span>
+</code></pre></div>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
