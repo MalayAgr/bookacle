@@ -31,6 +31,9 @@ theme:
     toggle:
       icon: material/weather-night
       name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
 
 markdown_extensions:
 - attr_list
@@ -69,6 +72,10 @@ plugins:
 - social
 - autorefs
 - markdown-exec
+- minify:
+    minify_html: true
+    minify_js: true
+    minify_css: true
 - gen-files:
     scripts:
     - docs/gen_ref_pages.py
