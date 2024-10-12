@@ -1,11 +1,14 @@
 site_name: bookacle - Book Oracle
 repo_url: https://github.com/MalayAgr/bookacle/
-edit_uri: "blob/master/docs/"
+edit_uri: "edit/main/"
 
 theme:
   name: material
   features:
   - announce.dismiss
+  - content.action.edit
+  - content.action.view
+  - content.code.annotate
   - content.code.copy
   - content.tooltips
   - navigation.footer
@@ -17,10 +20,14 @@ theme:
   - search.highlight
   - search.suggest
   - toc.follow
-  - toc.integrate
   palette:
+  - media: "(prefers-color-scheme)"
+    toggle:
+      icon: material/brightness-auto
+      name: Switch to light mode
   - media: "(prefers-color-scheme: light)"
     scheme: default
+    primary: teal
     accent: purple
     toggle:
       icon: material/weather-sunny
@@ -28,26 +35,28 @@ theme:
   - media: "(prefers-color-scheme: dark)"
     scheme: slate
     primary: black
+    accent: lime
     toggle:
       icon: material/weather-night
-      name: Switch to light mode
+      name: Switch to system preference
   font:
     text: Roboto
-    code: Roboto Mono
+    code: Source Code Pro
 
 markdown_extensions:
 - attr_list
 - smarty
-- pymdownx.emoji:
-    emoji_index: !!python/name:material.extensions.emoji.twemoji
-    emoji_generator: !!python/name:material.extensions.emoji.to_svg
 - md_in_html
 - admonition
 - def_list
 - meta
-- toc:
-    baselevel: 1
-    permalink: true
+- pymdownx.emoji:
+    emoji_index: !!python/name:material.extensions.emoji.twemoji
+    emoji_generator: !!python/name:material.extensions.emoji.to_svg
+- pymdownx.highlight:
+    pygments_lang_class: true
+- pymdownx.magiclink
+- pymdownx.superfences
 - pymdownx.keys
 - pymdownx.tabbed:
     alternate_style: true
@@ -56,15 +65,12 @@ markdown_extensions:
         case: lower
 - pymdownx.tasklist:
     custom_checkbox: true
-- pymdownx.highlight:
-    anchor_linenums: true
-    use_pygments: true
-    pygments_lang_class: true
 - pymdownx.details
-- pymdownx.magiclink
 - pymdownx.inlinehilite
-- pymdownx.superfences
 - pymdownx.snippets
+- toc:
+    baselevel: 1
+    permalink: "¤"
 
 
 plugins:
@@ -97,24 +103,26 @@ plugins:
           - https://joblib.readthedocs.io/en/stable/objects.inv
           - https://www.dynaconf.com/objects.inv
         options:
-          members_order: source
-          allow_inspection: true
-          show_signature_annotations: false
-          separate_signature: true
-          merge_init_into_class: true
           docstring_options:
             ignore_init_summary: true
-          preload_modules: [langchain_core, langchain_text_splitters]
+          docstring_section_style: list
+          filters: ["!^_", "^__init__$", "^__call__$", "!^can_replace$"]
+          heading_level: 1
+          inherited_members: true
+          merge_init_into_class: true
+          parameter_headings: true
+          separate_signature: true
+          show_root_heading: true
+          show_root_full_path: false
+          show_signature_annotations: true
+          show_source: false
           show_symbol_type_heading: true
           show_symbol_type_toc: true
           signature_crossrefs: true
-          show_source: false
-          filters:
-            - "!^_"
-            - "^__init__$"
-            - "^__call__$"
-            - "!^can_replace$"
-
+          summary: true
+          members_order: source
+          allow_inspection: true
+          preload_modules: ["langchain_text_splitters"]
 
 watch:
   - mkdocs.yml

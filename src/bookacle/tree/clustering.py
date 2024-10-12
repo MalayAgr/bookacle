@@ -57,7 +57,8 @@ class ClusteringBackendLike(Protocol):
             **kwargs: Additional keyword arguments to pass to the clustering function.
 
         Returns:
-            A tuple containing the mapping of embeddings to clusters and the mapping of clusters to embeddings.
+            The mapping of embeddings to clusters
+            The mapping of clusters to embeddings.
         """
         ...
 
