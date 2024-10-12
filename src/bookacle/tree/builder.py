@@ -9,6 +9,8 @@ from bookacle.tree.structures import Node, Tree, concatenate_node_texts
 
 
 class TreeBuilderLike(Protocol):
+    """A protocol that defines the interface for a RAPTOR tree builder."""
+
     def build_from_documents(  # type: ignore
         self,
         documents: list[Document],
@@ -16,11 +18,37 @@ class TreeBuilderLike(Protocol):
         chunk_overlap: int | None = None,
         *args,
         **kwargs,
-    ) -> Tree: ...
+    ) -> Tree:
+        """Build a tree from a list of documents.
+
+        Args:
+            documents: A list of documents to build the tree from.
+            chunk_size: The size of the chunks to split the documents into.
+            chunk_overlap: The overlap between the chunks.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            A tree built from the documents.
+        """
+        ...
 
 
 class ClusterTreeBuilder:
+    """A RAPTOR tree builder that clusters nodes at each subsequent tree layer to build the tree.
+
+    It implements the [TreeBuilderLike][bookacle.tree.builder.TreeBuilderLike] protocol.
+
+    Attributes:
+        config (RaptorTreeConfig): The configuration for the tree builder.
+    """
+
     def __init__(self, config: RaptorTreeConfig):
+        """Initialize the tree builder with the given configuration.
+
+        Args:
+            config: The configuration for the tree builder.
+        """
         self.config = config
 
     def __repr__(self) -> str:
@@ -31,6 +59,15 @@ class ClusterTreeBuilder:
         chunks: list[Document],
         embeddings: list[list[float]],
     ) -> dict[int, Node]:
+        """Create leaf nodes from the given chunks.
+
+        Args:
+            chunks: The chunks to create the leaf nodes from.
+            embeddings: The embeddings of the chunks.
+
+        Returns:
+            A mapping of the global index to the created leaf nodes.
+        """
         return {
             index: Node(
                 text=chunk["page_content"],
@@ -43,9 +80,25 @@ class ClusterTreeBuilder:
             for index, chunk in enumerate(chunks)
         }
 
-    def _create_next_tree_level(
+    def create_next_tree_level(
         self, clusters: list[list[Node]], first_node_index: int, layer: int
     ) -> dict[int, Node]:
+        """Create the next tree level from the given clusters.
+
+        For each cluster:
+            - The texts of the nodes in the cluster are concatenated.
+            - The concatenated text is summarized.
+            - The summarized text is embedded.
+            - A [Node][bookacle.tree.structures.Node] is created with the summarized text, embeddings, and the indices of the children nodes.
+
+        Args:
+            clusters: The clusters to create the next tree level from.
+            first_node_index: The global index of the first node in the new layer.
+            layer: The layer of the tree the clusters belong to.
+
+        Returns:
+            A mapping of the global indices to the created nodes.
+        """
         cluster_texts = [concatenate_node_texts(cluster) for cluster in clusters]
         summaries = self.config.summarization_model.summarize(text=cluster_texts)
         embeddings = self.config.embedding_model.embed(text=summaries)
@@ -69,6 +122,7 @@ class ClusterTreeBuilder:
         layer_to_nodes: dict[int, list[Node]],
         reduction_dimension: int = 10,
     ) -> tuple[dict[int, Node], int]:
+
         num_layers = self.config.max_num_layers
 
         for layer in range(self.config.max_num_layers):
@@ -84,7 +138,7 @@ class ClusterTreeBuilder:
                 reduction_dimension=reduction_dimension,
             )
 
-            new_level_nodes = self._create_next_tree_level(
+            new_level_nodes = self.create_next_tree_level(
                 clusters=clusters, first_node_index=len(all_tree_nodes), layer=layer + 1
             )
 
