@@ -1269,6 +1269,8 @@
 <a id="bookacle.tree.clustering"></a>
     <div class="doc doc-contents first">
 
+        <p>Clustering module for the tree structure.</p>
+
 
 
   <div class="doc doc-children">
@@ -2329,7 +2331,7 @@ the global cluster is returned as is in a singleton list.</p>
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">)</span>
 <a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="nb">print</span><span class="p">(</span><span class="n">clusters</span><span class="p">)</span>
 </code></pre></div>
-<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">[</span><span class="n">array</span><span class="p">([</span><span class="mi">66</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">40</span><span class="p">]),</span> <span class="n">array</span><span class="p">([</span><span class="mi">38</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">97</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="mi">25</span><span class="p">]),</span> <span class="n">array</span><span class="p">([</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">79</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">85</span><span class="p">]),</span> <span class="n">array</span><span class="p">([</span><span class="mi">70</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">73</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">36</span><span class="p">]),</span> <span class="n">array</span><span class="p">([</span><span class="mi">11</span><span class="p">,</span> <span class="mi">62</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span> <span class="mi">39</span><span class="p">])]</span>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">[</span><span class="n">array</span><span class="p">([</span><span class="mi">55</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">55</span><span class="p">]),</span> <span class="n">array</span><span class="p">([</span><span class="mi">68</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">96</span><span class="p">]),</span> <span class="n">array</span><span class="p">([</span><span class="mi">46</span><span class="p">,</span> <span class="mi">84</span><span class="p">,</span> <span class="mi">84</span><span class="p">,</span> <span class="mi">94</span><span class="p">,</span> <span class="mi">84</span><span class="p">,</span> <span class="mi">86</span><span class="p">]),</span> <span class="n">array</span><span class="p">([</span><span class="mi">33</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">69</span><span class="p">]),</span> <span class="n">array</span><span class="p">([</span><span class="mi">51</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">83</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">93</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">47</span><span class="p">])]</span>
 </code></pre></div>
 
     </div>
@@ -2426,7 +2428,7 @@ the global cluster is returned as is in a singleton list.</p>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <p><div class="language-python highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <div class="language-python highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span> <span class="nn">bookacle.tree.clustering</span> <span class="kn">import</span> <span class="n">GMMClusteringBackend</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">backend</span> <span class="o">=</span> <span class="n">GMMClusteringBackend</span><span class="p">(</span><span class="n">reduction_dim</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_clusters_global</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
@@ -2434,8 +2436,10 @@ the global cluster is returned as is in a singleton list.</p>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">emb_to_clusters</span><span class="p">,</span> <span class="n">clusters_to_emb</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">embeddings</span><span class="o">=</span><span class="n">embeddings</span><span class="p">)</span>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">clusters_to_emb</span><span class="p">)</span>
 </code></pre></div>
-<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">defaultdict</span><span class="p">(</span><span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">list</span><span class="s1">&#39;&gt;, {0: [0, 3, 5, 6], 1: [2, 8, 9], 2: [1, 4, 7]})</span>
-</code></pre></div></p>
+<div class="result">
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">defaultdict</span><span class="p">(</span><span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">list</span><span class="s1">&#39;&gt;, {0: [1, 2, 3, 7, 8], 1: [4, 5, 6], 2: [0, 9]})</span>
+</code></pre></div>
+</div>
 
     </div>
 

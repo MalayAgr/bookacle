@@ -1063,6 +1063,90 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#bookacle.tree.retriever.RetrieverLike" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;RetrieverLike
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" RetrieverLike">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bookacle.tree.retriever.RetrieverLike.retrieve" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;retrieve
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bookacle.tree.retriever.TreeRetriever" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;TreeRetriever
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" TreeRetriever">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bookacle.tree.retriever.TreeRetriever.get_relevant_node_indices" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_relevant_node_indices
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bookacle.tree.retriever.TreeRetriever.get_nodes_within_context" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_nodes_within_context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bookacle.tree.retriever.TreeRetriever.retrieve_collapse" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;retrieve_collapse
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bookacle.tree.retriever.TreeRetriever.retrieve_no_collapse" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;retrieve_no_collapse
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bookacle.tree.retriever.TreeRetriever.retrieve" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;retrieve
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1153,6 +1237,822 @@
 
 
 
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="bookacle.tree.retriever.RetrieverLike" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">RetrieverLike</span>
+
+
+<a href="#bookacle.tree.retriever.RetrieverLike" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-external" title="typing.Protocol" href="https://docs.python.org/3/library/typing.html#typing.Protocol">Protocol</a></code></p>
+
+
+        <p>A protocol that defines the interface for a tree retriever.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="bookacle.tree.retriever.RetrieverLike.retrieve" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">retrieve</span>
+
+
+<a href="#bookacle.tree.retriever.RetrieverLike.retrieve" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">retrieve</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Retrieve relevant nodes from a tree given a query.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>query</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The query to retrieve nodes for.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>tree</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="bookacle.tree.structures.Tree" href="../structures/#bookacle.tree.structures.Tree">Tree</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The tree to retrieve nodes from.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>*args</code></td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Additional positional arguments.</p>
+              </div>
+            </td>
+            <td>
+                  <code>()</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>**kwargs</code></td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Additional keyword arguments.</p>
+              </div>
+            </td>
+            <td>
+                  <code>{}</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="../structures/#bookacle.tree.structures.Node">Node</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The retrieved nodes.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The concatenated text of the retrieved nodes.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="bookacle.tree.retriever.TreeRetriever" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">TreeRetriever</span>
+
+
+<a href="#bookacle.tree.retriever.TreeRetriever" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">TreeRetriever</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>A tree retriever that retrieves relevant nodes from a tree given a query.</p>
+<p>It implements the <a class="autorefs autorefs-internal" href="#bookacle.tree.retriever.RetrieverLike">RetrieverLike</a> protocol.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="bookacle.tree.retriever.TreeRetriever.config">config</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="bookacle.tree.config.TreeRetrieverConfig" href="../config/#bookacle.tree.config.TreeRetrieverConfig">TreeRetrieverConfig</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The configuration for the retriever.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>config</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="bookacle.tree.config.TreeRetrieverConfig" href="../config/#bookacle.tree.config.TreeRetrieverConfig">TreeRetrieverConfig</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The configuration for the retriever.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="bookacle.tree.retriever.TreeRetriever.get_relevant_node_indices" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">get_relevant_node_indices</span>
+
+
+<a href="#bookacle.tree.retriever.TreeRetriever.get_relevant_node_indices" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">get_relevant_node_indices</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">target_embedding</span><span class="p">,</span> <span class="n">candidate_nodes</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Get the relevant node indices given a target embedding and candidate nodes.</p>
+
+
+<details class="nodes-are-selected-in-the-following-manner" open>
+  <summary>Nodes are selected in the following manner</summary>
+  <ul>
+<li>The cosine similarity between the target embedding and the candidate node embeddings is computed.</li>
+<li>The cosine similarities are sorted in descending order.</li>
+<li>If the selection mode is
+  <a class="autorefs autorefs-internal" href="../config/#bookacle.tree.config.SelectionMode.TOP_K">SelectionMode.TOP_K</a>, the top <code>k</code> nodes are selected.</li>
+<li>If the selection mode is
+  <a class="autorefs autorefs-internal" href="../config/#bookacle.tree.config.SelectionMode.THRESHOLD">SelectionMode.THRESHOLD</a>,
+  the nodes with cosine similarity greater than the threshold are selected.</li>
+</ul>
+</details>
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>target_embedding</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The target embedding to compare against.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>candidate_nodes</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="../structures/#bookacle.tree.structures.Node">Node</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The candidate nodes to compare against.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-external" title="numpy.typing.NDArray" href="https://numpy.org/doc/stable/reference/typing.html#numpy.typing.NDArray">NDArray</a>[<a class="autorefs autorefs-external" title="numpy.int64" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.int64">int64</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The relevant node indices.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="bookacle.tree.retriever.TreeRetriever.get_nodes_within_context" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">get_nodes_within_context</span>
+
+
+<a href="#bookacle.tree.retriever.TreeRetriever.get_nodes_within_context" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">get_nodes_within_context</span><span class="p">(</span><span class="n">candidate_nodes</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Filter candidate nodes to those that fit within the maximum token length.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>candidate_nodes</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="../structures/#bookacle.tree.structures.Node">Node</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The candidate nodes to filter.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="../structures/#bookacle.tree.structures.Node">Node</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The filtered candidate nodes.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="bookacle.tree.retriever.TreeRetriever.retrieve_collapse" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">retrieve_collapse</span>
+
+
+<a href="#bookacle.tree.retriever.TreeRetriever.retrieve_collapse" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">retrieve_collapse</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">tree</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Retrieve relevant nodes from a tree given a query using the collapsed tree strategy.</p>
+<p>For more details about the collapsed tree strategy, refer to the RAPTOR paper: <a href="https://arxiv.org/pdf/2401.18059">https://arxiv.org/pdf/2401.18059</a>.</p>
+
+
+<details class="the-retrieved-nodes-are-selected-in-the-following-manner" open>
+  <summary>The retrieved nodes are selected in the following manner</summary>
+  <ul>
+<li>The query is embedded using the embedding model.</li>
+<li>The candidate nodes are all the nodes in the tree.</li>
+<li>Relevant nodes are retrieved using
+  <a class="autorefs autorefs-internal" href="#bookacle.tree.retriever.TreeRetriever.get_relevant_node_indices">get_relevant_node_indices()</a>.</li>
+<li>The nodes are filtered to fit within the maximum token length using
+  <a class="autorefs autorefs-internal" href="#bookacle.tree.retriever.TreeRetriever.get_nodes_within_context">get_nodes_within_context()</a>.</li>
+</ul>
+</details>
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>query</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The query to retrieve nodes for.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>tree</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="bookacle.tree.structures.Tree" href="../structures/#bookacle.tree.structures.Tree">Tree</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The tree to retrieve nodes from.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="../structures/#bookacle.tree.structures.Node">Node</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The retrieved nodes.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The concatenated text of the retrieved nodes.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="bookacle.tree.retriever.TreeRetriever.retrieve_no_collapse" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">retrieve_no_collapse</span>
+
+
+<a href="#bookacle.tree.retriever.TreeRetriever.retrieve_no_collapse" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">retrieve_no_collapse</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">start_layer</span><span class="p">,</span> <span class="n">end_layer</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Retrieve relevant nodes from a tree given a query using the tree traversal strategy.</p>
+<p>For more details about the collapsed tree strategy, refer to the RAPTOR paper: <a href="https://arxiv.org/pdf/2401.18059">https://arxiv.org/pdf/2401.18059</a>.</p>
+
+
+<details class="the-retrieved-nodes-are-selected-in-the-following-manner" open>
+  <summary>The retrieved nodes are selected in the following manner</summary>
+  <ul>
+<li>The query is embedded using the embedding model.</li>
+<li>The candidate nodes are all the nodes in the tree from the start layer to the end layer.</li>
+<li>For each layer<ul>
+<li>Relevant nodes are retrieved using
+  <a class="autorefs autorefs-internal" href="#bookacle.tree.retriever.TreeRetriever.get_relevant_node_indices">get_relevant_node_indices()</a>.</li>
+<li>The process is repeated on the children of the relevant nodes until the end layer is reached
+  or no more children are available.</li>
+</ul>
+</li>
+<li>The nodes are filtered to fit within the maximum token length using</li>
+</ul>
+</details>
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>query</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The query to retrieve nodes for.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>tree</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="bookacle.tree.structures.Tree" href="../structures/#bookacle.tree.structures.Tree">Tree</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The tree to retrieve nodes from.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>start_layer</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The layer to start retrieving nodes from.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>end_layer</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The layer to stop retrieving nodes at.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="../structures/#bookacle.tree.structures.Node">Node</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The retrieved nodes.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The concatenated text of the retrieved nodes.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="bookacle.tree.retriever.TreeRetriever.retrieve" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">retrieve</span>
+
+
+<a href="#bookacle.tree.retriever.TreeRetriever.retrieve" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">retrieve</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">query</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">tree</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">start_layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">end_layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">collapse_tree</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Retrieve relevant nodes from a tree given a query.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>query</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The query to retrieve nodes for.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>tree</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="bookacle.tree.structures.Tree" href="../structures/#bookacle.tree.structures.Tree">Tree</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The tree to retrieve nodes from.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>start_layer</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The layer to start retrieving nodes from. When <code>None</code>, the root layer is used.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>end_layer</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The layer to stop retrieving nodes at. When <code>None</code>, the leaf layer is used.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>collapse_tree</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to use the collapsed tree strategy.</p>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="../structures/#bookacle.tree.structures.Node">Node</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The retrieved nodes.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The concatenated text of the retrieved nodes</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
 
 
 

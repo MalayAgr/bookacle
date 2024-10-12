@@ -1042,6 +1042,96 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#bookacle.tree.config.SelectionMode" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;SelectionMode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" SelectionMode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bookacle.tree.config.SelectionMode.TOP_K" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;TOP_K
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bookacle.tree.config.SelectionMode.THRESHOLD" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;THRESHOLD
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bookacle.tree.config.ClusterTreeConfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;ClusterTreeConfig
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" ClusterTreeConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bookacle.tree.config.ClusterTreeConfig.embedding_tokenizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;embedding_tokenizer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bookacle.tree.config.ClusterTreeConfig.summarization_tokenizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;summarization_tokenizer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bookacle.tree.config.TreeRetrieverConfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;TreeRetrieverConfig
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" TreeRetrieverConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bookacle.tree.config.TreeRetrieverConfig.tokenizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;tokenizer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1153,6 +1243,524 @@
 
 
 
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="bookacle.tree.config.SelectionMode" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">SelectionMode</span>
+
+
+<a href="#bookacle.tree.config.SelectionMode" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-external" title="enum.Enum" href="https://docs.python.org/3/library/enum.html#enum.Enum">Enum</a></code></p>
+
+
+        <p>Selection modes supported by the retriever.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="bookacle.tree.config.SelectionMode.TOP_K" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">TOP_K</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#bookacle.tree.config.SelectionMode.TOP_K" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">TOP_K</span> <span class="o">=</span> <span class="s1">&#39;top_k&#39;</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Selection using Top K.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="bookacle.tree.config.SelectionMode.THRESHOLD" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">THRESHOLD</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#bookacle.tree.config.SelectionMode.THRESHOLD" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">THRESHOLD</span> <span class="o">=</span> <span class="s1">&#39;threshold&#39;</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Selection using a threshold value on the distance.</p>
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="bookacle.tree.config.ClusterTreeConfig" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">ClusterTreeConfig</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#bookacle.tree.config.ClusterTreeConfig" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">ClusterTreeConfig</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">embedding_model</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">summarization_model</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">document_splitter</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">clustering_func</span><span class="o">=</span><span class="n">raptor_clustering</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">clustering_backend</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">max_length_in_cluster</span><span class="o">=</span><span class="mi">3500</span><span class="p">,</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">max_num_layers</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>Configuration for <a class="autorefs autorefs-internal" href="../builder/#bookacle.tree.builder.ClusterTreeBuilder">ClusterTreeBuilder</a>.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>embedding_model</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="bookacle.models.embedding.EmbeddingModelLike" href="../../models/embedding/#bookacle.models.embedding.EmbeddingModelLike">EmbeddingModelLike</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The embedding model to use.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>summarization_model</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="bookacle.models.summarization.SummarizationModelLike" href="../../models/summarization/#bookacle.models.summarization.SummarizationModelLike">SummarizationModelLike</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The summarization model to use.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>document_splitter</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="bookacle.splitters.DocumentSplitterLike" href="../../splitters/#bookacle.splitters.DocumentSplitterLike">DocumentSplitterLike</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The document splitter to use.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>clustering_func</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="bookacle.tree.clustering.ClusteringFunctionLike" href="../clustering/#bookacle.tree.clustering.ClusteringFunctionLike">ClusteringFunctionLike</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The clustering function to use.</p>
+              </div>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="bookacle.tree.clustering.raptor_clustering" href="../clustering/#bookacle.tree.clustering.raptor_clustering">raptor_clustering</a></code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>clustering_backend</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="bookacle.tree.clustering.ClusteringBackendLike" href="../clustering/#bookacle.tree.clustering.ClusteringBackendLike">ClusteringBackendLike</a> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The clustering backend to use.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>max_length_in_cluster</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The maximum length of a cluster.</p>
+              </div>
+            </td>
+            <td>
+                  <code>3500</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>max_num_layers</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The maximum number of layers</p>
+              </div>
+            </td>
+            <td>
+                  <code>5</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="bookacle.tree.config.ClusterTreeConfig.embedding_tokenizer" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">embedding_tokenizer</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#bookacle.tree.config.ClusterTreeConfig.embedding_tokenizer" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">embedding_tokenizer</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="bookacle.tokenizer.TokenizerLike" href="../../tokenizer/#bookacle.tokenizer.TokenizerLike">TokenizerLike</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The tokenizer of the embedding model.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="bookacle.tree.config.ClusterTreeConfig.summarization_tokenizer" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">summarization_tokenizer</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#bookacle.tree.config.ClusterTreeConfig.summarization_tokenizer" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">summarization_tokenizer</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="bookacle.tokenizer.TokenizerLike" href="../../tokenizer/#bookacle.tokenizer.TokenizerLike">TokenizerLike</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The tokenizer of the summarization model.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="bookacle.tree.config.TreeRetrieverConfig" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">TreeRetrieverConfig</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#bookacle.tree.config.TreeRetrieverConfig" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">TreeRetrieverConfig</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">embedding_model</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">top_k</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">selection_mode</span><span class="o">=</span><span class="n">SelectionMode</span><span class="o">.</span><span class="n">TOP_K</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">3500</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>Configuration for <a class="autorefs autorefs-internal" href="../retriever/#bookacle.tree.retriever.TreeRetriever">TreeRetriever</a>.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>embedding_model</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="bookacle.models.embedding.EmbeddingModelLike" href="../../models/embedding/#bookacle.models.embedding.EmbeddingModelLike">EmbeddingModelLike</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The embedding model to use.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>threshold</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The threshold value for selection when using threshold mode for selection.</p>
+              </div>
+            </td>
+            <td>
+                  <code>0.5</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>top_k</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The number of top results to return when using top k mode for selection.</p>
+              </div>
+            </td>
+            <td>
+                  <code>5</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>selection_mode</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="bookacle.tree.config.SelectionMode" href="#bookacle.tree.config.SelectionMode">SelectionMode</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The selection mode to use.</p>
+              </div>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="bookacle.tree.config.SelectionMode.TOP_K" href="#bookacle.tree.config.SelectionMode.TOP_K">TOP_K</a></code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>max_tokens</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The maximum number of tokens to retrieve.</p>
+              </div>
+            </td>
+            <td>
+                  <code>3500</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="bookacle.tree.config.TreeRetrieverConfig.tokenizer" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">tokenizer</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#bookacle.tree.config.TreeRetrieverConfig.tokenizer" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">tokenizer</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="bookacle.tokenizer.TokenizerLike" href="../../tokenizer/#bookacle.tokenizer.TokenizerLike">TokenizerLike</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The tokenizer of the embedding model.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
 
 
 
