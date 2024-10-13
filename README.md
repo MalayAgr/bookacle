@@ -3,7 +3,7 @@
 [![documentation](https://img.shields.io/badge/docs-bookacle-blue?style=flat
 )](https://malayagr.github.io/bookacle)
 
-Answer queries on complex PDF queries using RAPTOR-based RAG.
+Answer queries on complex PDF documents using RAPTOR-based RAG.
 
 For more details on RAPTOR, refer to the paper: <https://arxiv.org/abs/2401.18059>.
 
@@ -12,8 +12,13 @@ For more details on RAPTOR, refer to the paper: <https://arxiv.org/abs/2401.1805
 ## Features
 
 - Everything is a [Protocol](https://typing.readthedocs.io/en/latest/spec/protocol.html), allowing for convenient extensibility.
-- Use custom embedding models, summarization models, question-answering models and many more easily - just implement the protocol.
-- Sensible default implementations for all of the above:
-    - [SentenceTransformerEmbeddingModel][bookacle.models.embedding.SentenceTransformerEmbeddingModel] - Use any embedding model from the `sentence-transformers` library.
-    - [HuggingFaceLLMSummarizationModel][bookacle.models.summarization.HuggingFaceLLMSummarizationModel] - Use an LLM from HuggingFace for summarization.
-    - [OllamaQAModel][bookacle.models.qa.OllamaQAModel] - Use an LLM via Ollama for question-answering.
+- Completely local out of the box - no OpenAI key required.
+- Sensible default implementations for embeddings models, summarization models and question-answering models. See [Models](usage/models/index.md) for more details.
+- Use custom embedding models, summarization models and question-answering easily - just implement the protocol. See [Models](usage/models/index.md) for more details.
+- Load your PDFs as text or markdown using the provided loaders or implement your own. See [Loaders](usage/loaders.md) for more details.
+- Use _any_ tokenizer as long as it follows the `TokenizerLike` protocol. See [Tokenizers](usage/tokenizers.md) for more details.
+- Split your documents into chunks easily using the provided splitters or implement your own. See [Splitters](usage/splitters.md) for more details.
+- Customize the default RAPTOR-tree building methodology by implementing your own clustering logic. See [Clustering](usage/clustering.md) for more details.
+- Implement your own RAPTOR-tree building methodology by implementing the [`TreeBuilderLike`]. See [Building RAPTOR Tree](usage/building_raptor_tree.md) for more details.
+- Use a terminal-based chat to chat with your documents. See [Command-Line Interface](usage/cli.md) for more details.
+- Define configuration for `bookacle` using TOML files and use them throughout your application. See [Configuration](usage/cli.md) for more details.

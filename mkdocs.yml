@@ -10,6 +10,18 @@ nav:
   - License: license.md
 - Usage:
   - usage/index.md
+  - Models:
+    - usage/models/index.md
+    - Embedding Models: usage/models/embedding.md
+    - Summarization Models: usage/models/summarization.md
+    - Question-Answering Models: usage/models/qa.md
+  - Document Loaders: usage/loaders.md
+  - Text Splitters: usage/splitters.md
+  - Tokenizers: usage/tokenizers.md
+  - Clustering Support: usage/clustering.md
+  - Building RAPTOR Tree: usage/building-raptor-tree.md
+  - Command-Line Interface: usage/cli.md
+  - Configuration: usage/config.md
 - API Reference:
   - bookacle: reference/
 
