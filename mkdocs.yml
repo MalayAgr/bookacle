@@ -1,8 +1,12 @@
 site_name: bookacle - Book Oracle
 repo_url: https://github.com/MalayAgr/bookacle/
 edit_uri: "edit/main/"
+copyright: Copyright &copy; 2024 Malay Agarwal
 
 theme:
+  logo_dark_mode: assets/logo-dark.svg
+  logo_light_mode: assets/logo-light.svg
+  custom_dir: docs/overrides
   name: material
   features:
   - announce.dismiss
@@ -130,10 +134,14 @@ watch:
 
 extra_css:
   - stylesheets/custom.css
+  - stylesheets/links.css
+  - stylesheets/logo.css
 
 
 nav:
-- Introduction: index.md
+- Home:
+  - Overview: index.md
+  - License: license.md
 - Download and Install: download-install.md
 - API Reference: reference/
 

@@ -74,6 +74,8 @@ td code {
 
 }
 
-.language-pycon .gp, .language-pycon .go { /* Generic.Prompt, Generic.Output */
+.language-pycon .gp,
+.language-pycon .go {
+  /* Generic.Prompt, Generic.Output */
   user-select: none;
 }
