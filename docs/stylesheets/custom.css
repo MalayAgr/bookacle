@@ -44,12 +44,6 @@ body[data-md-color-primary="black"] .excalidraw svg rect {
   border: 0;
 }
 
-.doc-object code {
-  font-family: "Source Code Pro", "SFMono-Regular", Consolas, "Courier New", Courier,
-    monospace;
-}
-
-
 /* Indentation. */
 div.doc-contents:not(.first) {
   padding-left: 25px;
