@@ -1168,6 +1168,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#bookacle.conf.config.import_attribute_from_module" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;import_attribute_from_module
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#bookacle.conf.config.cast_class_path_to_instance" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;cast_class_path_to_instance
@@ -1189,15 +1198,6 @@
   <a href="#bookacle.conf.config.cast_retriever_config" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;cast_retriever_config
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#bookacle.conf.config.import_attribute_from_module" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;import_attribute_from_module
     </span>
   </a>
   
@@ -1698,6 +1698,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#bookacle.conf.config.import_attribute_from_module" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;import_attribute_from_module
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#bookacle.conf.config.cast_class_path_to_instance" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;cast_class_path_to_instance
@@ -1719,15 +1728,6 @@
   <a href="#bookacle.conf.config.cast_retriever_config" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;cast_retriever_config
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#bookacle.conf.config.import_attribute_from_module" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;import_attribute_from_module
     </span>
   </a>
   
@@ -1920,6 +1920,69 @@
 <div class="doc doc-object doc-function">
 
 
+<h2 id="bookacle.conf.config.import_attribute_from_module" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">import_attribute_from_module</span>
+
+
+<a href="#bookacle.conf.config.import_attribute_from_module" class="headerlink" title="Permanent link">¤</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">import_attribute_from_module</span><span class="p">(</span><span class="n">dotted_path</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Type" href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Imports an attribute (class or function) from a dotted module path.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>dotted_path</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The full path to the attribute in the form of &lsquo;module.submodule.ClassName&rsquo;.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-external" title="typing.Type" href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a>[<a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a>]</code>
+          –
+          <div class="doc-md-description">
+            <p>The imported attribute (e.g., a class or function).</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/exceptions.html#ImportError">ImportError</a></code>
+            –
+          <div class="doc-md-description">
+            <p>If the module cannot be imported.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/exceptions.html#AttributeError">AttributeError</a></code>
+            –
+          <div class="doc-md-description">
+            <p>If the attribute does not exist in the module.</p>
+          </div>
+        </li>
+    </ul>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h2 id="bookacle.conf.config.cast_class_path_to_instance" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">cast_class_path_to_instance</span>
 
@@ -2103,69 +2166,6 @@
             <p>If the arguments has the <code>selection_mode</code> key
              and it is not a member of the <a class="autorefs autorefs-internal" href="../../tree/config/#bookacle.tree.config.SelectionMode">SelectionMode</a>
              Enum.</p>
-          </div>
-        </li>
-    </ul>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h2 id="bookacle.conf.config.import_attribute_from_module" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">import_attribute_from_module</span>
-
-
-<a href="#bookacle.conf.config.import_attribute_from_module" class="headerlink" title="Permanent link">¤</a></h2>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">import_attribute_from_module</span><span class="p">(</span><span class="n">dotted_path</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Type" href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">]</span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-        <p>Imports an attribute (class or function) from a dotted module path.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          <b><code>dotted_path</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>The full path to the attribute in the form of &lsquo;module.submodule.ClassName&rsquo;.</p>
-          </div>
-        </li>
-    </ul>
-
-
-<p><span class="doc-section-title">Returns:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-              <code><a class="autorefs autorefs-external" title="typing.Type" href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a>[<a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a>]</code>
-          –
-          <div class="doc-md-description">
-            <p>The imported attribute (e.g., a class or function).</p>
-          </div>
-        </li>
-    </ul>
-
-
-<p><span class="doc-section-title">Raises:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/exceptions.html#ImportError">ImportError</a></code>
-            –
-          <div class="doc-md-description">
-            <p>If the module cannot be imported.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/exceptions.html#AttributeError">AttributeError</a></code>
-            –
-          <div class="doc-md-description">
-            <p>If the attribute does not exist in the module.</p>
           </div>
         </li>
     </ul>

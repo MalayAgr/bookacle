@@ -1408,18 +1408,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#bookacle.splitters.HuggingFaceMarkdownSplitter" class="md-nav__link">
+  <a href="#bookacle.splitters.HuggingFaceTextSplitter" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;HuggingFaceMarkdownSplitter
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;HuggingFaceTextSplitter
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#bookacle.splitters.HuggingFaceTextSplitter" class="md-nav__link">
+  <a href="#bookacle.splitters.HuggingFaceMarkdownSplitter" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;HuggingFaceTextSplitter
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;HuggingFaceMarkdownSplitter
     </span>
   </a>
   
@@ -1732,18 +1732,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#bookacle.splitters.HuggingFaceMarkdownSplitter" class="md-nav__link">
+  <a href="#bookacle.splitters.HuggingFaceTextSplitter" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;HuggingFaceMarkdownSplitter
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;HuggingFaceTextSplitter
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#bookacle.splitters.HuggingFaceTextSplitter" class="md-nav__link">
+  <a href="#bookacle.splitters.HuggingFaceMarkdownSplitter" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;HuggingFaceTextSplitter
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;HuggingFaceMarkdownSplitter
     </span>
   </a>
   
@@ -1940,78 +1940,6 @@
 
 
 
-<h2 id="bookacle.splitters.HuggingFaceMarkdownSplitter" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">HuggingFaceMarkdownSplitter</span>
-
-
-<a href="#bookacle.splitters.HuggingFaceMarkdownSplitter" class="headerlink" title="Permanent link">¤</a></h2>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">HuggingFaceMarkdownSplitter</span><span class="p">(</span>
-    <span class="n">tokenizer</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="transformers.PreTrainedTokenizerBase" href="https://huggingface.co/docs/transformers/main/en/internal/tokenization_utils#transformers.PreTrainedTokenizerBase">PreTrainedTokenizerBase</a></span><span class="p">,</span>
-<span class="p">)</span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-
-        <p>Markdown-based document splitter which uses a HuggingFace tokenizer to calculate
-length of chunks when splitting.</p>
-<p>It uses Langchain&rsquo;s
-<a class="autorefs autorefs-external" href="https://api.python.langchain.com/en/latest/markdown/langchain_text_splitters.markdown.MarkdownTextSplitter.html#langchain_text_splitters.markdown.MarkdownTextSplitter">MarkdownTextSplitter</a>
-and expects the list of documents to be in Markdown.</p>
-<p>It implements the <a class="autorefs autorefs-internal" href="#bookacle.splitters.DocumentSplitterLike">DocumentSplitterLike</a>
-protocol.</p>
-
-
-<p><span class="doc-section-title">Attributes:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          <b><code><span title="bookacle.splitters.HuggingFaceMarkdownSplitter.tokenizer">tokenizer</span></code></b>
-          –
-          <div class="doc-md-description">
-            <p>The HuggingFace tokenizer to use for calculating length.</p>
-          </div>
-        </li>
-    </ul>
-
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          <b><code>tokenizer</code></b>
-              (<code><a class="autorefs autorefs-external" title="transformers.PreTrainedTokenizerBase" href="https://huggingface.co/docs/transformers/main/en/internal/tokenization_utils#transformers.PreTrainedTokenizerBase">PreTrainedTokenizerBase</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>The HuggingFace tokenizer to use to calculate length.</p>
-          </div>
-        </li>
-    </ul>
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
 <h2 id="bookacle.splitters.HuggingFaceTextSplitter" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">HuggingFaceTextSplitter</span>
 
@@ -2074,6 +2002,78 @@ protocol.</p>
           <div class="doc-md-description">
             <p>The list of separators to use.
         When <code>None</code>, the default separators are used: <code>["\n\n", "\n", ".", "!", "?"]</code>.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="bookacle.splitters.HuggingFaceMarkdownSplitter" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">HuggingFaceMarkdownSplitter</span>
+
+
+<a href="#bookacle.splitters.HuggingFaceMarkdownSplitter" class="headerlink" title="Permanent link">¤</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">HuggingFaceMarkdownSplitter</span><span class="p">(</span>
+    <span class="n">tokenizer</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="transformers.PreTrainedTokenizerBase" href="https://huggingface.co/docs/transformers/main/en/internal/tokenization_utils#transformers.PreTrainedTokenizerBase">PreTrainedTokenizerBase</a></span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>Markdown-based document splitter which uses a HuggingFace tokenizer to calculate
+length of chunks when splitting.</p>
+<p>It uses Langchain&rsquo;s
+<a class="autorefs autorefs-external" href="https://api.python.langchain.com/en/latest/markdown/langchain_text_splitters.markdown.MarkdownTextSplitter.html#langchain_text_splitters.markdown.MarkdownTextSplitter">MarkdownTextSplitter</a>
+and expects the list of documents to be in Markdown.</p>
+<p>It implements the <a class="autorefs autorefs-internal" href="#bookacle.splitters.DocumentSplitterLike">DocumentSplitterLike</a>
+protocol.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><span title="bookacle.splitters.HuggingFaceMarkdownSplitter.tokenizer">tokenizer</span></code></b>
+          –
+          <div class="doc-md-description">
+            <p>The HuggingFace tokenizer to use for calculating length.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>tokenizer</code></b>
+              (<code><a class="autorefs autorefs-external" title="transformers.PreTrainedTokenizerBase" href="https://huggingface.co/docs/transformers/main/en/internal/tokenization_utils#transformers.PreTrainedTokenizerBase">PreTrainedTokenizerBase</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The HuggingFace tokenizer to use to calculate length.</p>
           </div>
         </li>
     </ul>

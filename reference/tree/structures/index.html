@@ -1595,18 +1595,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#bookacle.tree.structures.Node.from_children" class="md-nav__link">
+  <a href="#bookacle.tree.structures.Node.from_text" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;from_children
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;from_text
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#bookacle.tree.structures.Node.from_text" class="md-nav__link">
+  <a href="#bookacle.tree.structures.Node.from_children" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;from_text
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;from_children
     </span>
   </a>
   
@@ -1646,18 +1646,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#bookacle.tree.structures.Tree.fetch_layer" class="md-nav__link">
+  <a href="#bookacle.tree.structures.Tree.tolist" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;fetch_layer
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#bookacle.tree.structures.Tree.fetch_node_layer" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;fetch_node_layer
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;tolist
     </span>
   </a>
   
@@ -1673,9 +1664,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#bookacle.tree.structures.Tree.tolist" class="md-nav__link">
+  <a href="#bookacle.tree.structures.Tree.fetch_layer" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;tolist
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;fetch_layer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bookacle.tree.structures.Tree.fetch_node_layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;fetch_node_layer
     </span>
   </a>
   
@@ -1781,18 +1781,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#bookacle.tree.structures.Node.from_children" class="md-nav__link">
+  <a href="#bookacle.tree.structures.Node.from_text" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;from_children
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;from_text
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#bookacle.tree.structures.Node.from_text" class="md-nav__link">
+  <a href="#bookacle.tree.structures.Node.from_children" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;from_text
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;from_children
     </span>
   </a>
   
@@ -1832,18 +1832,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#bookacle.tree.structures.Tree.fetch_layer" class="md-nav__link">
+  <a href="#bookacle.tree.structures.Tree.tolist" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;fetch_layer
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#bookacle.tree.structures.Tree.fetch_node_layer" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;fetch_node_layer
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;tolist
     </span>
   </a>
   
@@ -1859,9 +1850,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#bookacle.tree.structures.Tree.tolist" class="md-nav__link">
+  <a href="#bookacle.tree.structures.Tree.fetch_layer" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;tolist
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;fetch_layer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bookacle.tree.structures.Tree.fetch_node_layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;fetch_node_layer
     </span>
   </a>
   
@@ -2066,98 +2066,6 @@
 <div class="doc doc-object doc-function">
 
 
-<h3 id="bookacle.tree.structures.Node.from_children" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">from_children</span>
-
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
-  </span>
-
-<a href="#bookacle.tree.structures.Node.from_children" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">from_children</span><span class="p">(</span>
-    <span class="n">children</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="#bookacle.tree.structures.Node">Node</a></span><span class="p">],</span>
-    <span class="n">embedding_model</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="bookacle.models.embedding.EmbeddingModelLike" href="../../models/embedding/#bookacle.models.embedding.EmbeddingModelLike">EmbeddingModelLike</a></span><span class="p">,</span>
-    <span class="n">summarization_model</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="bookacle.models.summarization.SummarizationModelLike" href="../../models/summarization/#bookacle.models.summarization.SummarizationModelLike">SummarizationModelLike</a></span><span class="p">,</span>
-    <span class="n">index</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">,</span>
-    <span class="n">layer</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="#bookacle.tree.structures.Node">Node</a></span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-        <p>Create a node from a list of children nodes by summarizing their texts.</p>
-<p>The text of the children nodes is concatenated using
-<a class="autorefs autorefs-internal" href="#bookacle.tree.structures.concatenate_node_texts">concatenate_node_texts()</a> and passed to
-the summarization model to generate a summary.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          <b><code>children</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="#bookacle.tree.structures.Node">Node</a>]</code>)
-          –
-          <div class="doc-md-description">
-            <p>A list of children nodes.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>embedding_model</code></b>
-              (<code><a class="autorefs autorefs-internal" title="bookacle.models.embedding.EmbeddingModelLike" href="../../models/embedding/#bookacle.models.embedding.EmbeddingModelLike">EmbeddingModelLike</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>The embedding model to use for embedding the summarized text.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>summarization_model</code></b>
-              (<code><a class="autorefs autorefs-internal" title="bookacle.models.summarization.SummarizationModelLike" href="../../models/summarization/#bookacle.models.summarization.SummarizationModelLike">SummarizationModelLike</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>The summarization model to use for summarizing
-                 the text of the children nodes.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>index</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>The global index of the node in the tree.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>layer</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>, default:
-                  <code>0</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Tree layer the node belongs to.</p>
-          </div>
-        </li>
-    </ul>
-
-
-<p><span class="doc-section-title">Returns:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-              <code><a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="#bookacle.tree.structures.Node">Node</a></code>
-          –
-          <div class="doc-md-description">
-            <p>A node created from the children nodes.</p>
-          </div>
-        </li>
-    </ul>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
 <h3 id="bookacle.tree.structures.Node.from_text" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">from_text</span>
 
@@ -2248,6 +2156,98 @@ the summarization model to generate a summary.</p>
           –
           <div class="doc-md-description">
             <p>A node created from the text.</p>
+          </div>
+        </li>
+    </ul>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="bookacle.tree.structures.Node.from_children" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">from_children</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#bookacle.tree.structures.Node.from_children" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">from_children</span><span class="p">(</span>
+    <span class="n">children</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="#bookacle.tree.structures.Node">Node</a></span><span class="p">],</span>
+    <span class="n">embedding_model</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="bookacle.models.embedding.EmbeddingModelLike" href="../../models/embedding/#bookacle.models.embedding.EmbeddingModelLike">EmbeddingModelLike</a></span><span class="p">,</span>
+    <span class="n">summarization_model</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="bookacle.models.summarization.SummarizationModelLike" href="../../models/summarization/#bookacle.models.summarization.SummarizationModelLike">SummarizationModelLike</a></span><span class="p">,</span>
+    <span class="n">index</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">,</span>
+    <span class="n">layer</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="#bookacle.tree.structures.Node">Node</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Create a node from a list of children nodes by summarizing their texts.</p>
+<p>The text of the children nodes is concatenated using
+<a class="autorefs autorefs-internal" href="#bookacle.tree.structures.concatenate_node_texts">concatenate_node_texts()</a> and passed to
+the summarization model to generate a summary.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>children</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="#bookacle.tree.structures.Node">Node</a>]</code>)
+          –
+          <div class="doc-md-description">
+            <p>A list of children nodes.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>embedding_model</code></b>
+              (<code><a class="autorefs autorefs-internal" title="bookacle.models.embedding.EmbeddingModelLike" href="../../models/embedding/#bookacle.models.embedding.EmbeddingModelLike">EmbeddingModelLike</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The embedding model to use for embedding the summarized text.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>summarization_model</code></b>
+              (<code><a class="autorefs autorefs-internal" title="bookacle.models.summarization.SummarizationModelLike" href="../../models/summarization/#bookacle.models.summarization.SummarizationModelLike">SummarizationModelLike</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The summarization model to use for summarizing
+                 the text of the children nodes.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>index</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The global index of the node in the tree.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>layer</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>, default:
+                  <code>0</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Tree layer the node belongs to.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="#bookacle.tree.structures.Node">Node</a></code>
+          –
+          <div class="doc-md-description">
+            <p>A node created from the children nodes.</p>
           </div>
         </li>
     </ul>
@@ -2420,6 +2420,80 @@ the summarization model to generate a summary.</p>
 <div class="doc doc-object doc-function">
 
 
+<h3 id="bookacle.tree.structures.Tree.tolist" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">tolist</span>
+
+
+<a href="#bookacle.tree.structures.Tree.tolist" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">tolist</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="#bookacle.tree.structures.Node">Node</a></span><span class="p">]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="#bookacle.tree.structures.Node">Node</a>]</code>
+          –
+          <div class="doc-md-description">
+            <p>List of all nodes in the tree.</p>
+          </div>
+        </li>
+    </ul>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="bookacle.tree.structures.Tree.get_node" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">get_node</span>
+
+
+<a href="#bookacle.tree.structures.Tree.get_node" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">get_node</span><span class="p">(</span><span class="n">index</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="#bookacle.tree.structures.Node">Node</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Fetch a node in the tree by its global index.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>index</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The global index of the node to fetch.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="#bookacle.tree.structures.Node">Node</a></code>
+          –
+          <div class="doc-md-description">
+            <p>The node with the given global index.</p>
+          </div>
+        </li>
+    </ul>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h3 id="bookacle.tree.structures.Tree.fetch_layer" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">fetch_layer</span>
 
@@ -2497,80 +2571,6 @@ the summarization model to generate a summary.</p>
           –
           <div class="doc-md-description">
             <p>The index of the layer the node belongs to.</p>
-          </div>
-        </li>
-    </ul>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="bookacle.tree.structures.Tree.get_node" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">get_node</span>
-
-
-<a href="#bookacle.tree.structures.Tree.get_node" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">get_node</span><span class="p">(</span><span class="n">index</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="#bookacle.tree.structures.Node">Node</a></span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-        <p>Fetch a node in the tree by its global index.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          <b><code>index</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>The global index of the node to fetch.</p>
-          </div>
-        </li>
-    </ul>
-
-
-<p><span class="doc-section-title">Returns:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-              <code><a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="#bookacle.tree.structures.Node">Node</a></code>
-          –
-          <div class="doc-md-description">
-            <p>The node with the given global index.</p>
-          </div>
-        </li>
-    </ul>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="bookacle.tree.structures.Tree.tolist" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">tolist</span>
-
-
-<a href="#bookacle.tree.structures.Tree.tolist" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">tolist</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="#bookacle.tree.structures.Node">Node</a></span><span class="p">]</span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-
-
-<p><span class="doc-section-title">Returns:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="bookacle.tree.structures.Node" href="#bookacle.tree.structures.Node">Node</a>]</code>
-          –
-          <div class="doc-md-description">
-            <p>List of all nodes in the tree.</p>
           </div>
         </li>
     </ul>

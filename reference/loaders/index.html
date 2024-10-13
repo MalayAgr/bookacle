@@ -1264,6 +1264,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#bookacle.loaders.register_loader" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;register_loader
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#bookacle.loaders.pymupdf4llm_loader" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;pymupdf4llm_loader
@@ -1276,15 +1285,6 @@
   <a href="#bookacle.loaders.pymupdf_loader" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;pymupdf_loader
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#bookacle.loaders.register_loader" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;register_loader
     </span>
   </a>
   
@@ -1783,6 +1783,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#bookacle.loaders.register_loader" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;register_loader
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#bookacle.loaders.pymupdf4llm_loader" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;pymupdf4llm_loader
@@ -1795,15 +1804,6 @@
   <a href="#bookacle.loaders.pymupdf_loader" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;pymupdf_loader
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#bookacle.loaders.register_loader" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;register_loader
     </span>
   </a>
   
@@ -2082,6 +2082,51 @@
 <div class="doc doc-object doc-function">
 
 
+<h2 id="bookacle.loaders.register_loader" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">register_loader</span>
+
+
+<a href="#bookacle.loaders.register_loader" class="headerlink" title="Permanent link">¤</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">register_loader</span><span class="p">(</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n">manager</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="bookacle.loaders.LoaderManager" href="#bookacle.loaders.LoaderManager">LoaderManager</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Callable" href="https://docs.python.org/3/library/typing.html#typing.Callable">Callable</a></span><span class="p">[[</span><span class="n"><a class="autorefs autorefs-internal" title="bookacle.loaders.LoaderLike" href="#bookacle.loaders.LoaderLike">LoaderLike</a></span><span class="p">],</span> <span class="n"><a class="autorefs autorefs-internal" title="bookacle.loaders.LoaderLike" href="#bookacle.loaders.LoaderLike">LoaderLike</a></span><span class="p">]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>A decorator that registers a loader function with the loader manager.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>name</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The name to map the loader function to.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>manager</code></b>
+              (<code><a class="autorefs autorefs-internal" title="bookacle.loaders.LoaderManager" href="#bookacle.loaders.LoaderManager">LoaderManager</a> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>The manager to register the function with.
+     If <code>None</code>, <a class="autorefs autorefs-internal" href="#bookacle.loaders.LOADER_MANAGER"><code>LOADER_MANAGER</code></a> is used.</p>
+          </div>
+        </li>
+    </ul>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h2 id="bookacle.loaders.pymupdf4llm_loader" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">pymupdf4llm_loader</span>
 
@@ -2124,51 +2169,6 @@
         <p>Document loader which uses <code>pymupdf</code> to load the PDF as text.</p>
 <p>Can be accessed using the name <code>'pymupdf'</code> via the default loader manager.</p>
 <p>It implements the <a class="autorefs autorefs-internal" href="#bookacle.loaders.LoaderLike">LoaderLike</a> protocol.</p>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h2 id="bookacle.loaders.register_loader" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">register_loader</span>
-
-
-<a href="#bookacle.loaders.register_loader" class="headerlink" title="Permanent link">¤</a></h2>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">register_loader</span><span class="p">(</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n">manager</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="bookacle.loaders.LoaderManager" href="#bookacle.loaders.LoaderManager">LoaderManager</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Callable" href="https://docs.python.org/3/library/typing.html#typing.Callable">Callable</a></span><span class="p">[[</span><span class="n"><a class="autorefs autorefs-internal" title="bookacle.loaders.LoaderLike" href="#bookacle.loaders.LoaderLike">LoaderLike</a></span><span class="p">],</span> <span class="n"><a class="autorefs autorefs-internal" title="bookacle.loaders.LoaderLike" href="#bookacle.loaders.LoaderLike">LoaderLike</a></span><span class="p">]</span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-        <p>A decorator that registers a loader function with the loader manager.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          <b><code>name</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>The name to map the loader function to.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>manager</code></b>
-              (<code><a class="autorefs autorefs-internal" title="bookacle.loaders.LoaderManager" href="#bookacle.loaders.LoaderManager">LoaderManager</a> | None</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>The manager to register the function with.
-     If <code>None</code>, <a class="autorefs autorefs-internal" href="#bookacle.loaders.LOADER_MANAGER"><code>LOADER_MANAGER</code></a> is used.</p>
-          </div>
-        </li>
-    </ul>
 
     </div>
 
