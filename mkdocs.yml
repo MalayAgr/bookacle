@@ -3,6 +3,16 @@ repo_url: https://github.com/MalayAgr/bookacle/
 edit_uri: "edit/main/"
 copyright: Copyright &copy; 2024 Malay Agarwal
 
+nav:
+- Home:
+  - Overview: index.md
+  - License: license.md
+- Usage:
+  - usage/index.md
+- API Reference:
+  - bookacle: reference/
+
+
 theme:
   logo_dark_mode: assets/logo-dark.svg
   logo_light_mode: assets/logo-light.svg
@@ -82,18 +92,13 @@ plugins:
 - social
 - autorefs
 - markdown-exec
-- minify:
-    minify_html: true
-    minify_js: true
-    minify_css: true
 - gen-files:
     scripts:
-    - docs/gen_ref_pages.py
+    - scripts/gen_ref_pages.py
 - literate-nav:
-    nav_file: SUMMARY.txt
+    nav_file: SUMMARY.md
 - section-index
 - mkdocstrings:
-    default_handler: python
     handlers:
       python:
         import:
@@ -106,6 +111,7 @@ plugins:
           - https://sbert.net/objects.inv
           - https://joblib.readthedocs.io/en/stable/objects.inv
           - https://www.dynaconf.com/objects.inv
+        paths: [src]
         options:
           docstring_options:
             ignore_init_summary: true
@@ -124,11 +130,10 @@ plugins:
           show_symbol_type_toc: true
           signature_crossrefs: true
           summary: true
-          members_order: source
-          allow_inspection: true
           preload_modules: ["langchain_text_splitters"]
 
 watch:
+  - README.md
   - mkdocs.yml
   - src/bookacle/
 
@@ -136,14 +141,6 @@ extra_css:
   - stylesheets/custom.css
   - stylesheets/links.css
   - stylesheets/logo.css
-
-
-nav:
-- Home:
-  - Overview: index.md
-  - License: license.md
-- Download and Install: download-install.md
-- API Reference: reference/
 
 extra:
   social:
