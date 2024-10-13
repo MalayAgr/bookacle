@@ -128,7 +128,8 @@ plugins:
           docstring_options:
             ignore_init_summary: true
           docstring_section_style: list
-          filters: ["!^_", "^__init__$", "^__call__$", "!^can_replace$"]
+          members_order: "source"
+          filters: ["!^_", "^__init__$", "^__call__$"]
           heading_level: 1
           inherited_members: true
           merge_init_into_class: true
