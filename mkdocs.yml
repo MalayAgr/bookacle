@@ -1,6 +1,7 @@
 site_name: "bookacle"
 repo_url: https://github.com/MalayAgr/bookacle/
 edit_uri: "edit/main/"
+watch: ["mkdocs.yml", "README.md", "src/bookacle"]
 copyright: Copyright &copy; 2024 Malay Agarwal
 
 nav:
@@ -90,14 +91,12 @@ markdown_extensions:
 plugins:
 - search
 - social
-- autorefs
 - markdown-exec
 - gen-files:
     scripts:
     - scripts/gen_ref_pages.py
 - literate-nav:
     nav_file: SUMMARY.md
-- section-index
 - mkdocstrings:
     handlers:
       python:
@@ -131,11 +130,6 @@ plugins:
           signature_crossrefs: true
           summary: true
           preload_modules: ["langchain_text_splitters"]
-
-watch:
-  - README.md
-  - mkdocs.yml
-  - src/bookacle/
 
 extra_css:
   - stylesheets/custom.css
