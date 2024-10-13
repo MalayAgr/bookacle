@@ -1,6 +1,6 @@
 site_name: "bookacle"
 repo_url: https://github.com/MalayAgr/bookacle/
-edit_uri: "edit/main/"
+edit_uri: "edit/main/docs"
 watch: ["mkdocs.yml", "README.md", "src/bookacle"]
 copyright: Copyright &copy; 2024 Malay Agarwal
 
@@ -92,6 +92,7 @@ plugins:
 - search
 - social
 - markdown-exec
+- autorefs
 - gen-files:
     scripts:
     - scripts/gen_ref_pages.py
