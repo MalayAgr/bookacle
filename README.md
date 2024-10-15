@@ -5,9 +5,29 @@
 
 Answer queries on complex PDF documents using RAPTOR-based RAG.
 
-For more details on RAPTOR, refer to the paper: <https://arxiv.org/abs/2401.18059>.
-
 ## RAPTOR Overview
+
+RAPTOR (**R**ecursive **A**bstractive **P**rocessing for **T**ree-**O**rganized **R**etrieval) is a RAG technique designed to work with large documents in a limited context. From the abstract:
+
+> _Retrieval-augmented language models can better adapt to changes in world state and incorporate long-tail knowledge. However, most existing methods retrieve only short contiguous chunks from a retrieval corpus, limiting holistic understanding of the overall document context. We introduce the novel approach of recursively embedding, clustering, and summarizing chunks of text, constructing a tree with differing levels of summarization from the bottom up. At inference time, our RAPTOR model retrieves from this tree, integrating information across lengthy documents at different levels of abstraction. Controlled experiments show that retrieval with recursive summaries offers significant improvements over traditional retrieval-augmented LMs on several tasks. On question-answering tasks that involve complex, multi-step reasoning, we show state-of-the-art results; for example, by coupling RAPTOR retrieval with the use of GPT-4, we can improve the best performance on the QuALITY benchmark by 20% in absolute accuracy._
+
+It builds a hierarchial tree structure on the documents and queries the tree to retrieve relevant context. The idea is that the upper layers of the tree represent a more holistic understanding of the documents and as we go down the tree, the understanding becomes more granular until we reach the leaf nodes, where the actual text from the documents resides.
+
+This holistic understanding is achieved as follows:
+
+- The documents are split into small chunks.
+- These chunks are embedded using an embedding model and become the leaf nodes of the tree structure.
+- A clustering algorithm is used to cluster these leaf nodes.
+- For each cluster:
+    - The texts of the nodes in the cluster are concatenated.
+    - A summary of the concatenated text is generated using a model.
+    - The summary is embedded using the same embedding model and becomes a node in the next layer.
+    - The children of this node are the nodes in the cluster.
+- This process is repeated until no further layers can be made.
+
+Since each subsequent layer is a summary of some nodes in the previous layer, it represents a holistic understanding of those nodes, helping build a holistic understanding of the overall documents as we go up the tree.
+
+For more details on RAPTOR, refer to the paper: <https://arxiv.org/abs/2401.18059>.
 
 ## Features
 
