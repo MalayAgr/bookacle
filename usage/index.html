@@ -1810,6 +1810,8 @@
 </code></pre></div>
 <div class="result">
 <div class="language-text highlight"><pre><span></span><code>Retrieved context:
+Mario Puzo wrote the screenplay for the movie &quot;The Godfather&quot;. The film starred an ensemble cast including Marlon Brando, Al Pacino, James Caan, Richard Castellano, Robert Duvall,  Sterling  Hayden,  John  Marley,  Richard  Conte  and  Diane  Keaton. It tells the story of the Corleone family, including Vito Corleone, from 1945 to 1955, who
+
 the office and pay reverence to Michael as &quot;Don Corleone&quot;.
 ▪ Marlon Brando as Vito Corleone: crime boss and
 patriarch of the Corleone family
@@ -1857,60 +1859,40 @@ position before Coppola signed on to direct the film but disagreement followed o
 several  characters,  in  particular,  Vito  (Brando)  and  Michael  (Pacino).  Filming  took  place
 primarily in locations around New York City and Sicily, and it was completed ahead of schedule.
 
-▪ Al Lettieri as Virgil Sollozzo: an adversary who
-attempts to pressure Vito to get into the drug
-business, backed by the Tattaglia family
-▪ Diane Keaton as Kay Adams-Corleone: Michael&#39;s
-girlfriend and, later
-, second wife
-▪ Abe Vigoda as Salvatore Tessio: a caporegime in the
-Corleone crime family
-▪ Talia Shire as Connie Corleone: Vito&#39;s only daughter
-▪ Gianni Russo as Carlo Rizzi: Connie&#39;s abusive husband
-▪ John Cazale as Fredo Corleone: Vito&#39;s middle son
-▪ Rudy Bond as Cuneo: a crime boss of a rival family
-▪ Al Martino as Johnny Fontane: a singer and Vito&#39;s
-godson
-▪ Morgana King as Carmela Corleone: Vito&#39;s wife
-▪ Lenny Montana as Luca Brasi: Vito&#39;s enforcer
-
-▪ Tony Giorgio as Bruno Tattaglia
-▪ Vito Scotti as Nazorine
-▪ Tere Livrano as Theresa Hagen: Tom&#39;s wife
-▪ Victor Rendina as Philip Tattaglia: head of the Tattaglia
-crime family and prostitution crime boss
-▪ Jeannie Linero as Lucy Mancini: Connie&#39;s friend and
-Sonny&#39;s mistress
-▪ Julie Gregg as Sandra Corleone: Sonny&#39;s wife
-▪ Ardell Sheridan as Mrs. Clemenza
-Other actors playing smaller roles in the Sicilian sequence are Simonetta Stefanelli as Apollonia Vitelli-Corleone, Angelo Infanti as Fabrizio,
-Corrado Gaipa as Don Tommasino, Franco Citti as Calò and Saro Urzì as Vitelli.
-The film is based on Mario Puzo&#39;s The Godfather, which remained on The New York Times Best Seller list for 67 weeks and sold over nine
+The Godfather is an epic gangster film directed by Francis Ford Coppola, based on Mario Puzo&#39;s best-selling novel. It stars Marlon Brando, Al Pacino, James Caan, Richard Castellano, Robert Duvall, Sterling Hayden, John Marley, Richard Conte, Diane Keaton. The film is about the transformation of Vito Corleone&#39;s youngest son, Michael, during the 1940s to 1950s.
 </code></pre></div>
 </div>
 <p>Set the system prompt (optional) and get an answer from the question-answering model:</p>
-<div class="language-python highlight"><pre><span></span><code><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-  <span class="n">File</span> <span class="s2">&quot;/media/malay_agr/Shared/Coding/Python/bookacle/.venv/lib/python3.11/site-packages/markdown_exec/formatters/python.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">71</span><span class="p">,</span> <span class="ow">in</span> <span class="n">_run_python</span>
-    <span class="n">exec_python</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">code_block_id</span><span class="p">,</span> <span class="n">exec_globals</span><span class="p">)</span>
-  <span class="n">File</span> <span class="s2">&quot;/media/malay_agr/Shared/Coding/Python/bookacle/.venv/lib/python3.11/site-packages/markdown_exec/formatters/_exec_python.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">8</span><span class="p">,</span> <span class="ow">in</span> <span class="n">exec_python</span>
-    <span class="n">exec</span><span class="p">(</span><span class="n">compiled</span><span class="p">,</span> <span class="n">exec_globals</span><span class="p">)</span>  <span class="c1"># noqa: S102</span>
-    <span class="o">^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
-  <span class="n">File</span> <span class="s2">&quot;&lt;code block: session rag; n7&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">10</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-    <span class="n">answer</span> <span class="o">=</span> <span class="n">qa_model</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">history</span><span class="o">=</span><span class="n">history</span><span class="p">)</span>
-              <span class="o">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
-  <span class="n">File</span> <span class="s2">&quot;/media/malay_agr/Shared/Coding/Python/bookacle/src/bookacle/models/qa.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">146</span><span class="p">,</span> <span class="ow">in</span> <span class="n">answer</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">ollama</span><span class="o">.</span><span class="n">chat</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span> <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
-               <span class="o">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
-  <span class="n">File</span> <span class="s2">&quot;/media/malay_agr/Shared/Coding/Python/bookacle/.venv/lib/python3.11/site-packages/ollama/_client.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">236</span><span class="p">,</span> <span class="ow">in</span> <span class="n">chat</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request_stream</span><span class="p">(</span>
-           <span class="o">^^^^^^^^^^^^^^^^^^^^^</span>
-  <span class="n">File</span> <span class="s2">&quot;/media/malay_agr/Shared/Coding/Python/bookacle/.venv/lib/python3.11/site-packages/ollama/_client.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">99</span><span class="p">,</span> <span class="ow">in</span> <span class="n">_request_stream</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">if</span> <span class="n">stream</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-                                                        <span class="o">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
-  <span class="n">File</span> <span class="s2">&quot;/media/malay_agr/Shared/Coding/Python/bookacle/.venv/lib/python3.11/site-packages/ollama/_client.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">75</span><span class="p">,</span> <span class="ow">in</span> <span class="n">_request</span>
-    <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span> <span class="kn">from</span> <span class="kc">None</span>
-<span class="n">ollama</span><span class="o">.</span><span class="n">_types</span><span class="o">.</span><span class="n">ResponseError</span><span class="p">:</span> <span class="n">llama</span> <span class="n">runner</span> <span class="n">process</span> <span class="n">has</span> <span class="n">terminated</span><span class="p">:</span> <span class="n">CUDA</span> <span class="n">error</span>
+<div class="language-python highlight"><pre><span></span><code><span class="n">system_prompt</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;You are a helpful assistant, designed to help users understand documents and answer questions on the documents.</span>
+<span class="s2">Use your knowledge and the context passed to you to answer user queries.</span>
+<span class="s2">The context will be text extracted from the document. It will be denoted by CONTEXT: in the prompt.</span>
+<span class="s2">The user&#39;s query will be denoted by QUERY: in the prompt.</span>
+<span class="s2">Do NOT explicitly state that you are referring to the context.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">history</span> <span class="o">=</span> <span class="p">[</span><span class="n">Message</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">system_prompt</span><span class="p">)]</span>
+
+<span class="n">answer</span> <span class="o">=</span> <span class="n">qa_model</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">history</span><span class="o">=</span><span class="n">history</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Answer:</span><span class="se">\n</span><span class="si">{</span><span class="n">answer</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
+<div class="result">
+<div class="language-text highlight"><pre><span></span><code>Answer:
+The cast members of &quot;The Godfather&quot; are as follows:
+
+1. Marlon Brando - Vito Corleone, eldest son
+2. Al Pacino - Michael Corleone, youngest son
+3. James Caan - Sonny Corleone, eldest son
+4. Richard Castellano - Peter Clemenza, a Caporegime in the Corleone family, Sonny&#39;s godfather
+5. Robert Duvall - Tom Hagen, crime boss, Sonny&#39;s consigliere and one of the &quot;undertakers&quot; (filmmaker)
+6. Sterling Hayden - Captain McCluskey, corrupt police captain on Sollozzo&#39;s payroll
+7. John Marley - Jack Woltz, Hollywood film producer, who is intimidated by the Corleones
+8. Richard Conte - Emilio Barzini, a crime boss of a rival family
+9. Diane Keaton - Gianni Russo, Connie&#39;s abusive husband
+
+They are all ensemble cast members in this classic American epic gangster film directed by Francis Ford Coppola and based on Mario Puzo&#39;s novel &quot;The Godfather&quot;.
+</code></pre></div>
+</div>
 
 
 
