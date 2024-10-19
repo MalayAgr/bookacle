@@ -1640,8 +1640,28 @@
 <h1 id="bookacle">bookacle<a class="headerlink" href="#bookacle" title="Permanent link">¤</a></h1>
 <p><a href="https://malayagr.github.io/bookacle"><img alt="documentation" src="https://img.shields.io/badge/docs-bookacle-blue?style=flat" /></a></p>
 <p>Answer queries on complex PDF documents using RAPTOR-based RAG.</p>
-<p>For more details on RAPTOR, refer to the paper: <a href="https://arxiv.org/abs/2401.18059">https://arxiv.org/abs/2401.18059</a>.</p>
 <h2 id="raptor-overview">RAPTOR Overview<a class="headerlink" href="#raptor-overview" title="Permanent link">¤</a></h2>
+<p>RAPTOR (<strong>R</strong>ecursive <strong>A</strong>bstractive <strong>P</strong>rocessing for <strong>T</strong>ree-<strong>O</strong>rganized <strong>R</strong>etrieval) is a RAG technique designed to work with large documents in a limited context. From the abstract:</p>
+<blockquote>
+<p><em>Retrieval-augmented language models can better adapt to changes in world state and incorporate long-tail knowledge. However, most existing methods retrieve only short contiguous chunks from a retrieval corpus, limiting holistic understanding of the overall document context. We introduce the novel approach of recursively embedding, clustering, and summarizing chunks of text, constructing a tree with differing levels of summarization from the bottom up. At inference time, our RAPTOR model retrieves from this tree, integrating information across lengthy documents at different levels of abstraction. Controlled experiments show that retrieval with recursive summaries offers significant improvements over traditional retrieval-augmented LMs on several tasks. On question-answering tasks that involve complex, multi-step reasoning, we show state-of-the-art results; for example, by coupling RAPTOR retrieval with the use of GPT-4, we can improve the best performance on the QuALITY benchmark by 20% in absolute accuracy.</em></p>
+</blockquote>
+<p>It builds a hierarchial tree structure on the documents and queries the tree to retrieve relevant context. The idea is that the upper layers of the tree represent a more holistic understanding of the documents and as we go down the tree, the understanding becomes more granular until we reach the leaf nodes, where the actual text from the documents resides.</p>
+<p>This holistic understanding is achieved as follows:</p>
+<ul>
+<li>The documents are split into small chunks.</li>
+<li>These chunks are embedded using an embedding model and become the leaf nodes of the tree structure.</li>
+<li>A clustering algorithm is used to cluster these leaf nodes.</li>
+<li>For each cluster:<ul>
+<li>The texts of the nodes in the cluster are concatenated.</li>
+<li>A summary of the concatenated text is generated using a model.</li>
+<li>The summary is embedded using the same embedding model and becomes a node in the next layer.</li>
+<li>The children of this node are the nodes in the cluster.</li>
+</ul>
+</li>
+<li>This process is repeated until no further layers can be made.</li>
+</ul>
+<p>Since each subsequent layer is a summary of some nodes in the previous layer, it represents a holistic understanding of those nodes, helping build a holistic understanding of the overall documents as we go up the tree.</p>
+<p>For more details on RAPTOR, refer to the paper: <a href="https://arxiv.org/abs/2401.18059">https://arxiv.org/abs/2401.18059</a>.</p>
 <h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">¤</a></h2>
 <ul>
 <li>Everything is a <a href="https://typing.readthedocs.io/en/latest/spec/protocol.html">Protocol</a>, allowing for convenient extensibility.</li>

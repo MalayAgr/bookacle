@@ -20,7 +20,7 @@
     
     
       
-        <title>Index - bookacle</title>
+        <title>Usage - bookacle</title>
       
     
     
@@ -67,7 +67,7 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="Index - bookacle" >
+        <meta  property="og:title"  content="Usage - bookacle" >
       
         <meta  property="og:description"  content="None" >
       
@@ -83,7 +83,7 @@
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="Index - bookacle" >
+        <meta  name="twitter:title"  content="Usage - bookacle" >
       
         <meta  name="twitter:description"  content="None" >
       
@@ -108,6 +108,11 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
+      
+        
+        <a href="#usage" class="md-skip">
+          Skip to content
+        </a>
       
     </div>
     <div data-md-component="announce">
@@ -139,7 +144,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Index
+              Usage
             
           </span>
         </div>
@@ -1579,6 +1584,49 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example-rag-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example RAG Application
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example RAG Application">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#full-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Full Code
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step-by-Step
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1609,9 +1657,260 @@
   
 
 
-  <h1>Index</h1>
+<h1 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">¤</a></h1>
+<h2 id="example-rag-application">Example RAG Application<a class="headerlink" href="#example-rag-application" title="Permanent link">¤</a></h2>
+<h3 id="full-code">Full Code<a class="headerlink" href="#full-code" title="Permanent link">¤</a></h3>
+<details class="code">
+<summary>Code</summary>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">bookacle.loaders</span> <span class="kn">import</span> <span class="n">pymupdf_loader</span>
+<span class="kn">from</span> <span class="nn">bookacle.models.embedding</span> <span class="kn">import</span> <span class="n">SentenceTransformerEmbeddingModel</span>
+<span class="kn">from</span> <span class="nn">bookacle.models.qa</span> <span class="kn">import</span> <span class="n">OllamaQAModel</span>
+<span class="kn">from</span> <span class="nn">bookacle.models.summarization</span> <span class="kn">import</span> <span class="n">HuggingFaceLLMSummarizationModel</span>
+<span class="kn">from</span> <span class="nn">bookacle.splitters</span> <span class="kn">import</span> <span class="n">HuggingFaceTextSplitter</span>
+<span class="kn">from</span> <span class="nn">bookacle.tree.builder</span> <span class="kn">import</span> <span class="n">ClusterTreeBuilder</span>
+<span class="kn">from</span> <span class="nn">bookacle.tree.config</span> <span class="kn">import</span> <span class="n">ClusterTreeConfig</span><span class="p">,</span> <span class="n">TreeRetrieverConfig</span>
+<span class="kn">from</span> <span class="nn">bookacle.tree.retriever</span> <span class="kn">import</span> <span class="n">TreeRetriever</span>
+<span class="kn">from</span> <span class="nn">bookacle.models.message</span> <span class="kn">import</span> <span class="n">Message</span>
 
+<span class="n">documents</span> <span class="o">=</span> <span class="n">pymupdf_loader</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;data/the-godfather.pdf&quot;</span><span class="p">)</span>
 
+<span class="n">embedding_model</span> <span class="o">=</span> <span class="n">SentenceTransformerEmbeddingModel</span><span class="p">(</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;sentence-transformers/all-MiniLM-L6-v2&quot;</span><span class="p">,</span> <span class="n">use_gpu</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">document_splitter</span> <span class="o">=</span> <span class="n">HuggingFaceTextSplitter</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">=</span><span class="n">embedding_model</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">)</span>
+
+<span class="n">summarization_model</span> <span class="o">=</span> <span class="n">HuggingFaceLLMSummarizationModel</span><span class="p">(</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;Qwen/Qwen2-0.5B-Instruct&quot;</span><span class="p">,</span>
+    <span class="n">use_gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">summarization_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">ClusterTreeConfig</span><span class="p">(</span>
+    <span class="n">embedding_model</span><span class="o">=</span><span class="n">embedding_model</span><span class="p">,</span>
+    <span class="n">summarization_model</span><span class="o">=</span><span class="n">summarization_model</span><span class="p">,</span>
+    <span class="n">document_splitter</span><span class="o">=</span><span class="n">document_splitter</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">tree_builder</span> <span class="o">=</span> <span class="n">ClusterTreeBuilder</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+
+<span class="n">tree</span> <span class="o">=</span> <span class="n">tree_builder</span><span class="o">.</span><span class="n">build_from_documents</span><span class="p">(</span><span class="n">documents</span><span class="o">=</span><span class="n">documents</span><span class="p">)</span>
+
+<span class="n">retriever_config</span> <span class="o">=</span> <span class="n">TreeRetrieverConfig</span><span class="p">(</span><span class="n">embedding_model</span><span class="o">=</span><span class="n">embedding_model</span><span class="p">)</span>
+<span class="n">retriever</span> <span class="o">=</span> <span class="n">TreeRetriever</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">retriever_config</span><span class="p">)</span>
+
+<span class="n">qa_model</span> <span class="o">=</span> <span class="n">OllamaQAModel</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;qwen2.5:0.5b-instruct&quot;</span><span class="p">)</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;Who are the cast members of The Godfather?&quot;</span>
+
+<span class="n">_</span><span class="p">,</span> <span class="n">context</span> <span class="o">=</span> <span class="n">retriever</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">tree</span><span class="o">=</span><span class="n">tree</span><span class="p">)</span>
+
+<span class="n">system_prompt</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;You are a helpful assistant, designed to help users understand documents and answer questions on the documents.</span>
+<span class="s2">Use your knowledge and the context passed to you to answer user queries.</span>
+<span class="s2">The context will be text extracted from the document. It will be denoted by CONTEXT: in the prompt.</span>
+<span class="s2">The user&#39;s query will be denoted by QUERY: in the prompt.</span>
+<span class="s2">Do NOT explicitly state that you are referring to the context.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">history</span> <span class="o">=</span> <span class="p">[</span><span class="n">Message</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">system_prompt</span><span class="p">)]</span>
+
+<span class="n">answer</span> <span class="o">=</span> <span class="n">qa_model</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">history</span><span class="o">=</span><span class="n">history</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Answer:</span><span class="se">\n</span><span class="si">{</span><span class="n">answer</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+</details>
+<h3 id="step-by-step">Step-by-Step<a class="headerlink" href="#step-by-step" title="Permanent link">¤</a></h3>
+<p>Below, the code is shown step-by-step with intermediate outputs.</p>
+<details class="imports">
+<summary>Imports</summary>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">bookacle.loaders</span> <span class="kn">import</span> <span class="n">pymupdf_loader</span>
+<span class="kn">from</span> <span class="nn">bookacle.models.embedding</span> <span class="kn">import</span> <span class="n">SentenceTransformerEmbeddingModel</span>
+<span class="kn">from</span> <span class="nn">bookacle.models.qa</span> <span class="kn">import</span> <span class="n">OllamaQAModel</span>
+<span class="kn">from</span> <span class="nn">bookacle.models.summarization</span> <span class="kn">import</span> <span class="n">HuggingFaceLLMSummarizationModel</span>
+<span class="kn">from</span> <span class="nn">bookacle.splitters</span> <span class="kn">import</span> <span class="n">HuggingFaceTextSplitter</span>
+<span class="kn">from</span> <span class="nn">bookacle.tree.builder</span> <span class="kn">import</span> <span class="n">ClusterTreeBuilder</span>
+<span class="kn">from</span> <span class="nn">bookacle.tree.config</span> <span class="kn">import</span> <span class="n">ClusterTreeConfig</span><span class="p">,</span> <span class="n">TreeRetrieverConfig</span>
+<span class="kn">from</span> <span class="nn">bookacle.tree.retriever</span> <span class="kn">import</span> <span class="n">TreeRetriever</span>
+<span class="kn">from</span> <span class="nn">bookacle.models.message</span> <span class="kn">import</span> <span class="n">Message</span>
+</code></pre></div>
+<div class="result"></div>
+</details>
+<p>Load the data file. The example uses the first 2 pages (when exported in A3) of the Wikipedia entry on <a href="https://en.wikipedia.org/wiki/The_Godfather">The Godfather</a>:</p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">documents</span> <span class="o">=</span> <span class="n">pymupdf_loader</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;data/the-godfather.pdf&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of documents: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">documents</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;First document:</span><span class="se">\n</span><span class="si">{</span><span class="n">documents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="result">
+<div class="language-python highlight"><pre><span></span><code><span class="n">Number</span> <span class="n">of</span> <span class="n">documents</span><span class="p">:</span> <span class="mi">2</span>
+<span class="n">First</span> <span class="n">document</span><span class="p">:</span>
+<span class="p">{</span><span class="s1">&#39;page_content&#39;</span><span class="p">:</span> <span class="s1">&#39;The Godfather</span><span class="se">\n</span><span class="s1">Theatrical release poster</span><span class="se">\n</span><span class="s1">Directed by</span><span class="se">\n</span><span class="s1">Francis Ford Coppola</span><span class="se">\n</span><span class="s1">Screenplay by</span><span class="se">\n</span><span class="s1">Mario Puzo</span><span class="se">\n</span><span class="s1">Francis Ford Coppola</span><span class="se">\n</span><span class="s1">Based on</span><span class="se">\n</span><span class="s1">The Godfather</span><span class="se">\n</span><span class="s1">by Mario Puzo</span><span class="se">\n</span><span class="s1">Produced by</span><span class="se">\n</span><span class="s1">Albert S. Ruddy</span><span class="se">\n</span><span class="s1">Starring</span><span class="se">\n</span><span class="s1">Marlon Brando</span><span class="se">\n</span><span class="s1">Al Pacino</span><span class="se">\n</span><span class="s1">James Caan</span><span class="se">\n</span><span class="s1">Richard Castellano</span><span class="se">\n</span><span class="s1">Robert Duvall</span><span class="se">\n</span><span class="s1">Sterling Hayden</span><span class="se">\n</span><span class="s1">John Marley</span><span class="se">\n</span><span class="s1">Richard Conte</span><span class="se">\n</span><span class="s1">Diane Keaton</span><span class="se">\n</span><span class="s1">Cinematography</span><span class="se">\n</span><span class="s1">Gordon Willis</span><span class="se">\n</span><span class="s1">Edited by</span><span class="se">\n</span><span class="s1">William Reynolds</span><span class="se">\n</span><span class="s1">Peter Zinner</span><span class="se">\n</span><span class="s1">Music by</span><span class="se">\n</span><span class="s1">Nino Rota</span><span class="se">\n</span><span class="s1">Production</span><span class="se">\n</span><span class="s1">companies</span><span class="se">\n</span><span class="s1">Paramount Pictures</span><span class="se">\n</span><span class="s1">Alfran Productions</span><span class="se">\n</span><span class="s1">Distributed by</span><span class="se">\n</span><span class="s1">Paramount Pictures</span><span class="se">\n</span><span class="s1">Release dates</span><span class="se">\n</span><span class="s1">March</span><span class="se">\xa0</span><span class="s1">14,</span><span class="se">\xa0</span><span class="s1">1972 (Loew</span><span class="se">\&#39;</span><span class="s1">s</span><span class="se">\n</span><span class="s1">State Theatre)</span><span class="se">\n</span><span class="s1">March</span><span class="se">\xa0</span><span class="s1">24,</span><span class="se">\xa0</span><span class="s1">1972 (United</span><span class="se">\n</span><span class="s1">States)</span><span class="se">\n</span><span class="s1">Running time</span><span class="se">\n</span><span class="s1">175 minutes</span><span class="se">\n</span><span class="s1">Country</span><span class="se">\n</span><span class="s1">United States</span><span class="se">\n</span><span class="s1">Language</span><span class="se">\n</span><span class="s1">English</span><span class="se">\n</span><span class="s1">Budget</span><span class="se">\n</span><span class="s1">$6–7.2 million</span><span class="se">\n</span><span class="s1">Box oﬃce</span><span class="se">\n</span><span class="s1">$250–291 million</span><span class="se">\n</span><span class="s1">The Godfather</span><span class="se">\n</span><span class="s1">The Godfather is a 1972 American epic gangster film directed by Francis Ford Coppola, who</span><span class="se">\n</span><span class="s1">co-wrote the screenplay with Mario Puzo, based on Puzo</span><span class="se">\&#39;</span><span class="s1">s best-selling 1969 novel. The film stars</span><span class="se">\n</span><span class="s1">an ensemble cast including Marlon Brando, Al Pacino, James Caan, Richard Castellano, Robert</span><span class="se">\n</span><span class="s1">Duvall,  Sterling  Hayden,  John  Marley,  Richard  Conte  and  Diane  Keaton.  It  is  the  first</span><span class="se">\n</span><span class="s1">installment in The Godfather trilogy, chronicling the Corleone family under patriarch Vito</span><span class="se">\n</span><span class="s1">Corleone (Brando) from 1945 to 1955. It focuses on the transformation of his youngest son,</span><span class="se">\n</span><span class="s1">Michael Corleone (Pacino), from reluctant family outsider to ruthless mafia boss.</span><span class="se">\n</span><span class="s1">Paramount Pictures obtained the rights to the novel for $80,000, before it gained popularity.</span><span class="se">\n</span><span class="s1">Studio executives had trouble finding a director; the first few candidates turned down the</span><span class="se">\n</span><span class="s1">position before Coppola signed on to direct the film but disagreement followed over casting</span><span class="se">\n</span><span class="s1">several  characters,  in  particular,  Vito  (Brando)  and  Michael  (Pacino).  Filming  took  place</span><span class="se">\n</span><span class="s1">primarily in locations around New York City and Sicily, and it was completed ahead of schedule.</span><span class="se">\n</span><span class="s1">The score was composed principally by Nino Rota, with additional pieces by Carmine Coppola.</span><span class="se">\n</span><span class="s1">The Godfather premiered at the Loew</span><span class="se">\&#39;</span><span class="s1">s State Theatre on March 14, 1972, and was widely</span><span class="se">\n</span><span class="s1">released in the United States on March 24, 1972. It was the highest-grossing film of 1972, and</span><span class="se">\n</span><span class="s1">was for a time the highest-grossing film ever made, earning between $250 and $291 million at</span><span class="se">\n</span><span class="s1">the box office. The film was acclaimed by critics and audiences, who praised its performances—</span><span class="se">\n</span><span class="s1">particularly those of Brando and Pacino—direction, screenplay, story, cinematography, editing,</span><span class="se">\n</span><span class="s1">score and portrayal of the mafia. The Godfather launched the successful careers of Coppola,</span><span class="se">\n</span><span class="s1">Pacino and other relative newcomers in the cast and crew. At the 45th Academy Awards, the film</span><span class="se">\n</span><span class="s1">won Best Picture, Best Actor (Brando) and Best Adapted Screenplay (for Puzo and Coppola). In</span><span class="se">\n</span><span class="s1">addition, the seven other Oscar nominations included Pacino, Caan and Duvall, all for Best</span><span class="se">\n</span><span class="s1">Supporting Actor, and Coppola for Best Director.</span><span class="se">\n</span><span class="s1">The Godfather is regarded as one of the greatest and most influential films ever made, as well as</span><span class="se">\n</span><span class="s1">a landmark of the gangster genre. It was selected for preservation in the U.S. National Film</span><span class="se">\n</span><span class="s1">Registry  of  the  Library  of  Congress  in  1990,  being  deemed  &quot;culturally,  historically,  or</span><span class="se">\n</span><span class="s1">aesthetically significant&quot; and is ranked the second-greatest film in American cinema (behind</span><span class="se">\n</span><span class="s1">Citizen Kane) by the American Film Institute. It was followed by sequels The Godfather Part II</span><span class="se">\n</span><span class="s1">(1974) and The Godfather Part III (1990). Pauline Kael wrote that &quot;If ever there was a great</span><span class="se">\n</span><span class="s1">example of how the best popular movies come out of a merger of commerce and art, The</span><span class="se">\n</span><span class="s1">Godfather is it.&quot;</span><span class="se">\n</span><span class="s1">In 1945, the New York City Corleone family don, Vito Corleone, listens to requests during his</span><span class="se">\n</span><span class="s1">daughter Connie</span><span class="se">\&#39;</span><span class="s1">s wedding to Carlo Rizzi. Vito</span><span class="se">\&#39;</span><span class="s1">s youngest son Michael, a Marine who has thus</span><span class="se">\n</span><span class="s1">far stayed out of the family business, introduces his girlfriend, Kay Adams, to his family at the</span><span class="se">\n</span><span class="s1">reception. Johnny Fontane, a popular singer and Vito</span><span class="se">\&#39;</span><span class="s1">s godson, seeks Vito</span><span class="se">\&#39;</span><span class="s1">s help in securing a</span><span class="se">\n</span><span class="s1">movie role. Vito sends his consigliere, Tom Hagen, to persuade studio president Jack Woltz to</span><span class="se">\n</span><span class="s1">offer Johnny the part. Woltz refuses Hagen</span><span class="se">\&#39;</span><span class="s1">s request at first, but soon complies after finding the severed head of his prized stud horse in his</span><span class="se">\n</span><span class="s1">bed.</span><span class="se">\n</span><span class="s1">As Christmas approaches, drug baron Virgil &quot;The Turk&quot; Sollozzo asks Vito to invest in his narcotics business and for police protection. Vito</span><span class="se">\n</span><span class="s1">declines, citing that involvement in narcotics would alienate his political connections. Suspicious of Sollozzo</span><span class="se">\&#39;</span><span class="s1">s partnership with the Tattaglia</span><span class="se">\n</span><span class="s1">crime family, Vito sends his enforcer Luca Brasi to the Tattaglias on an espionage mission. Brasi is garroted to death during the initial meeting.</span><span class="se">\n</span><span class="s1">Later, enforcers gun down Vito and coerce Hagen into a meeting. With Vito</span><span class="se">\&#39;</span><span class="s1">s first-born Sonny now in command, Sollozzo pressures Hagen to</span><span class="se">\n</span><span class="s1">persuade Sonny to accept the narcotics deal. Vito survives the shooting and is visited in the hospital by Michael, who finds him unprotected</span><span class="se">\n</span><span class="s1">after NYPD officers on Sollozzo</span><span class="se">\&#39;</span><span class="s1">s payroll clear out Vito</span><span class="se">\&#39;</span><span class="s1">s guards. Michael thwarts the attempt on his father</span><span class="se">\&#39;</span><span class="s1">s life but is beaten by corrupt police</span><span class="se">\n</span><span class="s1">captain Mark McCluskey. After the attempted hit at the hospital, Sonny retaliates with a hit on Bruno Tattaglia. Sollozzo and McCluskey</span><span class="se">\n</span><span class="s1">request to meet with Michael and settle the dispute. Michael feigns interest and agrees to meet, but hatches a plan with Sonny and Corleone</span><span class="se">\n</span><span class="s1">capo Clemenza to kill them and go into hiding. Michael meets Sollozzo and McCluskey at a Bronx restaurant; after retrieving a handgun</span><span class="se">\n</span><span class="s1">planted in the bathroom by Clemenza, he shoots both men dead.</span><span class="se">\n</span><span class="s1">Despite a clampdown by the authorities for the killing of a police captain, the Five Families erupt in open warfare. Michael takes refuge in</span><span class="se">\n</span><span class="s1">Sicily and Fredo, Vito</span><span class="se">\&#39;</span><span class="s1">s second son, is sheltered by Moe Greene in Las Vegas. In Sicily, Michael meets and marries a local woman, Apollonia.</span><span class="se">\n</span><span class="s1">Sonny publicly attacks and threatens Carlo for physically abusing Connie. When he abuses her again, Sonny speeds to their home but is</span><span class="se">\n</span><span class="s1">ambushed and murdered by gangsters at a highway toll booth. Apollonia is killed shortly thereafter by a car bomb intended for Michael.</span><span class="se">\n</span><span class="s1">Devastated by Sonny</span><span class="se">\&#39;</span><span class="s1">s death and tired of war, Vito sets a meeting with the Five Families. He assures them that he will withdraw his opposition</span><span class="se">\n</span><span class="s1">to their narcotics business and forgo avenging Sonny</span><span class="se">\&#39;</span><span class="s1">s murder. His safety guaranteed, Michael returns home to enter the family business and</span><span class="se">\n</span><span class="s1">Plot</span><span class="se">\n</span><span class="s1">The Godfather - Wikipedia</span><span class="se">\n</span><span class="s1">https://en.wikipedia.org/wiki/The_Godfather</span><span class="se">\n</span><span class="s1">1 of 11</span><span class="se">\n</span><span class="s1">19/10/24, 14:37</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;metadata&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;PDF 1.7&#39;</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;subject&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;keywords&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;creator&#39;</span><span class="p">:</span> <span class="s1">&#39;Mozilla Firefox 131.0.2&#39;</span><span class="p">,</span> <span class="s1">&#39;producer&#39;</span><span class="p">:</span> <span class="s1">&#39;cairo 1.18.0 (https://cairographics.org)&#39;</span><span class="p">,</span> <span class="s1">&#39;creationDate&#39;</span><span class="p">:</span> <span class="s2">&quot;D:20241019143725+05&#39;30&quot;</span><span class="p">,</span> <span class="s1">&#39;modDate&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;trapped&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;encryption&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;page&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}}</span>
+</code></pre></div>
+</div>
+<p>Create the embedding model, splitter to use and the summarization model. The example uses the following embedding and summarization models:</p>
+<ul>
+<li><a href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2"><code>all-MiniLM-L6-v2</code></a> as the embedding model.</li>
+<li><a href="https://huggingface.co/Qwen/Qwen2-0.5B-Instruct"><code>Qwen/Qwen2-0.5B-Instruct</code></a> as the summarization model.</li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span class="n">embedding_model</span> <span class="o">=</span> <span class="n">SentenceTransformerEmbeddingModel</span><span class="p">(</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;sentence-transformers/all-MiniLM-L6-v2&quot;</span><span class="p">,</span> <span class="n">use_gpu</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">document_splitter</span> <span class="o">=</span> <span class="n">HuggingFaceTextSplitter</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">=</span><span class="n">embedding_model</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">)</span>
+
+<span class="n">summarization_model</span> <span class="o">=</span> <span class="n">HuggingFaceLLMSummarizationModel</span><span class="p">(</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;Qwen/Qwen2-0.5B-Instruct&quot;</span><span class="p">,</span>
+    <span class="n">use_gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">summarization_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Embedding Model: </span><span class="si">{</span><span class="n">embedding_model</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Summarization Model: </span><span class="si">{</span><span class="n">summarization_model</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="result">
+<div class="language-python highlight"><pre><span></span><code><span class="n">Embedding</span> <span class="n">Model</span><span class="p">:</span> <span class="n">SentenceTransformerEmbeddingModel</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;sentence-transformers/all-MiniLM-L6-v2&#39;</span><span class="p">,</span> <span class="n">use_gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">Summarization</span> <span class="n">Model</span><span class="p">:</span> <span class="n">HuggingFaceLLMSummarizationModel</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;Qwen/Qwen2-0.5B-Instruct&#39;</span><span class="p">,</span> <span class="n">summarization_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">system_prompt</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">use_gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<p>Create the RAPTOR tree:</p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">config</span> <span class="o">=</span> <span class="n">ClusterTreeConfig</span><span class="p">(</span>
+    <span class="n">embedding_model</span><span class="o">=</span><span class="n">embedding_model</span><span class="p">,</span>
+    <span class="n">summarization_model</span><span class="o">=</span><span class="n">summarization_model</span><span class="p">,</span>
+    <span class="n">document_splitter</span><span class="o">=</span><span class="n">document_splitter</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">tree_builder</span> <span class="o">=</span> <span class="n">ClusterTreeBuilder</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+
+<span class="n">tree</span> <span class="o">=</span> <span class="n">tree_builder</span><span class="o">.</span><span class="n">build_from_documents</span><span class="p">(</span><span class="n">documents</span><span class="o">=</span><span class="n">documents</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tree: </span><span class="si">{</span><span class="n">tree</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="result">
+<div class="language-python highlight"><pre><span></span><code><span class="n">Tree</span><span class="p">:</span> <span class="n">Tree</span><span class="p">(</span><span class="n">num_layers</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<p>Initialize the retriever and the question-answering model. The example uses the <a href="https://ollama.com/library/qwen2.5:0.5b-instruct"><code>qwen2.5:0.5b-instruct</code></a> model from Ollama for question-answering (GPU poor <img alt="😭" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f62d.svg" title=":sob:" />):</p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">retriever_config</span> <span class="o">=</span> <span class="n">TreeRetrieverConfig</span><span class="p">(</span><span class="n">embedding_model</span><span class="o">=</span><span class="n">embedding_model</span><span class="p">)</span>
+<span class="n">retriever</span> <span class="o">=</span> <span class="n">TreeRetriever</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">retriever_config</span><span class="p">)</span>
+
+<span class="n">qa_model</span> <span class="o">=</span> <span class="n">OllamaQAModel</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;qwen2.5:0.5b-instruct&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;QA Model: </span><span class="si">{</span><span class="n">qa_model</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="result">
+<div class="language-python highlight"><pre><span></span><code><span class="n">QA</span> <span class="n">Model</span><span class="p">:</span> <span class="n">OllamaQAModel</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;qwen2.5:0.5b-instruct&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<p>Send a query to retriever to retrieve context:</p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;Who are the cast members of The Godfather?&quot;</span>
+
+<span class="n">_</span><span class="p">,</span> <span class="n">context</span> <span class="o">=</span> <span class="n">retriever</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">tree</span><span class="o">=</span><span class="n">tree</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Retrieved context:</span><span class="se">\n</span><span class="si">{</span><span class="n">context</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="result">
+<div class="language-text highlight"><pre><span></span><code>Retrieved context:
+the office and pay reverence to Michael as &quot;Don Corleone&quot;.
+▪ Marlon Brando as Vito Corleone: crime boss and
+patriarch of the Corleone family
+▪ Al Pacino as Michael Corleone: Vito&#39;s youngest son
+▪ James Caan as Sonny Corleone: Vito&#39;s eldest son
+▪ Richard Castellano as Peter Clemenza: a caporegime in
+the Corleone crime family, Sonny&#39;s godfather
+▪ Robert Duvall as Tom Hagen: Corleone consigliere,
+lawyer
+, and unoﬃcial adopted member of the
+Corleone family
+▪ Sterling Hayden as Captain McCluskey: a corrupt
+police captain on Sollozzo&#39;s payroll
+▪ John Marley as Jack Woltz: Hollywood ﬁlm producer
+who is intimidated by the Corleones
+▪ Richard Conte as Emilio Barzini: a crime boss of a rival
+family
+
+▪ Gianni Russo as Carlo Rizzi: Connie&#39;s abusive husband
+▪ John Cazale as Fredo Corleone: Vito&#39;s middle son
+▪ Rudy Bond as Cuneo: a crime boss of a rival family
+▪ Al Martino as Johnny Fontane: a singer and Vito&#39;s
+godson
+▪ Morgana King as Carmela Corleone: Vito&#39;s wife
+▪ Lenny Montana as Luca Brasi: Vito&#39;s enforcer
+▪ Johnny Martino as Paulie Gatto: a soldier in the
+Corleone crime family
+▪ Salvatore Corsitto as Amerigo Bonasera: the
+undertaker who asks for a favor at Connie&#39;s wedding
+▪ Richard Bright as Al Neri: the soldier in the Corleone
+crime family who becomes Michael&#39;s enforcer
+▪ Alex Rocco as Moe Greene: a Jewish mobster and Las
+Vegas casino proprietor
+▪ Tony Giorgio as Bruno Tattaglia
+
+co-wrote the screenplay with Mario Puzo, based on Puzo&#39;s best-selling 1969 novel. The film stars
+an ensemble cast including Marlon Brando, Al Pacino, James Caan, Richard Castellano, Robert
+Duvall,  Sterling  Hayden,  John  Marley,  Richard  Conte  and  Diane  Keaton.  It  is  the  first
+installment in The Godfather trilogy, chronicling the Corleone family under patriarch Vito
+Corleone (Brando) from 1945 to 1955. It focuses on the transformation of his youngest son,
+Michael Corleone (Pacino), from reluctant family outsider to ruthless mafia boss.
+Paramount Pictures obtained the rights to the novel for $80,000, before it gained popularity.
+Studio executives had trouble finding a director; the first few candidates turned down the
+position before Coppola signed on to direct the film but disagreement followed over casting
+several  characters,  in  particular,  Vito  (Brando)  and  Michael  (Pacino).  Filming  took  place
+primarily in locations around New York City and Sicily, and it was completed ahead of schedule.
+
+▪ Al Lettieri as Virgil Sollozzo: an adversary who
+attempts to pressure Vito to get into the drug
+business, backed by the Tattaglia family
+▪ Diane Keaton as Kay Adams-Corleone: Michael&#39;s
+girlfriend and, later
+, second wife
+▪ Abe Vigoda as Salvatore Tessio: a caporegime in the
+Corleone crime family
+▪ Talia Shire as Connie Corleone: Vito&#39;s only daughter
+▪ Gianni Russo as Carlo Rizzi: Connie&#39;s abusive husband
+▪ John Cazale as Fredo Corleone: Vito&#39;s middle son
+▪ Rudy Bond as Cuneo: a crime boss of a rival family
+▪ Al Martino as Johnny Fontane: a singer and Vito&#39;s
+godson
+▪ Morgana King as Carmela Corleone: Vito&#39;s wife
+▪ Lenny Montana as Luca Brasi: Vito&#39;s enforcer
+
+▪ Tony Giorgio as Bruno Tattaglia
+▪ Vito Scotti as Nazorine
+▪ Tere Livrano as Theresa Hagen: Tom&#39;s wife
+▪ Victor Rendina as Philip Tattaglia: head of the Tattaglia
+crime family and prostitution crime boss
+▪ Jeannie Linero as Lucy Mancini: Connie&#39;s friend and
+Sonny&#39;s mistress
+▪ Julie Gregg as Sandra Corleone: Sonny&#39;s wife
+▪ Ardell Sheridan as Mrs. Clemenza
+Other actors playing smaller roles in the Sicilian sequence are Simonetta Stefanelli as Apollonia Vitelli-Corleone, Angelo Infanti as Fabrizio,
+Corrado Gaipa as Don Tommasino, Franco Citti as Calò and Saro Urzì as Vitelli.
+The film is based on Mario Puzo&#39;s The Godfather, which remained on The New York Times Best Seller list for 67 weeks and sold over nine
+</code></pre></div>
+</div>
+<p>Set the system prompt (optional) and get an answer from the question-answering model:</p>
+<div class="language-python highlight"><pre><span></span><code><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s2">&quot;/media/malay_agr/Shared/Coding/Python/bookacle/.venv/lib/python3.11/site-packages/markdown_exec/formatters/python.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">71</span><span class="p">,</span> <span class="ow">in</span> <span class="n">_run_python</span>
+    <span class="n">exec_python</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">code_block_id</span><span class="p">,</span> <span class="n">exec_globals</span><span class="p">)</span>
+  <span class="n">File</span> <span class="s2">&quot;/media/malay_agr/Shared/Coding/Python/bookacle/.venv/lib/python3.11/site-packages/markdown_exec/formatters/_exec_python.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">8</span><span class="p">,</span> <span class="ow">in</span> <span class="n">exec_python</span>
+    <span class="n">exec</span><span class="p">(</span><span class="n">compiled</span><span class="p">,</span> <span class="n">exec_globals</span><span class="p">)</span>  <span class="c1"># noqa: S102</span>
+    <span class="o">^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+  <span class="n">File</span> <span class="s2">&quot;&lt;code block: session rag; n7&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">10</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+    <span class="n">answer</span> <span class="o">=</span> <span class="n">qa_model</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">history</span><span class="o">=</span><span class="n">history</span><span class="p">)</span>
+              <span class="o">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+  <span class="n">File</span> <span class="s2">&quot;/media/malay_agr/Shared/Coding/Python/bookacle/src/bookacle/models/qa.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">146</span><span class="p">,</span> <span class="ow">in</span> <span class="n">answer</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">ollama</span><span class="o">.</span><span class="n">chat</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span> <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+               <span class="o">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+  <span class="n">File</span> <span class="s2">&quot;/media/malay_agr/Shared/Coding/Python/bookacle/.venv/lib/python3.11/site-packages/ollama/_client.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">236</span><span class="p">,</span> <span class="ow">in</span> <span class="n">chat</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request_stream</span><span class="p">(</span>
+           <span class="o">^^^^^^^^^^^^^^^^^^^^^</span>
+  <span class="n">File</span> <span class="s2">&quot;/media/malay_agr/Shared/Coding/Python/bookacle/.venv/lib/python3.11/site-packages/ollama/_client.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">99</span><span class="p">,</span> <span class="ow">in</span> <span class="n">_request_stream</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">if</span> <span class="n">stream</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+                                                        <span class="o">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+  <span class="n">File</span> <span class="s2">&quot;/media/malay_agr/Shared/Coding/Python/bookacle/.venv/lib/python3.11/site-packages/ollama/_client.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">75</span><span class="p">,</span> <span class="ow">in</span> <span class="n">_request</span>
+    <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span> <span class="kn">from</span> <span class="kc">None</span>
+<span class="n">ollama</span><span class="o">.</span><span class="n">_types</span><span class="o">.</span><span class="n">ResponseError</span><span class="p">:</span> <span class="n">llama</span> <span class="n">runner</span> <span class="n">process</span> <span class="n">has</span> <span class="n">terminated</span><span class="p">:</span> <span class="n">CUDA</span> <span class="n">error</span>
+</code></pre></div>
 
 
 
@@ -1667,13 +1966,13 @@
         
         
           
-          <a href="models/" class="md-footer__link md-footer__link--next" aria-label="Next: Index">
+          <a href="models/" class="md-footer__link md-footer__link--next" aria-label="Next: Models">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Index
+                Models
               </div>
             </div>
             <div class="md-footer__button md-icon">
