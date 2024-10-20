@@ -255,8 +255,8 @@ Here is an example interaction:
 
 You can also use the chat via the CLI to interact with your documents.
 
-```console exec="true" source="material-block" result="python"
-$ bookacle --help
+```bash exec="true" source="material-block" result="ansi"
+bookacle --help
 ```
 
 See [Command-Line Interface](cli.md) for more information on the usage.
