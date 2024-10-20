@@ -139,6 +139,8 @@ print(document_splitter)
 
     See [Document Splitters](splitters.md) for more details on splitters and how you can create your own splitters.
 
+    You can also use custom tokenizers by implementing the [`TokenizerLike`][bookacle.tokenizer.TokenizerLike] protocol. See [Tokenizers](tokenizers.md) for more details.
+
 Next, we create the RAPTOR tree using [`ClusterTreeBuilder`][bookacle.tree.builder.ClusterTreeBuilder], which implements the methodology in the RAPTOR paper:
 
 - Split the documents into chunks and create the leaf nodes from these chunks.
@@ -208,16 +210,53 @@ answer = qa_model.answer(question=query, context=context, stream=False, history=
 print(f"Answer:\n{answer['content']}")
 ```
 
-## Use the terminal-based chat
+## Chat Interface
 
-You can also use the terminal-based chat to interact with your documents.
+`bookacle` comes with a built-in terminal-based chat interface powered by [`rich`](https://github.com/Textualize/rich) and [`prompt-toolkit`](https://github.com/prompt-toolkit/python-prompt-toolkit), which supports the following:
+
+- Autocompletion in the chat.
+- Custom user avatars.
+- Markdown rendering.
+- Streaming output with a nice progress bar.
+- Pass a system prompt to the question-answering model.
+- Store chat history in a file as you chat, etc.
+
+### Launch from a script
+
+The chat interface can be launched in a script by using [`Chat`][bookacle.chat.Chat].
+
+```python
+from rich.console import Console
+from bookacle.chat import Chat
+
+console = Console()
+
+chat = Chat(
+    retriever=retriever,
+    qa_model=qa_model,
+    console=console,
+)
+
+system_prompt = """You are a helpful assistant, designed to help users understand documents and answer questions on the documents.
+Use your knowledge and the context passed to you to answer user queries.
+The context will be text extracted from the document. It will be denoted by CONTEXT: in the prompt.
+The user's query will be denoted by QUERY: in the prompt.
+Always respond in Markdown.
+"""
+
+chat.run(tree=tree, stream=True, system_prompt=system_prompt)
+```
+
+Here is an example interaction:
+
+![Chat Interaction](../assets/chat-interaction.png)
+
+### Terminal-based Chat
+
+You can also use the chat via the CLI to interact with your documents.
 
 ```console exec="true" source="material-block" result="python"
 $ bookacle --help
 ```
 
-See [Command-Line Interface](cli.md) for more information.
-
-## Use the chat interface from a script
-
-The chat interface can also be launched in a script. You can use the [`Chat`][bookacle.chat.Chat] class to create a chat session and start the session using the class' [`run()`][bookacle.chat.Chat.run] method.
+See [Command-Line Interface](cli.md) for more information on the usage.
