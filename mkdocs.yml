@@ -12,10 +12,11 @@ nav:
   - usage/index.md
   - Models: usage/models.md
   - Document Loaders: usage/loaders.md
-  - Text Splitters: usage/splitters.md
+  - Document Splitters: usage/splitters.md
   - Tokenizers: usage/tokenizers.md
   - Clustering Support: usage/clustering.md
   - Building RAPTOR Tree: usage/building-raptor-tree.md
+  - Retrievers: usage/retriever.md
   - Command-Line Interface: usage/cli.md
   - Configuration: usage/config.md
 - API Reference:
