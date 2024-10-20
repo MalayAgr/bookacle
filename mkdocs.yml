@@ -1,4 +1,5 @@
 site_name: "bookacle"
+site_url: https://malayagr.github.io/bookacle/
 repo_url: https://github.com/MalayAgr/bookacle/
 edit_uri: "edit/main/docs"
 watch: ["mkdocs.yml", "README.md", "src/bookacle"]
