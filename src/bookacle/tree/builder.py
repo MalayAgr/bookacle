@@ -107,7 +107,7 @@ class ClusterTreeBuilder:
             first_node_index
             + index: Node(
                 text=summary,
-                index=index,
+                index=first_node_index + index,
                 children={node.index for node in cluster},
                 embeddings=embeddings[index],
                 layer=layer,
