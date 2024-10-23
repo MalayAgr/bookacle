@@ -2,7 +2,7 @@ site_name: "bookacle"
 site_url: https://malayagr.github.io/bookacle/
 repo_url: https://github.com/MalayAgr/bookacle/
 edit_uri: "edit/main/docs"
-watch: ["mkdocs.yml", "README.md", "src/bookacle"]
+watch: ["mkdocs.yml", "README.md", "src/bookacle", "docs/snippets"]
 copyright: Copyright &copy; 2024 Malay Agarwal
 
 nav:
@@ -92,7 +92,9 @@ markdown_extensions:
     custom_checkbox: true
 - pymdownx.details
 - pymdownx.inlinehilite
-- pymdownx.snippets
+- pymdownx.snippets:
+    base_path: ['.', 'docs']
+    check_paths: true
 - toc:
     baselevel: 1
     permalink: "¤"
